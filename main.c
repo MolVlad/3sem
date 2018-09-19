@@ -6,60 +6,100 @@
 #define MAX_SIZE_WORD 100
 #define MAX_SIZE_TEXT 10000
 #define MAX_SIZE_DELIMITERS 10
-#define MAX_NUM_WORDS 100
+#define MAX_NUM_WORDS 20
 
-int Split(const char * str, const char * delimiters, char *** words, int * count);
-void Print_words(char ** words, int count);
+char * Allocate_memory(int num_symbols);
+char ** Allocate_memory_array(int array_size, int word_size);
+int Print_words(char ** words, int count);
+int Split(char * str, const char * delimiters, char ** words, int * count);
 
 int main()
 {
-/* Scan text------------------------------------------------------------*/
-
-	char * text = malloc((MAX_SIZE_TEXT + 1) * sizeof(char));
-	assert(text);
+	char * text = Allocate_memory(MAX_SIZE_TEXT);
 	printf("Print text:\n");
-	scanf("%s", text);
-	if(strlen(text) > MAX_SIZE_TEXT)
-		assert(!"text_overflow");
+	fgets(text, MAX_SIZE_TEXT, stdin);
 
-/* Scan delimiters------------------------------------------------------*/
-
-	char * delimiters = malloc((MAX_SIZE_DELIMITERS + 1) * sizeof(char));
-	assert(delimiters);
+	char * delimiters = Allocate_memory(MAX_SIZE_DELIMITERS);
 	printf("Print delimiters:\n");
-	scanf("%s", delimiters);
-	if(strlen(delimiters) > MAX_SIZE_DELIMITERS)
-		assert(!"delimiters_overflow");
+	fgets(delimiters, MAX_SIZE_DELIMITERS, stdin);
 
-/* Split words----------------------------------------------------------*/
-
-	char ** words = malloc(MAX_NUM_WORDS * sizeof(char));		//allocate memory for pointer to a word array
-
-	int i;
-	for(i = 0; i < MAX_NUM_WORDS; i++)
-		words[i] = malloc((MAX_SIZE_WORD + 1) * sizeof(char));	//allocate memory for words
-
+	char ** words = Allocate_memory_array(MAX_NUM_WORDS, MAX_SIZE_WORD);
 	int count;
 
-	Split(text, delimiters, &words, &count);
-
-	Print_words(words, count);
+	assert(!Split(text, delimiters, words, &count));
+//	assert(!Print_words(words, count));
 
 	return 0;
 }
 
-int Split(const char * str, const char * delimiters, char *** words, int * count)
+char * Allocate_memory(int num_symbols)
 {
-	*words[0] = "lol";
-	*words[1] = "sg";
-	*count = 2;
+	char * ret = (char *)malloc((num_symbols + 1) * sizeof(char));
+	assert(ret);
 
+	return ret;
 }
 
-void Print_words(char ** words, int count)
+char ** Allocate_memory_array(int array_size, int word_size)
 {
 	int i;
 
+	char ** ret = (char **)malloc(array_size * sizeof(char *));
+	assert(ret);
+
+	for(i = 0; i < array_size; i++)
+	{
+		ret[i] = (char *)malloc((word_size + 1) * sizeof(char));
+		assert(ret[i]);
+	}
+
+	return ret;
+}
+
+int Print_words(char ** words, int count)
+{
+	if(!words)
+		return 1;
+	int i;
+
+
 	for(i = 0; i < count; i++)
+	{
+		if(!words[i])
+			return 1;
 		printf("%s\n", words[i]);
+	}
+
+	return 0;
+}
+
+int Split(char * str, const char * delimiters, char ** words, int * count)
+{
+	char * fragment = Allocate_memory(MAX_SIZE_WORD);
+
+	int i = 0;
+	fragment = strtok(str, delimiters);
+	while(fragment)
+	{
+		printf("%s\n", fragment);
+		strcpy(words[i], fragment);
+		i++;
+		fragment = strtok(NULL, delimiters);
+	}
+
+	*count = i;
+
+	free(fragment);
+
+	return 0;
+}
+
+void Free_memory_array(char ** array, int array_size)
+{
+	int i;
+
+	for(i = 0; i < array_size; i++)
+		free(array[i]);
+
+	free(array);
 }
