@@ -22,7 +22,7 @@
 
 #define MAX_SIZE_TEXT		10000
 #define MAX_SIZE_DELIMITERS	10
-#define MAX_NUM_WORDS		20
+#define MAX_NUM_WORDS		100
 #define MAX_SIZE_WORD		100
 
 /* Structure for SPLIT -----------------------------------------------------------*/
@@ -89,7 +89,7 @@ char ** Allocate_memory_array(int array_size, int word_size)
 	int i;
 
 	for(i = 0; i < array_size; i++)
-		ret[i] = (char *)malloc((word_size + 1) * sizeof(char));
+		ret[i] = Allocate_memory(word_size);
 
 	return ret;
 }
