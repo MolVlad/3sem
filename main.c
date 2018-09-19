@@ -27,7 +27,7 @@ int main()
 	int count;
 
 	assert(!Split(text, delimiters, words, &count));
-//	assert(!Print_words(words, count));
+	assert(!Print_words(words, count));
 
 	return 0;
 }
@@ -81,7 +81,6 @@ int Split(char * str, const char * delimiters, char ** words, int * count)
 	fragment = strtok(str, delimiters);
 	while(fragment)
 	{
-		printf("%s\n", fragment);
 		strcpy(words[i], fragment);
 		i++;
 		fragment = strtok(NULL, delimiters);
