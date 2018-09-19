@@ -75,16 +75,6 @@ int main()
 
 /* Prototypes of functions for memory---------------------------------------------*/
 
-void Free_memory_array(char ** array, int array_size)
-{
-	int i;
-
-	for(i = 0; i < array_size; i++)
-		free(array[i]);
-
-	free(array);
-}
-
 char * Allocate_memory(int num_symbols)
 {
 	char * ret = (char *)malloc((num_symbols + 1) * sizeof(char));
@@ -107,6 +97,16 @@ char ** Allocate_memory_array(int array_size, int word_size)
 	}
 
 	return ret;
+}
+
+void Free_memory_array(char ** array, int array_size)
+{
+	int i;
+
+	for(i = 0; i < array_size; i++)
+		free(array[i]);
+
+	free(array);
 }
 
 /* Prototypes of SPLIT-functions -------------------------------------------------*/
