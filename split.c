@@ -56,14 +56,6 @@ int splitFree(splitStruct * split);
 
 /* Main function -----------------------------------------------------------------*/
 
-/* FIXIT: замечание в основном к стилю именования переменных и ф-й: вы собрали всевозможные стили вместе.
-   Лучше что-то такое:
-   SplitInfo info;
-   info.maxSizeText = MAX_SIZE_TEXT;
-   ...
-*/
-
-
 int main()
 {
 	splitStruct split;
