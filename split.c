@@ -64,25 +64,25 @@ int main()
 	split.maxNumWords = 		MAX_NUM_WORDS;
 	split.maxSizeWord = 		MAX_SIZE_WORD;
 
-	if(!splitInit(&split))
+	if(splitInit(&split))
 	{
 		printf("Init error\n");
 		return 1;
 	}
 
-	if(!splitScan(&split))
+	if(splitScan(&split))
 	{
 		printf("Scan error\n");
 		return 2;
 	}
 
-	if(!splitPrint(&split))
+	if(splitPrint(&split))
 	{
 		printf("Print error\n");
 		return 3;
 	}
 
-	if(!splitFree(&split))
+	if(splitFree(&split))
 	{
 		printf("Free error\n");
 		return 4;
