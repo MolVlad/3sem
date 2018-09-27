@@ -29,30 +29,30 @@
 
 typedef struct
 {
-	int max_size_text;
-	int max_size_delimiters;
-	int max_num_words;
-	int max_size_word;
+	int maxSizeText;
+	int maxSizeDelimiters;
+	int maxNumWords;
+	int maxSizeWord;
 	int count;
 
 	char * text;
 	char * delimiters;
 	char ** words;
-} SPLIT_STRUCT;
+} splitStruct;
 
 /* Declarations of functions for memory ------------------------------------------*/
 
-char ** Allocate_memory_array(int array_size, int word_size);
-char * Allocate_memory(int num_symbols);
-void Free_memory_array(char ** array, int array_size);
+char ** allocateMemoryArray(int array_size, int word_size);
+char * allocateMemory(int num_symbols);
+void freeMemoryArray(char ** array, int array_size);
 
 /* Declarations of SPLIT-functions -----------------------------------------------*/
 
-int SPLIT_Init(SPLIT_STRUCT * split);
-int SPLIT_Scan(SPLIT_STRUCT * split);
-int SPLIT_Split(SPLIT_STRUCT * split);
-int SPLIT_Print(SPLIT_STRUCT * split);
-int SPLIT_Free(SPLIT_STRUCT * split);
+int splitInit(splitStruct * split);
+int splitScan(splitStruct * split);
+int splitSplit(splitStruct * split);
+int splitPrint(splitStruct * split);
+int splitFree(splitStruct * split);
 
 /* Main function -----------------------------------------------------------------*/
 
@@ -61,56 +61,70 @@ int SPLIT_Free(SPLIT_STRUCT * split);
    SplitInfo info;
    info.maxSizeText = MAX_SIZE_TEXT;
    ...
-   
-   Еще assert работает только в режиме debug. Т.е. если вы соберете программу с ключом -O2 (режим release), и потом
-   вы не сможете на каком-то этапе, например, память выделить, то потом получится seg fault, при попытке обращения к этой памяти.
-   Плюс компилятор в режиме release может быть умнее программиста и просто не вычислять выражения внутри assert'ов :)
 */
 
 
 int main()
 {
-	SPLIT_STRUCT split;
-	split.max_size_text = 		MAX_SIZE_TEXT;
-	split.max_size_delimiters = 	MAX_SIZE_DELIMITERS;
-	split.max_num_words = 		MAX_NUM_WORDS;
-	split.max_size_word = 		MAX_SIZE_WORD;
+	splitStruct split;
+	split.maxSizeText = 		MAX_SIZE_TEXT;
+	split.maxSizeDelimiters = 	MAX_SIZE_DELIMITERS;
+	split.maxNumWords = 		MAX_NUM_WORDS;
+	split.maxSizeWord = 		MAX_SIZE_WORD;
 
-	assert(!SPLIT_Init(&split));
-	assert(!SPLIT_Scan(&split));
-	assert(!SPLIT_Split(&split));
-	assert(!SPLIT_Print(&split));
-	assert(!SPLIT_Free(&split));
+	if(!splitInit(&split))
+	{
+		printf("Init error\n");
+		return 1;
+	}
+
+	if(!splitScan(&split))
+	{
+		printf("Scan error\n");
+		return 2;
+	}
+
+	if(!splitPrint(&split))
+	{
+		printf("Print error\n");
+		return 3;
+	}
+
+	if(!splitFree(&split))
+	{
+		printf("Free error\n");
+		return 4;
+	}
 
 	return 0;
 }
 
 /* Prototypes of functions for memory---------------------------------------------*/
 
-char * Allocate_memory(int num_symbols)
+char * allocateMemory(int numSymbols)
 {
-	char * ret = (char *)malloc((num_symbols + 1) * sizeof(char));
+	char * ret = (char *)malloc((numSymbols + 1) * sizeof(char));
 
 	return ret;
 }
 
-char ** Allocate_memory_array(int array_size, int word_size)
+char ** allocateMemoryArray(int arraySize, int wordSize)
 {
-	char ** ret = (char **)malloc(array_size * sizeof(char *));
+	char ** ret = (char **)malloc(arraySize * sizeof(char *));
 
 	int i;
 
-	for(i = 0; i < array_size; i++)
-		ret[i] = Allocate_memory(word_size);
+	for(i = 0; i < arraySize; i++)
+		ret[i] = allocateMemory(wordSize);
 
 	return ret;
 }
 
-void Free_memory_array(char ** array, int array_size)
+void freeMemoryArray(char ** array, int arraySize)
 {
 	int i;
 
-	for(i = 0; i < array_size; i++)
+	for(i = 0; i < arraySize; i++)
 		free(array[i]);
 
 	free(array);
@@ -118,11 +132,11 @@ void Free_memory_array(char ** array, int array_size)
 
 /* Prototypes of SPLIT-functions -------------------------------------------------*/
 
-int SPLIT_Init(SPLIT_STRUCT * split)
+int splitInit(splitStruct * split)
 {
-	split->text =		Allocate_memory(split->max_size_text);
-	split->delimiters =	Allocate_memory(split->max_size_delimiters);
-	split->words =		Allocate_memory_array(split->max_num_words, split->max_size_word);
+	split->text =		allocateMemory(split->maxSizeText);
+	split->delimiters =	allocateMemory(split->maxSizeDelimiters);
+	split->words =		allocateMemoryArray(split->maxNumWords, split->maxSizeWord);
 	split->count =		0;
 
 	if(!split->text || !split->delimiters || !split->words)
@@ -130,7 +144,7 @@ int SPLIT_Init(SPLIT_STRUCT * split)
 
 	int i;
 
-	for(i = 0; i < split->max_num_words; i++)
+	for(i = 0; i < split->maxNumWords; i++)
 	{
 		if(!split->words[i])
 			return 1;
@@ -139,20 +153,20 @@ int SPLIT_Init(SPLIT_STRUCT * split)
 	return 0;
 }
 
-int SPLIT_Scan(SPLIT_STRUCT * split)
+int splitScan(splitStruct * split)
 {
 	printf("Print text:\n");
-	fgets(split->text, split->max_size_text, stdin);
+	fgets(split->text, split->maxSizeText, stdin);
 
 	printf("Print delimiters:\n");
-	fgets(split->delimiters, split->max_size_delimiters, stdin);
+	fgets(split->delimiters, split->maxSizeDelimiters, stdin);
 
 	return 0;
 }
 
-int SPLIT_Split(SPLIT_STRUCT * split)
+int splitSplit(splitStruct * split)
 {
-	char * fragment = Allocate_memory(MAX_SIZE_WORD);
+	char * fragment = allocateMemory(MAX_SIZE_WORD);
 
 	int i = 0;
 
@@ -174,7 +188,7 @@ int SPLIT_Split(SPLIT_STRUCT * split)
 	return 0;
 }
 
-int SPLIT_Print(SPLIT_STRUCT * split)
+int splitPrint(splitStruct * split)
 {
 	if(!split->words)
 		return 1;
@@ -192,11 +206,11 @@ int SPLIT_Print(SPLIT_STRUCT * split)
 	return 0;
 }
 
-int SPLIT_Free(SPLIT_STRUCT * split)
+int splitFree(splitStruct * split)
 {
 	free(split->text);
 	free(split->delimiters);
-	Free_memory_array(split->words, split->max_num_words);
+	freeMemoryArray(split->words, split->maxNumWords);
 
 	return 0;
 }
