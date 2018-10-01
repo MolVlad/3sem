@@ -1,0 +1,12 @@
+5 ls -al
+2 gcc hello.c
+10 pwd
+4 ./a.out
+3 ./a.out > hello.txt
+12 ls -g
+17 mkdir lol
+18 echo lol
+19 rmdir lol
+20 echo rmlol
+15 sdsdg
+7 ls -a
