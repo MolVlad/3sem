@@ -16,22 +16,38 @@ int main()
 		return 1;
 	}
 
-	if(splitScan(&split))
-	{
-		printf("Scan error\n");
-		return 2;
-	}
+	#ifndef SCAN_DELIMITERS
+	char delimiters[] = " \n\t";
+	strcpy(split.delimiters, delimiters);
+	#endif /* SCAN_DELIMITERS */
 
-	if(splitSplit(&split))
-	{
-		printf("Split error\n");
-		return 3;
-	}
+	int thereIsCommand = 1;
 
-	if(splitPrint(&split))
+	while(thereIsCommand)
 	{
-		printf("Print error\n");
-		return 4;
+		if(splitScan(&split))
+		{
+			printf("Scan error\n");
+			return 2;
+		}
+
+		if(splitSplit(&split))
+		{
+			printf("Split error\n");
+			return 3;
+		}
+
+		
+
+		//createTask();
+
+		if(splitPrint(&split))
+		{
+			printf("Print error\n");
+			return 4;
+		}
+
+		thereIsCommand = 0;
 	}
 
 	if(splitFree(&split))

@@ -75,15 +75,21 @@ int splitInit(splitStruct * split)
 
 int splitScan(splitStruct * split)
 {
+	#ifdef CONSOLE
 	printf("Print text:\n");
+	#endif /* CONSOLE */
 
 	scanf("%[^\n]", split->text);
 	getchar();
 
+	#ifdef SCAN_DELIMITERS
+	#ifdef CONSOLE
 	printf("Print delimiters:\n");
+	#endif /* CONSOLE */
 
 	scanf("%[^\n]", split->delimiters);
 	getchar();
+	#endif /* SCAN_DELIMITERS */
 
 	return 0;
 }

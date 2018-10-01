@@ -1,22 +1,31 @@
 PROJECT = homework2
 
 SOURCES = src/main.c src/split.c
+OBJS = $(SOURCES:.c=.o)
 
+INCLUDES += -I src
 INCLUDES += -I includes
 
-DEFINES = -DCONSOLE
+DEFINES = -DNDEBUG #-DCONSOLE
 
 CFLAGS = -Wall -Wextra
 CFLAGS += $(DEFINES) $(INCLUDES) $(DEFINES)
 
-RM = rm -f
+COMP = gcc
+RM = rm -rf
 
-.PHONY: all clean go
+.PHONY: all clean go tags
 
-all: clean go
-
-go:
-	gcc $(CFLAGS) $(SOURCES) -o $(PROJECT)
+all: link
 
 clean:
-	$(RM) *.o
+	$(RM) $(OBJS)
+
+link: $(OBJS)
+	$(COMP) -o $(PROJECT) $(OBJS)
+
+%.o:
+	gcc -c $(CFLAGS) $(@:.o=.c) -o $@
+
+tags:
+	ctags -R
