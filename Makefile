@@ -1,4 +1,4 @@
-PROJECT = homework2
+PROJECT = exe
 
 SOURCES = src/main.c src/split.c
 OBJS = $(SOURCES:.c=.o)
