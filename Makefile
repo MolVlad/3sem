@@ -1,33 +1,22 @@
 PROJECT = homework2
 
-###########
-#Sources
+SOURCES = src/main.c src/split.c
 
-SOURCES_S =
-SOURCES_C = src/main.c src/split.c
+INCLUDES += -I includes
 
-SOURCES = $(SOURCES_S) $(SOURCES_C)
-OBJS = $(SOURCES_S:.s = .o) $(SOURCES_C:.c=.o)
-
-INCLUDES += src
-INCLUDES += includes
-
-DEFINES =
+DEFINES = -DCONSOLE
 
 CFLAGS = -Wall -Wextra
-CFLAGS += $(INCLUDES) $(DEFINES)
+CFLAGS += $(DEFINES) $(INCLUDES) $(DEFINES)
 
 RM = rm -f
 
-.PHONY: all clean
+.PHONY: all clean go
 
-all: clean $(PROJECT) #$(PROJECT)
-	gcc -o $(PROJECT) $(PROJECT).o
+all: clean go
 
-$(PROJECT): $(OBJS)
-
-%.o:
-	gcc $(CFLAGS) -c $<
+go:
+	gcc $(CFLAGS) $(SOURCES) -o $(PROJECT)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) *.o

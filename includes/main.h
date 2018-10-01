@@ -1,6 +1,8 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+/* Includes ----------------------------------------------------------------------*/
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>

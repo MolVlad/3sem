@@ -11,8 +11,7 @@
   ******************************************************************************
 */
 
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#include "split.h"
 
 /* Declarations of functions for memory ------------------------------------------*/
 
@@ -76,16 +75,12 @@ int splitInit(splitStruct * split)
 
 int splitScan(splitStruct * split)
 {
-	#ifdef console
 	printf("Print text:\n");
-	#endif
 
 	scanf("%[^\n]", split->text);
 	getchar();
 
-	#ifdef console
 	printf("Print delimiters:\n");
-	#endif
 
 	scanf("%[^\n]", split->delimiters);
 	getchar();
@@ -143,5 +138,3 @@ int splitFree(splitStruct * split)
 
 	return 0;
 }
-
-#endif /* __SPLIT_H__ */

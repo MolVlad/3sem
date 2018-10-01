@@ -14,8 +14,6 @@
 #ifndef __SPLIT_H__
 #define __SPLIT_H__
 
-//#define console 1	//define for output to the console
-
 /* Includes ----------------------------------------------------------------------*/
 
 #include<stdio.h>

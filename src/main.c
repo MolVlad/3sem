@@ -1,12 +1,4 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#include "main.h"
 
 /* Main function -----------------------------------------------------------------*/
 
@@ -75,5 +67,3 @@ int main()
 
 	return 0;
 }*/
-
-#endif /* __MAIN_H__ */
