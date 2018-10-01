@@ -11,6 +11,8 @@
   ******************************************************************************
 */
 
+//#define console 1	//define for output to the console
+
 /* Includes ----------------------------------------------------------------------*/
 
 #include<stdio.h>
@@ -76,16 +78,22 @@ int main()
 		return 2;
 	}
 
+	if(splitSplit(&split))
+	{
+		printf("Split error\n");
+		return 3;
+	}
+
 	if(splitPrint(&split))
 	{
 		printf("Print error\n");
-		return 3;
+		return 4;
 	}
 
 	if(splitFree(&split))
 	{
 		printf("Free error\n");
-		return 4;
+		return 5;
 	}
 
 	return 0;
@@ -147,11 +155,19 @@ int splitInit(splitStruct * split)
 
 int splitScan(splitStruct * split)
 {
+	#ifdef console
 	printf("Print text:\n");
-	fgets(split->text, split->maxSizeText, stdin);
+	#endif
 
+	scanf("%[^\n]", split->text);
+	getchar();
+
+	#ifdef console
 	printf("Print delimiters:\n");
-	fgets(split->delimiters, split->maxSizeDelimiters, stdin);
+	#endif
+
+	scanf("%[^\n]", split->delimiters);
+	getchar();
 
 	return 0;
 }
