@@ -58,14 +58,10 @@ int main()
 				sleep(split.delay + MAX_TIME);
 
 				if(waitpid(pid, &status, WNOHANG))
-				{
-					printf("child has done\n");
 					exit(0);
-				}
 				else
 				{
-					printf("child hasn't done\n");
-					//kill(pid, )****************
+					kill(pid, SIGKILL);
 					exit(0);
 				}
 			}

@@ -101,12 +101,15 @@ int splitSplit(splitStruct * split)
 	int i = 0;
 
 	fragment = strtok(split->text, split->delimiters);
+
+	#ifdef SPLIT_WITH_DELAY
 	if(!fragment)
 		return 1;
 
 	split->delay = atoi(fragment);
 
 	fragment = strtok(NULL, split->delimiters);
+	#endif /* SPLIT_WITH_DELAY */
 
 	while(fragment)
 	{
