@@ -6,20 +6,22 @@
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
 COMP	Makefile	/^COMP = gcc$/;"	m
-DEFINES	Makefile	/^DEFINES = #-DCONSOLE$/;"	m
+DEFINES	Makefile	/^DEFINES = -DNDEBUG #-DCONSOLE$/;"	m
 MAX_NUM_WORDS	includes/split.h	28;"	d
 MAX_SIZE_DELIMITERS	includes/split.h	27;"	d
 MAX_SIZE_TEXT	includes/split.h	26;"	d
 MAX_SIZE_WORD	includes/split.h	29;"	d
+MAX_TIME	includes/main.h	16;"	d
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
-PROJECT	Makefile	/^PROJECT = homework2$/;"	m
-RM	Makefile	/^RM = rm -f$/;"	m
+PROJECT	Makefile	/^PROJECT = exe$/;"	m
+RM	Makefile	/^RM = rm -rf$/;"	m
 SOURCES	Makefile	/^SOURCES = src\/main.c src\/split.c$/;"	m
 __MAIN_H__	includes/main.h	2;"	d
 __SPLIT_H__	includes/split.h	15;"	d
 allocateMemory	src/split.c	/^char * allocateMemory(int numSymbols)$/;"	f
 allocateMemoryArray	src/split.c	/^char ** allocateMemoryArray(int arraySize, int wordSize)$/;"	f
 count	includes/split.h	/^	int count;$/;"	m	struct:__anon1
+delay	includes/split.h	/^	int delay;$/;"	m	struct:__anon1
 delimiters	includes/split.h	/^	char * delimiters;$/;"	m	struct:__anon1
 freeMemoryArray	src/split.c	/^void freeMemoryArray(char ** array, int arraySize)$/;"	f
 main	fork.c	/^int main(int argc, char * argv[], char *envp[])$/;"	f

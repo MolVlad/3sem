@@ -37,6 +37,7 @@ typedef struct
 	int maxNumWords;
 	int maxSizeWord;
 	int count;
+	int delay;
 
 	char * text;
 	char * delimiters;

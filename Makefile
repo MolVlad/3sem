@@ -16,13 +16,13 @@ RM = rm -rf
 
 .PHONY: all clean go tags
 
-all: link
+link: $(OBJS)
+	$(COMP) -o $(PROJECT) $(OBJS)
+
+all: clean link
 
 clean:
 	$(RM) $(OBJS)
-
-link: $(OBJS)
-	$(COMP) -o $(PROJECT) $(OBJS)
 
 %.o:
 	gcc -c $(CFLAGS) $(@:.o=.c) -o $@

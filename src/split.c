@@ -101,11 +101,15 @@ int splitSplit(splitStruct * split)
 	int i = 0;
 
 	fragment = strtok(split->text, split->delimiters);
+	if(!fragment)
+		return 1;
+
+	split->delay = atoi(fragment);
+
+	fragment = strtok(NULL, split->delimiters);
+
 	while(fragment)
 	{
-		if(!split->words[i])
-			return 1;
-
 		strcpy(split->words[i], fragment);
 		fragment = strtok(NULL, split->delimiters);
 		i++;

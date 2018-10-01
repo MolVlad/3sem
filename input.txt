@@ -1,8 +1,10 @@
-5 ls -al
-2 gcc hello.c
-10 pwd
-4 ./a.out
+12
+2 ./prog
 3 ./a.out > hello.txt
+2 gcc hello.c
+5 ls -al
+10 pwd
+4 ./prog
 12 ls -g
 17 mkdir lol
 18 echo lol

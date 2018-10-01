@@ -10,21 +10,24 @@ int main()
 	split.maxNumWords = 		MAX_NUM_WORDS;
 	split.maxSizeWord = 		MAX_SIZE_WORD;
 
-	if(splitInit(&split))
+	int i, numberOfTask;
+	scanf("%d", &numberOfTask);
+	getchar();
+
+	int status;
+	int pid;
+
+	for(i = 0; i < numberOfTask; i++)
 	{
-		printf("Init error\n");
-		return 1;
-	}
+		if(splitInit(&split))
+		{
+			printf("Init error\n");
+			return 1;
+		}
 
-	#ifndef SCAN_DELIMITERS
-	char delimiters[] = " \n\t";
-	strcpy(split.delimiters, delimiters);
-	#endif /* SCAN_DELIMITERS */
+		char delimiters[] = " \n\t";
+		strcpy(split.delimiters, delimiters);
 
-	int thereIsCommand = 1;
-
-	while(thereIsCommand)
-	{
 		if(splitScan(&split))
 		{
 			printf("Scan error\n");
@@ -37,17 +40,36 @@ int main()
 			return 3;
 		}
 
-		
+		split.words[split.count + 1] = NULL;
 
-		//createTask();
+		pid = fork();
 
-		if(splitPrint(&split))
+		if(pid == 0)
 		{
-			printf("Print error\n");
-			return 4;
-		}
+			pid = fork();
 
-		thereIsCommand = 0;
+			if(pid == 0)
+			{
+				sleep(split.delay);
+				execvp(split.words[0], &split.words[2]);
+			}
+			else
+			{
+				sleep(split.delay + MAX_TIME);
+
+				if(waitpid(pid, &status, WNOHANG))
+				{
+					printf("child has done\n");
+					exit(0);
+				}
+				else
+				{
+					printf("child hasn't done\n");
+					//kill(pid, )****************
+					exit(0);
+				}
+			}
+		}
 	}
 
 	if(splitFree(&split))
