@@ -44,6 +44,9 @@ typedef struct
 
 /* Declarations of functions for memory ------------------------------------------*/
 
+// Вы не используете эти три ф-и в main'е, так что можно обойтись и без их объявления совсем.
+// Оставить только определение после main'a.
+
 char ** allocateMemoryArray(int array_size, int word_size);
 char * allocateMemory(int num_symbols);
 void freeMemoryArray(char ** array, int array_size);
