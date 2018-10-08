@@ -10,7 +10,7 @@
 #define STDOUT 1
 #define STDIN 0
 
-int main()
+int main(int argc, char *argv[])
 {
 	char * cat_args[] = {"cat", "lol.txt", NULL};
 	char * grep_args[] = {"grep", "az", NULL};
