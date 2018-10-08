@@ -4,6 +4,9 @@
 
 int main()
 {
+	// Мне не нравится название splitStruct
+	// 1) Пишите первую букву названия заглавной
+	// 2) Слово Struct не несет никакой смысловой нагрузки. Это скорее некое описание команды для запуска по своей сути, а не абстрактный набор текста и слов.
 	splitStruct split;
 	split.maxSizeText = 		MAX_SIZE_TEXT;
 	split.maxSizeDelimiters = 	MAX_SIZE_DELIMITERS;
@@ -13,6 +16,8 @@ int main()
 	int i, numberOfTask;
 	scanf("%d", &numberOfTask);
 	getchar();
+	// FIXIT: вы пишите здесь getchar, чтобы считать символ перевода строки, ненужный вам фактически?
+	// Можно просто scanf("%d\n", &numberOfTask); написать.
 
 	int status;
 	int pid;
@@ -42,6 +47,8 @@ int main()
 
 		split.words[split.count + 1] = NULL;
 
+		// Смотря только в код сложно понять, зачем вам нужно создавать два процесса.
+		// Я бы создал хотя бы две отдельные переменные для pid'а процесса таймера и того, где запуск команды происходит
 		pid = fork();
 
 		if(pid == 0)
