@@ -94,6 +94,8 @@ int splitScan(splitStruct * split)
 	return 0;
 }
 
+// Кажется, что splitWithDelay можно переименовать во что-то вроде parseCommandLine или т.п.
+// Главное, что уже parse, а не split.
 int splitSplit(splitStruct * split)
 {
 	char * fragment = allocateMemory(MAX_SIZE_WORD);
