@@ -1,4 +1,5 @@
 12
+1 ls
 2 ./prog
 3 ./a.out > hello.txt
 2 gcc hello.c
