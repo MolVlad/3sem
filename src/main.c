@@ -14,10 +14,7 @@ int main()
 	split.maxSizeWord = 		MAX_SIZE_WORD;
 
 	int i, numberOfTask;
-	scanf("%d", &numberOfTask);
-	getchar();
-	// FIXIT: вы пишите здесь getchar, чтобы считать символ перевода строки, ненужный вам фактически?
-	// Можно просто scanf("%d\n", &numberOfTask); написать.
+	scanf("%d\n", &numberOfTask);
 
 	int status;
 	int pid;
