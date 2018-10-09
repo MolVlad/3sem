@@ -16,12 +16,6 @@
 
 /* Includes ----------------------------------------------------------------------*/
 
-// Вам в данном заголовочном файле include'ы ниже не нужны, т.к. именно здесь не используются ни printf, ни strlen, ни assert и т.п.
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<assert.h>
-
 /* Defgroup for sizes ------------------------------------------------------------*/
 
 #define MAX_SIZE_TEXT		10000

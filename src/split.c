@@ -5,12 +5,13 @@
   * @institute		MIPT
   * @departament	DREC
   * @group		717
-  * @version		V1.1
-  * @date		1-October-2018
+  * @version		V1.2
+  * @date		9-October-2018
   * @brief		split-functions
   ******************************************************************************
 */
 
+#include "precomp.h"
 #include "split.h"
 
 /* Declarations of functions for memory ------------------------------------------*/

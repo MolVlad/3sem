@@ -1,5 +1,5 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __PRECOMP_H__
+#define __PRECOMP_H__
 
 /* Includes ----------------------------------------------------------------------*/
 
@@ -16,8 +16,11 @@
 #include<sys/types.h>
 #include<sys/wait.h>
 
-#include "split.h"
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<assert.h>
 
 #define MAX_TIME 5
 
-#endif /* __MAIN_H__ */
+#endif /* __PRECOMP_H__ */

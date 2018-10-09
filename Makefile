@@ -1,22 +1,22 @@
 PROJECT = exe
 
+PRECOMP = includes/precomp.h
 SOURCES = src/main.c src/split.c
+INCLUDES += -I includes
+DEFINES = -DSPLIT_WITH_DELAY -DNDEBUG #-DCONSOLE
+CFLAGS = -Wall -Wextra
+COMP = gcc
+
+PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)
 OBJS = $(SOURCES:.c=.o)
 
-INCLUDES += -I src
-INCLUDES += -I includes
-
-DEFINES = -DSPLIT_WITH_DELAY -DNDEBUG #-DCONSOLE
-
-CFLAGS = -Wall -Wextra
 CFLAGS += $(DEFINES) $(INCLUDES) $(DEFINES)
 
-COMP = gcc
 RM = rm -rf
 
 .PHONY: all clean go tags
 
-link: $(OBJS)
+link: $(PRECOMP_OBJ) $(OBJS)
 	$(COMP) -o $(PROJECT) $(OBJS)
 
 all: clean link
@@ -24,8 +24,14 @@ all: clean link
 clean:
 	$(RM) $(OBJS)
 
-%.o:
-	gcc -c $(CFLAGS) $(@:.o=.c) -o $@
+clean_all: clean
+	$(RM) $(PRECOMP_OBJ)
+
+$(PRECOMP_OBJ):
+	$(COMP) -c $(CFLAGS) $(PRECOMP)
+
+%.o: %.c
+	$(COMP) -c $(CFLAGS) $(@:.o=.c) -o $@
 
 tags:
 	ctags -R

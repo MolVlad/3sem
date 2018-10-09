@@ -1,4 +1,5 @@
-#include "main.h"
+#include "precomp.h"
+#include "split.h"
 
 /* Main function -----------------------------------------------------------------*/
 
@@ -17,7 +18,6 @@ int main()
 	scanf("%d\n", &numberOfTask);
 
 	int status;
-	int pid;
 
 	for(i = 0; i < numberOfTask; i++)
 	{
@@ -46,13 +46,13 @@ int main()
 
 		// Смотря только в код сложно понять, зачем вам нужно создавать два процесса.
 		// Я бы создал хотя бы две отдельные переменные для pid'а процесса таймера и того, где запуск команды происходит
-		pid = fork();
+		int pid = fork();
 
 		if(pid == 0)
 		{
-			pid = fork();
+			int new_pid = fork();
 
-			if(pid == 0)
+			if(new_pid == 0)
 			{
 				sleep(split.delay);
 				execvp(split.words[0], &split.words[2]);
