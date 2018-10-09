@@ -3,7 +3,7 @@ PROJECT = exe
 PRECOMP = includes/precomp.h
 SOURCES = src/main.c src/split.c
 INCLUDES += -I includes
-DEFINES = -DSPLIT_WITH_DELAY -DNDEBUG #-DCONSOLE
+DEFINES = -DPARSE_COMMAND_LINE -DNDEBUG #-DCONSOLE
 CFLAGS = -Wall -Wextra
 COMP = gcc
 

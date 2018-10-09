@@ -5,10 +5,8 @@
 
 int main()
 {
-	// Мне не нравится название splitStruct
-	// 1) Пишите первую букву названия заглавной
-	// 2) Слово Struct не несет никакой смысловой нагрузки. Это скорее некое описание команды для запуска по своей сути, а не абстрактный набор текста и слов.
-	splitStruct split;
+	Split split;
+
 	split.maxSizeText = 		MAX_SIZE_TEXT;
 	split.maxSizeDelimiters = 	MAX_SIZE_DELIMITERS;
 	split.maxNumWords = 		MAX_NUM_WORDS;
@@ -44,8 +42,6 @@ int main()
 
 		split.words[split.count + 1] = NULL;
 
-		// Смотря только в код сложно понять, зачем вам нужно создавать два процесса.
-		// Я бы создал хотя бы две отдельные переменные для pid'а процесса таймера и того, где запуск команды происходит
 		int pid = fork();
 
 		if(pid == 0)
@@ -80,28 +76,3 @@ int main()
 
 	return 0;
 }
-
-/*int main(int argc, char * argv[], char *envp[])
-{
-	int status;
-	int pid = fork();
-
-	if(pid == 0)
-	{
-		pid = fork();
-		if(pid == 0)
-			execlp("gcc", "gcc", "hello.c", "-o", "prog", NULL);
-		else
-		{
-			wait(&status);
-			execlp("./prog", "./prog", NULL);
-		}
-	}
-	else
-	{
-		wait(&status);
-		printf("that's success!\n");
-	}
-
-	return 0;
-}*/

@@ -37,14 +37,14 @@ typedef struct
 	char * text;
 	char * delimiters;
 	char ** words;
-} splitStruct;
+} Split;
 
 /* Declarations of SPLIT-functions -----------------------------------------------*/
 
-int splitInit(splitStruct * split);
-int splitScan(splitStruct * split);
-int splitSplit(splitStruct * split);
-int splitPrint(splitStruct * split);
-int splitFree(splitStruct * split);
+int splitInit(Split * split);
+int splitScan(Split * split);
+int splitSplit(Split * split);
+int splitPrint(Split * split);
+int splitFree(Split * split);
 
 #endif /* __SPLIT_H__ */

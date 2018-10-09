@@ -53,7 +53,7 @@ void freeMemoryArray(char ** array, int arraySize)
 
 /* Prototypes of SPLIT-functions -------------------------------------------------*/
 
-int splitInit(splitStruct * split)
+int splitInit(Split * split)
 {
 	split->text =		allocateMemory(split->maxSizeText);
 	split->delimiters =	allocateMemory(split->maxSizeDelimiters);
@@ -74,7 +74,7 @@ int splitInit(splitStruct * split)
 	return 0;
 }
 
-int splitScan(splitStruct * split)
+int splitScan(Split * split)
 {
 	#ifdef CONSOLE
 	printf("Print text:\n");
@@ -95,9 +95,7 @@ int splitScan(splitStruct * split)
 	return 0;
 }
 
-// Кажется, что splitWithDelay можно переименовать во что-то вроде parseCommandLine или т.п.
-// Главное, что уже parse, а не split.
-int splitSplit(splitStruct * split)
+int splitSplit(Split * split)
 {
 	char * fragment = allocateMemory(MAX_SIZE_WORD);
 
@@ -105,14 +103,14 @@ int splitSplit(splitStruct * split)
 
 	fragment = strtok(split->text, split->delimiters);
 
-	#ifdef SPLIT_WITH_DELAY
+	#ifdef PARSE_COMMAND_LINE
 	if(!fragment)
 		return 1;
 
 	split->delay = atoi(fragment);
 
 	fragment = strtok(NULL, split->delimiters);
-	#endif /* SPLIT_WITH_DELAY */
+	#endif /* PARSE_COMMAND_LINE */
 
 	while(fragment)
 	{
@@ -128,7 +126,7 @@ int splitSplit(splitStruct * split)
 	return 0;
 }
 
-int splitPrint(splitStruct * split)
+int splitPrint(Split * split)
 {
 	if(!split->words)
 		return 1;
@@ -146,7 +144,7 @@ int splitPrint(splitStruct * split)
 	return 0;
 }
 
-int splitFree(splitStruct * split)
+int splitFree(Split * split)
 {
 	free(split->text);
 	free(split->delimiters);
