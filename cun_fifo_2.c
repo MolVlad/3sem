@@ -14,15 +14,21 @@ int main(int argc, char *argv[])
 {
 	const char generalFIFO[] = "users";
 
-	if(argc == 1)	//receive
+	if(argc == 2)	//receive
 	{
-		int users = open(generalFIFO, O_RDONLY);
+		if(strlen(argv[1]) != NAME_SIZE)
+		{
+			printf("Name error: the name must contain 4 char\n");
+			return 2;
+		}
+
+		int users = open(generalFIFO, O_RDWR);
 
 		if(users == -1)
 		{
 			printf("Need to create %s\n", generalFIFO);
 			mkfifo(generalFIFO, PERMISSION);
-			users = open(generalFIFO, O_RDONLY);
+			users = open(generalFIFO, O_RDWR);
 		}
 
 		char name[NAME_SIZE];
@@ -36,6 +42,23 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 
+		while(strcmp(name, argv[1]))
+		{
+			n = write(users, &name, NAME_SIZE);
+			if(n != NAME_SIZE)
+			{
+				printf("error write name\n");
+				return 3;
+			}
+
+			n = read(users, &name, NAME_SIZE);
+			if(n != NAME_SIZE)
+			{
+				printf("error read name\n");
+				return 1;
+			}
+		}
+
 		mkfifo(name, PERMISSION);
 		if(errno == EEXIST)
 			printf("%s already exists\n", name);
@@ -45,13 +68,15 @@ int main(int argc, char *argv[])
 
 		char buf[BUF_SIZE];
 
-		while(1)
+		do
 		{
 			n = read(receiveFIFO, &buf, BUF_SIZE);
 			write(1, &buf, n);
 		}
+		while(n);
+
 	}
-	else if(argc == 2)	//transmit
+	else if(argc == 3)	//transmit
 	{
 		if(strlen(argv[1]) != NAME_SIZE)
 		{
@@ -80,12 +105,22 @@ int main(int argc, char *argv[])
 		int transmitFIFO = open(argv[1], O_WRONLY);
 		printf("There is recipient! Let's get started!\n");
 
-		while(1)
+		char buf[BUF_SIZE];
+
+		int file = open(argv[2], O_RDONLY);
+		printf("File open. Let's transmit!\n");
+
+		do
 		{
-			static char buf[BUF_SIZE];
-			n = read(1, &buf, BUF_SIZE);
+			n = read(file, &buf, BUF_SIZE);
 			write(transmitFIFO, &buf, n);
 		}
+		while(n);
+
+		if(read(file, &buf, 1))
+			printf("An error was occured!\n");
+		else
+			printf("File transmitted succesfully!\n");
 	}
 	else
 	{
