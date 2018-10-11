@@ -24,22 +24,29 @@ int main(int argc, char *argv[])
 
 	int pid = fork();
 
-	while(1)
+	if(pid == 0)
 	{
-		if(pid == 0)
+		fifo[0] = open(argv[1], O_WRONLY);
+
+		while(n)
 		{
-			fifo[0] = open(argv[1], O_WRONLY);
 			n = read(1, buf, BUF_SIZE);
 			write(fifo[0], buf, n);
-			close(fifo[0]);
 		}
-		else
+
+		close(fifo[0]);
+	}
+	else
+	{
+		fifo[1] = open(argv[2], O_RDONLY);
+
+		while(n)
 		{
-			fifo[1] = open(argv[2], O_RDONLY);
 			n = read(fifo[1], buf, BUF_SIZE);
 			write(1, buf, n);
-			close(fifo[1]);
 		}
+
+		close(fifo[1]);
 	}
 
 	return 0;
