@@ -31,7 +31,7 @@ $(PRECOMP_OBJ):
 	$(COMP) -c $(CFLAGS) $(PRECOMP)
 
 %.o: %.c
-	$(COMP) -c $(CFLAGS) $(@:.o=.c) -o $@
+	$(COMP) -c $(CFLAGS) $(@:.o=.c) -include $(PRECOMP) -o $@
 
 tags:
 	ctags -R
