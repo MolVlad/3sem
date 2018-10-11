@@ -130,3 +130,33 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
+char * getname();
+char* itoa(int val, int base);
+
+char * getname()
+{
+	char * pid = itoa(getpid(), 10);
+	static char name[NAME_SIZE];
+
+	strcpy(name, pid);
+
+	int len = strlen(name);
+	int i;
+
+	for(i = len; i < NAME_SIZE; i++)
+		name[i] = '_';
+
+	return name;
+}
+
+char* itoa(int val, int base)
+{
+	static char buf[32] = {0};
+	int i = 30;
+
+	for(; val && i ; --i, val /= base)
+		buf[i] = "0123456789abcdef"[val % base];
+
+	return &buf[i+1];
+}
