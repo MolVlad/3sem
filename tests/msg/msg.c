@@ -9,8 +9,6 @@
 #include<stdlib.h>
 
 #define PERMISSION 0777
-#define BUF_SIZE 1500
-#define STDOUT 1
 #define MSG_SIZE 5
 #define MESSAGE_FOR_TR 1
 #define MESSAGE_FOR_RC 2
