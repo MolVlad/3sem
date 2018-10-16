@@ -7,10 +7,11 @@
 #include<errno.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<pthread.h>
 
 #define PERMISSION 0777
-#define MSG_SIZE 2
-#define MESSAGE_FOR_SERVER 1
+#define MESSAGE_FOR_INC 1
+#define MESSAGE_FOR_DECR 2
 
 #define CHECK(nameFunction, retValue)				\
 do {								\
@@ -23,9 +24,23 @@ do {								\
 		printf("%s succeeded\n", nameFunction);		\
 } while(0)							\
 
+void *thread_inc(void * arg)
+{
+	pthread_t thid = pthread_self();
+	printf("In thread %d\n", thid);
+}
+
+void *thread_decr(void * arg)
+{
+	pthread_t thid = pthread_self();
+	printf("In thread %d\n", thid);
+
+
+}
+
 int main(int argc, char *argv[])
 {
-	const char file[] = "server.c";
+	const char file[] = "synch.c";
 
 	if(argc == 2)	//server
 	{
@@ -65,21 +80,33 @@ int main(int argc, char *argv[])
 			struct Data
 			{
 				int pid;
-				int num[MSG_SIZE];
+				int sem;
+				int parametr;
 			} data;
 		} bufRequest;
 
 		struct msgBufAnswer
 		{
 			long type;
-			int answer;
 		} bufAnswer;
+
+		int i, sem[SEM_NUM];
+		for(i = 0; i < SEM_NUM; i++)
+			sem[i] = 0;
+
+		pthread_t incThreadId, decThreadId;
+		int result;
+		result = pthread_create(&incThreadId, (pthread_attr_t *)NULL, thread_inc, NULL);
+		CHECK("pthread_create", result);
+		result = pthread_create(&incThreadId, (pthread_attr_t *)NULL, thread_inc, NULL);
+		CHECK("pthread_create", result);
+
 
 		printf("Let's get started processing requests\n");
 		int length, answer, result;
 		while(1)
 		{
-			length = msgrcv(msgid, (struct msg_buf *)&bufRequest, sizeof(struct Data), MESSAGE_FOR_SERVER, 0);
+			length = msgrcv(msgid, (struct msg_buf *)&bufRequest, sizeof(struct Data), -(MESSAGE_FOR_SERVER + 1), 0);
 			if(length)
 			{
 				printf("Message from %d\n", bufRequest.data.pid);
@@ -88,16 +115,19 @@ int main(int argc, char *argv[])
 					printf("Too short message\n");
 				else
 				{
-					answer = bufRequest.data.num[0] + bufRequest.data.num[1];
+					if(bufRequest.data.sem >= SEM_NUM)
+						printf("Sem %d don't exist\n", bufRequest.data.sem);
+					else
+					{
+						bufAnswer.type = bufRequest.data.pid;
+						bufAnswer.answer = answer;
 
-					bufAnswer.type = bufRequest.data.pid;
-					bufAnswer.answer = answer;
+						printf("Accepted %d and %d\n", bufRequest.data.num[0], bufRequest.data.num[1]);
+						printf("Sum = %d\n", answer);
 
-					printf("Accepted %d and %d\n", bufRequest.data.num[0], bufRequest.data.num[1]);
-					printf("Sum = %d\n", answer);
-
-					result = msgsnd(msgid, (struct msgbuf *)&bufAnswer, sizeof(int), 0);
-					CHECK("msgsnd", result);
+						result = msgsnd(msgid, (struct msgbuf *)&bufAnswer, sizeof(int), 0);
+						CHECK("msgsnd", result);
+					}
 				}
 			}
 		}
