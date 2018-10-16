@@ -144,6 +144,8 @@ int main(int argc, char *argv[])
 		printf("Scan b = ");
 		scanf("%d", &b);
 
+//		a = 5, b = 5;
+
 		int pid = getpid();
 
 		printf("Let's get transmitted\n");
