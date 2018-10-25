@@ -12,6 +12,17 @@
 #define STDIN 0
 #define PERMISSION 0777
 
+#define CHECK(nameFunction, retValue)				\
+do {								\
+	if(retValue == -1)					\
+	{							\
+		printf("%s failure\n", nameFunction);		\
+		exit(1);					\
+	}							\
+	else							\
+		printf("%s succeeded\n", nameFunction);		\
+} while(0)							\
+
 void *thread(void * arg)
 {
 	char * fileOut = (char *)arg;
@@ -23,23 +34,19 @@ void *thread(void * arg)
 			printf("mkfifo error\n");
 			exit(1);
 		}
+		else
+			printf("fifo exist\n");
 	}
 	else
 		printf("mkfifo successfuly\n");
 
 	int fifoOut = open(fileOut, O_WRONLY);
-	if(fifoOut == -1)
-	{
-		printf("open error\n");
-		exit(2);
-	}
-	else
-		printf("open %s successfuly\n", fileOut);;
+	CHECK("open", fifoOut);
 
 	char bufOut[BUF_SIZE];
 	int n;
 
-	while(1)
+	do
 	{
 		n = read(STDIN, bufOut, BUF_SIZE);
 		if(n - write(fifoOut, bufOut, n))
@@ -48,14 +55,9 @@ void *thread(void * arg)
 			exit(3);
 		}
 	}
+	while(n);
 
-	if(close(fifoOut) == -1)
-	{
-		printf("close error\n");
-		exit(4);
-	}
-	else
-		printf("close fifoOut successfuly\n");
+	CHECK("close", close(fifoOut));
 
 	exit(0);
 }
@@ -87,23 +89,19 @@ int main(int argc, char *argv[])
 			printf("mkfifo error\n");
 			return 1;
 		}
+		else
+			printf("fifo exist\n");
 	}
 	else
 		printf("mkfifo successfuly\n");
 
 	int fifoIn = open(fileIn, O_RDONLY);
-	if(fifoIn == -1)
-	{
-		printf("open error\n");
-		return 2;
-	}
-	else
-		printf("open %s successfuly\n", fileIn);;
+	CHECK("open", fifoIn);
 
 	char bufIn[BUF_SIZE];
 	int n;
 
-	while(1)
+	do
 	{
 		n = read(fifoIn, bufIn, BUF_SIZE);
 		if(n - write(STDOUT, bufIn, n))
@@ -112,14 +110,9 @@ int main(int argc, char *argv[])
 			return 3;
 		}
 	}
+	while(n);
 
-	if(close(fifoIn) == -1)
-	{
-		printf("close error\n");
-		return 4;
-	}
-	else
-		printf("close fifoIn successfuly\n");
+	CHECK("close", close(fifoIn));
 
 	return 0;
 }
