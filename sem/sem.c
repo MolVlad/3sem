@@ -41,7 +41,7 @@ int main()
 	int fd[2];
 	char buf[BUF_SIZE];
 
-	const char pathname[] = "half-duplex.c";
+	const char pathname[] = "sem.c";
 	key_t key = ftok(pathname, 0);
 	CHECK("ftok", key);
 	printf("key = %d\n", key);
