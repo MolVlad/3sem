@@ -7,7 +7,7 @@
 #include<pthread.h>
 #include<errno.h>
 
-#define BUF_SIZE 10
+#define BUF_SIZE 11
 #define STDOUT 1
 #define STDIN 0
 #define PERMISSION 0777
