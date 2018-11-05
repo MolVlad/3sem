@@ -28,6 +28,9 @@ void *thread(void * arg)
 	for(i = segment.firstElement; i <= segment.lastElement; i++)
 		average += array[i];
 
+	// FIXIT: у вас несколько потоков увеличивают на 1 completedThreads ... это состояние гонки
+	// Вы можете сделать синхронизацию через семафоры, либо просто разбить эту ф-ю на две:
+	// одна для среднего, вторая для дисперсии
 	completedThreads++;
 	while(!isAverageReady);
 
@@ -101,6 +104,8 @@ int main()
 
 	double end = clock();
 
+	// FIXIT: приведите, пожалуйста, в комментарии в начале кода данные с измеренным ускорением. в последнем письме писал про wall-clock time и user_sys time
+	// Вам нужно первое.
 	printf("time: %f\n", (end - begin) / CLOCKS_PER_SEC);
 
 	return 0;
