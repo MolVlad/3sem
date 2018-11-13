@@ -4,8 +4,28 @@
 #include<stdio.h>
 #include<time.h>
 
+/* Runtime test results:
+ * 1 thread	0.766585
+ * 2 threads	0.593474
+ * 3 threads	0.547082
+ * 4 threads	0.528047
+ * 5 threads	0.514218
+ * 6 threads	0.501517
+*/
+
 #define AMOUNT_OF_NUMBERS 100000000
 #define MAX_RANDOM 1000
+
+#define CHECK(nameFunction, retValue)				\
+do {								\
+	if(retValue == -1)					\
+	{							\
+		printf("%s failure\n", nameFunction);		\
+		return 1;					\
+	}							\
+	else							\
+		printf("%s succeeded\n", nameFunction);		\
+} while(0)							\
 
 typedef struct Segment
 {
@@ -13,19 +33,20 @@ typedef struct Segment
 	int lastElement;
 } Segment;
 
+typedef void *(*function)(void *);
+
 float average = 0, dispersion = 0;
-int completedThreads = 0;
-int isAverageReady = 0;
-int * array, * sum, *deviations;
+int * array;
 int step;
 
-void joinThreads(int numberOfThreads, pthread_t *thids);
-void *thread(void * arg);
+void *threadForDispersion(void * arg);
+void *threadForAverage(void * arg);
+int joinThreads(int numberOfThreads, pthread_t *thids);
 int allocateMemory(pthread_t ** thids, Segment ** segment, int numberOfThreads);
 void freeMemory(pthread_t * thids, Segment * segment);
 int scanNumberOfThreads();
 void generateData();
-int startThreads(int numberOfThreads, pthread_t * thids, Segment * segment);
+int startThreads(int numberOfThreads, pthread_t * thids, Segment * segment, function threadRoutine);
 
 int main()
 {
@@ -43,28 +64,60 @@ int main()
 	generateData();
 
 	double begin = clock();
-	int i, result;
 
-	startThreads(numberOfThreads, thids, segment);
+	int result;
 
-	while(completedThreads != numberOfThreads);
-
+	result = startThreads(numberOfThreads, thids, segment, threadForAverage);
+	CHECK("startThreads", result);
+	result = joinThreads(numberOfThreads, thids);
+	CHECK("joinThreads", result);
 	average /= AMOUNT_OF_NUMBERS;
-	isAverageReady = 1;
 
-	joinThreads(numberOfThreads, thids);
-	freeMemory(thids, segment);
-
+	result = startThreads(numberOfThreads, thids, segment, threadForDispersion);
+	CHECK("startThreads", result);
+	result = joinThreads(numberOfThreads, thids);
+	CHECK("joinThreads", result);
 	dispersion /= AMOUNT_OF_NUMBERS;
+
 	printf("average = %f, dispersion = %f\n", average, dispersion);
 
 	double end = clock();
 	printf("time: %f\n", (end - begin) / CLOCKS_PER_SEC);
 
+	freeMemory(thids, segment);
+
 	return 0;
 }
 
-void joinThreads(int numberOfThreads, pthread_t *thids)
+void *threadForAverage(void * arg)
+{
+	printf("In thread for average\n");
+	struct Segment segment = *(struct Segment *)arg;
+
+	int i;
+
+	for(i = segment.firstElement; i <= segment.lastElement; i++)
+		average += array[i];
+
+	printf("Good Bye from thread for average\n");
+	pthread_exit(0);
+}
+
+void *threadForDispersion(void * arg)
+{
+	printf("In thread for dispersion\n");
+	struct Segment segment = *(struct Segment *)arg;
+
+	int i;
+
+	for(i = segment.firstElement; i <= segment.lastElement; i++)
+		dispersion += (array[i] - average) * (array[i] - average);
+
+	printf("Good Bye from thread for dispersion\n");
+	pthread_exit(0);
+}
+
+int joinThreads(int numberOfThreads, pthread_t *thids)
 {
 	int i, result;
 
@@ -73,34 +126,10 @@ void joinThreads(int numberOfThreads, pthread_t *thids)
 		result = pthread_join(thids[i], (void **)NULL);
 
 		if(result != 0)
-		{
-			printf("Error on thread join, return value = %d\n", result);
-			exit(-1);
-		}
+			return -1;
 	}
-}
 
-void *thread(void * arg)
-{
-	printf("In thread\n");
-	struct Segment segment = *(struct Segment *)arg;
-
-	int i;
-
-	for(i = segment.firstElement; i <= segment.lastElement; i++)
-		average += array[i];
-
-	// FIXIT: у вас несколько потоков увеличивают на 1 completedThreads ... это состояние гонки
-	// Вы можете сделать синхронизацию через семафоры, либо просто разбить эту ф-ю на две:
-	// одна для среднего, вторая для дисперсии
-	completedThreads++;
-	while(!isAverageReady);
-
-	for(i = segment.firstElement; i <= segment.lastElement; i++)
-		dispersion += (array[i] - average) * (array[i] - average);
-
-	printf("Good Bye\n");
-	pthread_exit(0);
+	return 0;
 }
 
 int allocateMemory(pthread_t ** thids, Segment ** segment, int numberOfThreads)
@@ -140,7 +169,7 @@ void generateData()
 	printf("generated succesfull\n");
 }
 
-int startThreads(int numberOfThreads, pthread_t * thids, Segment * segment)
+int startThreads(int numberOfThreads, pthread_t * thids, Segment * segment, function threadRoutine)
 {
 	int i, result;
 	for(i = 0; i < numberOfThreads; i++)
@@ -148,29 +177,12 @@ int startThreads(int numberOfThreads, pthread_t * thids, Segment * segment)
 		segment[i].firstElement = i * step;
 		segment[i].lastElement = (i + 1) * step - 1;
 
-		result = pthread_create(&thids[i], NULL, thread, &segment[i]);
+		result = pthread_create(&thids[i], NULL, threadRoutine, &segment[i]);
 		if(result != 0)
 		{
 			return -1;
 		}
 	}
-<<<<<<< HEAD
-=======
-
-	dispersion /= AMOUNT_OF_NUMBERS;
-
-	free(thids);
-	free(array);
-	free(segment);
-
-	printf("average = %f, dispersion = %f\n", average, dispersion);
-
-	double end = clock();
-
-	// FIXIT: приведите, пожалуйста, в комментарии в начале кода данные с измеренным ускорением. в последнем письме писал про wall-clock time и user_sys time
-	// Вам нужно первое.
-	printf("time: %f\n", (end - begin) / CLOCKS_PER_SEC);
 
 	return 0;
->>>>>>> c66627d7c8f1663fa92e395ab50008fe89ff5c0f
 }
