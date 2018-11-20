@@ -1,14 +1,17 @@
 #include"libs.h"
-#include"list.h"
 #include"configure.h"
+#include"list.h"
+#include"read_from_file.h"
+#include"sem.h"
+#include"shm.h"
 
-void readTimesList(List * listTimes);
-void readTablewareList(List * listTableware, List * listTimes);
-FILE * fileOpenAndCheck(const char * fileName);
+void washingElement(List * listWetTableware, Data * data);
 
-void washingElement(Data * data);
-void startOfWork();
-void endOfWork();
+typedef struct Segment
+{
+	Data * data;
+	int sem;
+} Segment;
 
 int main(int argc, char *argv[])
 {
@@ -30,25 +33,28 @@ int main(int argc, char *argv[])
 		readTablewareList(listTableware, listTimes);
 		printList(listTableware);
 
-		startOfWork();
+		key_t key = getTheKey(KEY_FILE);
 
-		int pid = fork();
-		if(pid == 0)
+		int semid = createSem(key);
+
+		int shmid = createShm(key);
+		char * data = attachMemory(shmid);
+
+		strcpy(data, listTableware->first->data->name);
+
+		printf("Start of work!\n");
+		List * listWetTableware = createList("listWetTableware");
+		Node * current;
+		for(current = listTableware->first; current != NULL; current = current->next)
 		{
-
-		}
-		else
-		{
-			Node * current;
-			for(current = listTableware->first; current != NULL; current = current->next)
-			{
-				washingElement(current->data);
-//				waitingForSpaceOnTheTable();
-//				putOnTheTable();
-			}
+			washingElement(listWetTableware, current->data);
+			semOperation(semid, spaceOnTheTable, -1);
+//			putOnTheTable();
 		}
 
-		endOfWork();
+		CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
+		CHECK("shmdt", shmdt(data));
+		CHECK("shmctl", shmctl(shmid, IPC_RMID, NULL));
 
 		deleteList(listTimes);
 		deleteList(listTableware);
@@ -61,91 +67,31 @@ int main(int argc, char *argv[])
 		readTimesList(listTimes);
 		printList(listTimes);
 
-		List * listTableware = createList("listTableware");
+		printf("\nLet's connect to sem\n");
+		key_t key = getTheKey(KEY_FILE);
+		//int semid = connectToSem(key);
 
-		int pid = fork();
-		if(pid == 0)
-		{
+		printf("\nLet's connect to sem\n");
+		int shmid = connectToShm(key);
+		char * data = attachMemory(shmid);
 
-		}
-		else
-		{
+		//List * listTableware = createList("listTableware");
 
-		}
-
+		CHECK("shmdt", shmdt(data));
 		deleteList(listTimes);
 	}
 }
 
-void startOfWork()
+/*void thread(void * arg)
 {
-	printf("\nStart of work!\n");
-}
+	Segment segment = *(Segment *)arg;
 
-void endOfWork()
-{
-	printf("\nEnd of work!\n");
-}
 
-void washingElement(Data * data)
+}*/
+
+void washingElement(List * listWetTableware, Data * data)
 {
 	printf("I'm cleaning %s for %d seconds\n", data->name, data->timeToWash);
 	sleep(data->timeToWash);
-}
-
-void readTimesList(List * listTimes)
-{
-	FILE *file = fileOpenAndCheck(TABLEWARE_TIMES);
-
-	int numberOfElements;
-	fscanf(file, "%d\n", &numberOfElements);
-
-	char name[MAX_SIZE_NAME];
-	int timeToWash, timeToWipe;
-	int i;
-	for(i = 0; i < numberOfElements; i++)
-	{
-		fscanf(file, "%s %d %d\n", name, &timeToWash, &timeToWipe);
-		addToList(listTimes, createData(name, timeToWash, timeToWipe));
-	}
-
-	fclose(file);
-}
-
-void readTablewareList(List * listTableware, List * listTimes)
-{
-	FILE *file = fileOpenAndCheck(TABLEWARE_LIST);
-
-	int numberOfElements;
-	fscanf(file, "%d\n", &numberOfElements);
-
-	char name[MAX_SIZE_NAME];
-	Data * data;
-	int i;
-	for(i = 0; i < numberOfElements; i++)
-	{
-		fscanf(file, "%s\n", name);
-		data = findInList(listTimes, name);
-		if(data == NULL)
-		{
-			printf("Not founded\n");
-			continue;
-		}
-
-		addToList(listTableware, copyData(data));
-	}
-
-	fclose(file);
-}
-
-FILE * fileOpenAndCheck(const char * fileName)
-{
-	FILE *file = fopen(fileName, "r");
-	if(file == NULL)
-	{
-		printf("fopen error\n");
-		exit(-1);
-	}
-
-	return file;
+	addToList(listWetTableware, copyData(data));
 }

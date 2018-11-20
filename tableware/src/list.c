@@ -96,7 +96,7 @@ void addToList(List * list, Data * data)
 
 void printList(List * list)
 {
-	printf("\nList name: %s\n", list->name);
+	printf("List name: %s\n", list->name);
 
 	Node * current;
 	for(current = list->first; current != NULL; current = current->next)
