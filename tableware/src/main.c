@@ -5,13 +5,20 @@
 #include"sem.h"
 #include"shm.h"
 
-void washingElement(List * listWetTableware, Data * data);
+void washingElement(Data * data);
+void wipeElement(Data * data);
+void *tranmsitTableware(void * arg);
+int joinThreads(int numberOfThreads, pthread_t *thids);
 
 typedef struct Segment
 {
+	int semid;
+	Data * pieceOfMemory;
 	Data * data;
-	int sem;
 } Segment;
+
+void freeMemory(pthread_t * thids, Segment * segment);
+int allocateMemory(pthread_t ** thids, Segment ** segment, int numberOfThreads);
 
 int main(int argc, char *argv[])
 {
@@ -38,60 +45,139 @@ int main(int argc, char *argv[])
 		int semid = createSem(key);
 
 		int shmid = createShm(key);
-		char * data = attachMemory(shmid);
+		Data * pieceOfMemory = attachMemory(shmid);
 
-		strcpy(data, listTableware->first->data->name);
+		putInMemory(pieceOfMemory, listTableware->first->data);
+		printData(pieceOfMemory);
 
-		printf("Start of work!\n");
-		List * listWetTableware = createList("listWetTableware");
-		Node * current;
-		for(current = listTableware->first; current != NULL; current = current->next)
+		printf("size = %d\n", listTableware->size);
+		Segment * segment;
+		pthread_t * thids;
+		int numberOfThreads = listTableware->size;
+		if(!allocateMemory(&thids, &segment, numberOfThreads))
 		{
-			washingElement(listWetTableware, current->data);
-			semOperation(semid, spaceOnTheTable, -1);
-//			putOnTheTable();
+			printf("Allocate error\n");
+			exit(-1);
 		}
 
+		printf("\nStart of work!\n\n");
+		Node * current;
+		int i = 0, result;
+		for(current = listTableware->first; current != NULL; current = current->next)
+		{
+			washingElement(current->data);
+			semOperation(semid, spaceOnTheTable, -1);
+
+			segment[i].pieceOfMemory = pieceOfMemory;
+			segment[i].data = current->data;
+			segment[i].semid = semid;
+			result = pthread_create(&thids[i], NULL, tranmsitTableware, &segment[i]);
+			i++;
+		}
+
+		result = joinThreads(numberOfThreads, thids);
+		CHECK("joinThreads", result);
+
+		semOperation(semid, workIsDone, -1);
+		printf("\nEnd of work!\n\n");
+
 		CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
-		CHECK("shmdt", shmdt(data));
+		CHECK("shmdt", shmdt(pieceOfMemory));
 		CHECK("shmctl", shmctl(shmid, IPC_RMID, NULL));
 
 		deleteList(listTimes);
 		deleteList(listTableware);
+
+		freeMemory(thids, segment);
 	}
 	else
 	{
 		printf("Wiper!\n");
 
-		List * listTimes = createList("listTimes");
-		readTimesList(listTimes);
-		printList(listTimes);
-
-		printf("\nLet's connect to sem\n");
 		key_t key = getTheKey(KEY_FILE);
-		//int semid = connectToSem(key);
+		int semid = connectToSem(key);
 
-		printf("\nLet's connect to sem\n");
 		int shmid = connectToShm(key);
-		char * data = attachMemory(shmid);
+		Data * pieceOfMemory = attachMemory(shmid);
 
-		//List * listTableware = createList("listTableware");
+		List * listTableware = createList("listTableware");
 
-		CHECK("shmdt", shmdt(data));
-		deleteList(listTimes);
+		printf("\nStart of work!\n\n");
+
+		while(1)	//узнать, что передача завершена
+		{
+			semOperation(semid, readyToReadFromMemory, 1);
+			semOperation(semid, allowedToReadFromMemory, -1);
+			wipeElement(pieceOfMemory);
+			addToList(listTableware, copyData(pieceOfMemory));
+			semOperation(semid, spaceOnTheTable, 1);
+		}
+
+		semOperation(semid, workIsDone, 1);
+		printf("\nEnd of work!\n\n");
+		printList(listTableware);
+
+		CHECK("shmdt", shmdt(pieceOfMemory));
+		deleteList(listTableware);
 	}
 }
 
-/*void thread(void * arg)
+int joinThreads(int numberOfThreads, pthread_t *thids)
 {
-	Segment segment = *(Segment *)arg;
+	int i, result;
 
+	for(i = 0; i < numberOfThreads; i++)
+	{
+		result = pthread_join(thids[i], (void **)NULL);
 
-}*/
+		if(result != 0)
+		{
+			return -1;
+		}
+	}
 
-void washingElement(List * listWetTableware, Data * data)
+	return 0;
+}
+
+int allocateMemory(pthread_t ** thids, Segment ** segment, int numberOfThreads)
 {
-	printf("I'm cleaning %s for %d seconds\n", data->name, data->timeToWash);
+	*thids = calloc(numberOfThreads, sizeof(pthread_t));
+	*segment = (struct Segment *)calloc(numberOfThreads, sizeof(struct Segment));
+
+	return segment && thids;
+}
+
+void freeMemory(pthread_t * thids, Segment * segment)
+{
+	free(thids);
+	free(segment);
+}
+
+void *tranmsitTableware(void * arg)
+{
+	printf("In thread for tableware transmit\n");
+	Segment * segment = (Segment *)arg;
+
+	printData(segment->pieceOfMemory);
+	printData(segment->data);
+
+	semOperation(segment->semid, readyToReadFromMemory, -1);
+	putInMemory(segment->pieceOfMemory, segment->data);
+	semOperation(segment->semid, allowedToReadFromMemory, 1);
+
+	pthread_exit(0);
+}
+
+void wipeElement(Data * data)
+{
+	printf("\t\t\t\t\tWipe %s for %d seconds\n", data->name, data->timeToWipe);
+
+	sleep(data->timeToWipe);
+}
+
+void washingElement(Data * data)
+{
+	printf("\t\t\t\t\tCleaning %s for %d seconds\n", data->name, data->timeToWash);
+
 	sleep(data->timeToWash);
-	addToList(listWetTableware, copyData(data));
 }

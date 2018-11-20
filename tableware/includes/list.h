@@ -7,7 +7,7 @@
 
 typedef struct Data
 {
-	char * name;
+	char name[MAX_SIZE_NAME];
 	int timeToWash;
 	int timeToWipe;
 } Data;
@@ -19,6 +19,7 @@ typedef const char * TypeOfDesired;
 
 Data * createData(const char * name, int timeToWash, int timeToWipe);
 int deleteData(Data * data);
+void putInMemory(Data * piaceOfMemory, Data * data);
 void printData(Data * data);
 int isDesired(Data * data, TypeOfDesired desired);
 Data * copyData(Data * data);
@@ -38,7 +39,7 @@ typedef struct Node
 typedef struct List
 {
 	int size;
-	char * name;
+	char name[MAX_SIZE_NAME];
 	Node * first;
 	Node * last;
 } List;

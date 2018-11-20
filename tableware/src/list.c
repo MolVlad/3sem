@@ -1,4 +1,5 @@
 #include"libs.h"
+#include"configure.h"
 #include"list.h"
 
 /* Customized functions for data---------------------------*/
@@ -10,7 +11,6 @@ int deleteData(Data * data)
 	if(data == NULL)
 		return 0;
 
-	free(data->name);
 	free(data);
 	return 0;
 }
@@ -19,12 +19,18 @@ Data * copyData(Data * data)
 {
 	Data * new = (Data *)calloc(1, sizeof(Data));
 
-	new->name = (char *)calloc(strlen(data->name) + 1, sizeof(char));
 	strcpy(new->name, data->name);
 	new->timeToWash = data->timeToWash;
 	new->timeToWipe = data->timeToWipe;
 
 	return new;
+}
+
+void putInMemory(Data * piaceOfMemory, Data * data)
+{
+	strcpy(piaceOfMemory->name, data->name);
+	piaceOfMemory->timeToWash = data->timeToWash;
+	piaceOfMemory->timeToWipe = data->timeToWipe;
 }
 
 int isDesired(Data * data, TypeOfDesired desired)
@@ -41,7 +47,6 @@ Data * createData(const char * name, int timeToWash, int timeToWipe)
 {
 	Data * new = (Data *)calloc(1, sizeof(Data));
 
-	new->name = (char *)calloc(strlen(name) + 1, sizeof(char));
 	strcpy(new->name, name);
 	new->timeToWash = timeToWash;
 	new->timeToWipe = timeToWipe;
@@ -56,7 +61,6 @@ Data * createData(const char * name, int timeToWash, int timeToWipe)
 List * createList(char * name)
 {
 	List * list = (List *)calloc(1, sizeof(List));
-	list->name = calloc(strlen(name) + 1, sizeof(char));
 	strcpy(list->name, name);
 
 	return list;
@@ -68,7 +72,6 @@ int deleteList(List * list)
 		return 0;
 
 	deleteNode(list->first);
-	free(list->name);
 	free(list);
 	return 0;
 }
@@ -96,7 +99,7 @@ void addToList(List * list, Data * data)
 
 void printList(List * list)
 {
-	printf("List name: %s\n", list->name);
+	printf("\nList name: %s\n", list->name);
 
 	Node * current;
 	for(current = list->first; current != NULL; current = current->next)
@@ -104,6 +107,7 @@ void printList(List * list)
 		printf("%d) ", current->number);
 		printData(current->data);
 	}
+	printf("\n");
 }
 
 Data * findInList(List * list, TypeOfDesired desired)

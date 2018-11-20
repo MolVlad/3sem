@@ -1,0 +1,7 @@
+6
+lol 1 3
+kek 2 4
+azazaz 5 10
+io 2 4
+sdg 4 1
+gs 4 2

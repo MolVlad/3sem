@@ -1,0 +1,90 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
+CHECK	includes/configure.h	11;"	d
+COMP	Makefile	/^COMP = gcc$/;"	m
+DEFINES	Makefile	/^DEFINES = -DPARSE_COMMAND_LINE -DNDEBUG #-DCONSOLE$/;"	m
+Data	includes/list.h	/^typedef struct Data$/;"	s
+Data	includes/list.h	/^} Data;$/;"	t	typeref:struct:Data
+KEY_FILE	includes/configure.h	6;"	d
+LIBS	Makefile	/^LIBS = -lpthread$/;"	m
+List	includes/list.h	/^typedef struct List$/;"	s
+List	includes/list.h	/^} List;$/;"	t	typeref:struct:List
+MAX_SIZE_NAME	includes/configure.h	7;"	d
+NUM_OF_SEM	includes/sem.h	4;"	d
+Node	includes/list.h	/^typedef struct Node$/;"	s
+Node	includes/list.h	/^} Node;$/;"	t	typeref:struct:Node
+OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
+PERMISSION	includes/configure.h	8;"	d
+PRECOMP	Makefile	/^PRECOMP = includes\/precomp.h$/;"	m
+PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
+PROJECT	Makefile	/^PROJECT = exe$/;"	m
+RM	Makefile	/^RM = rm -rf$/;"	m
+SOURCES	Makefile	/^SOURCES = src\/main.c src\/list.c src\/read_from_file.c src\/sem.c src\/shm.c$/;"	m
+SPACE_ON_THE_TABLE	includes/configure.h	9;"	d
+Segment	src/main.c	/^typedef struct Segment$/;"	s	file:
+Segment	src/main.c	/^} Segment;$/;"	t	typeref:struct:Segment	file:
+SemName	includes/sem.h	/^enum SemName$/;"	g
+TABLEWARE_LIST	includes/configure.h	5;"	d
+TABLEWARE_TIMES	includes/configure.h	4;"	d
+TypeOfDesired	includes/list.h	/^typedef const char * TypeOfDesired;$/;"	t
+__CONFIGURE_H__	includes/configure.h	2;"	d
+__LIST_H__	includes/list.h	2;"	d
+__PRECOMP_H__	includes/libs.h	2;"	d
+__READ_FROM_FILE__	includes/read_from_file.h	2;"	d
+__SEM_H__	includes/sem.h	2;"	d
+__SHM_H__	includes/shm.h	2;"	d
+addToList	src/list.c	/^void addToList(List * list, Data * data)$/;"	f
+allocateMemory	src/main.c	/^int allocateMemory(pthread_t ** thids, Segment ** segment, int numberOfThreads)$/;"	f
+allowedToReadFromMemory	includes/sem.h	/^	allowedToReadFromMemory,$/;"	e	enum:SemName
+attachMemory	src/shm.c	/^Data * attachMemory(int shmid)$/;"	f
+connectToSem	src/sem.c	/^int connectToSem(key_t key)$/;"	f
+connectToShm	src/shm.c	/^int connectToShm(key_t key)$/;"	f
+copyData	src/list.c	/^Data * copyData(Data * data)$/;"	f
+createData	src/list.c	/^Data * createData(const char * name, int timeToWash, int timeToWipe)$/;"	f
+createList	src/list.c	/^List * createList(char * name)$/;"	f
+createNode	src/list.c	/^Node * createNode(Data * data)$/;"	f
+createSem	src/sem.c	/^int createSem(key_t key)$/;"	f
+createShm	src/shm.c	/^int createShm(key_t key)$/;"	f
+data	includes/list.h	/^	Data * data;$/;"	m	struct:Node
+data	src/main.c	/^	Data * data;$/;"	m	struct:Segment	file:
+deleteData	src/list.c	/^int deleteData(Data * data)$/;"	f
+deleteList	src/list.c	/^int deleteList(List * list)$/;"	f
+deleteNode	src/list.c	/^int deleteNode(Node * node)$/;"	f
+fileOpenAndCheck	src/read_from_file.c	/^FILE * fileOpenAndCheck(const char * fileName)$/;"	f
+findInList	src/list.c	/^Data * findInList(List * list, TypeOfDesired desired)$/;"	f
+first	includes/list.h	/^	Node * first;$/;"	m	struct:List
+freeMemory	src/main.c	/^void freeMemory(pthread_t * thids, Segment * segment)$/;"	f
+getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+isDesired	src/list.c	/^int isDesired(Data * data, TypeOfDesired desired)$/;"	f
+joinThreads	src/main.c	/^int joinThreads(int numberOfThreads, pthread_t *thids)$/;"	f
+last	includes/list.h	/^	Node * last;$/;"	m	struct:List
+main	src/2.c	/^int main(int argc, char *argv[])$/;"	f
+main	src/main.c	/^int main(int argc, char *argv[])$/;"	f
+name	includes/list.h	/^	char name[MAX_SIZE_NAME];$/;"	m	struct:Data
+name	includes/list.h	/^	char name[MAX_SIZE_NAME];$/;"	m	struct:List
+next	includes/list.h	/^	struct Node * next;$/;"	m	struct:Node	typeref:struct:Node::Node
+number	includes/list.h	/^	int number;$/;"	m	struct:Node
+pieceOfMemory	src/main.c	/^	Data * pieceOfMemory;$/;"	m	struct:Segment	file:
+printData	src/list.c	/^void printData(Data * data)$/;"	f
+printList	src/list.c	/^void printList(List * list)$/;"	f
+putInMemory	src/list.c	/^void putInMemory(Data * piaceOfMemory, Data * data)$/;"	f
+readTablewareList	src/read_from_file.c	/^void readTablewareList(List * listTableware, List * listTimes)$/;"	f
+readTimesList	src/read_from_file.c	/^void readTimesList(List * listTimes)$/;"	f
+readyToReadFromMemory	includes/sem.h	/^	readyToReadFromMemory,$/;"	e	enum:SemName
+receiveToWiper	src/2.c	/^void receiveToWiper(char * name)$/;"	f
+semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
+semid	src/main.c	/^	int semid;$/;"	m	struct:Segment	file:
+size	includes/list.h	/^	int size;$/;"	m	struct:List
+spaceOnTheTable	includes/sem.h	/^	spaceOnTheTable = 0,$/;"	e	enum:SemName
+timeToWash	includes/list.h	/^	int timeToWash;$/;"	m	struct:Data
+timeToWipe	includes/list.h	/^	int timeToWipe;$/;"	m	struct:Data
+tranmsitTableware	src/main.c	/^void *tranmsitTableware(void * arg)$/;"	f
+wash	src/2.c	/^int wash(char * name, Tableware * tablewareList)$/;"	f
+washingElement	src/main.c	/^void washingElement(Data * data)$/;"	f
+wipeElement	src/main.c	/^void wipeElement(Data * data)$/;"	f
+workIsDone	includes/sem.h	/^	workIsDone,$/;"	e	enum:SemName

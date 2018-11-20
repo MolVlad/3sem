@@ -6,7 +6,7 @@
 #define KEY_FILE "txt/key_file.txt"
 #define MAX_SIZE_NAME 100
 #define PERMISSION 0777
-#define SPACE_ON_THE_TABLE 2
+#define SPACE_ON_THE_TABLE 1
 
 #define CHECK(nameFunction, retValue)				\
 do {								\
