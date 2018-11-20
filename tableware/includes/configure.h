@@ -3,8 +3,10 @@
 
 #define TABLEWARE_TIMES "txt/tableware_times.txt"
 #define TABLEWARE_LIST "txt/tableware_list.txt"
-#define KEY_FILE "txt/key_file.txt"
+#define CALLBOARD_FIFO "users"
+
 #define MAX_SIZE_NAME 100
+#define SIZE_ID 4
 #define PERMISSION 0777
 #define SPACE_ON_THE_TABLE 1
 

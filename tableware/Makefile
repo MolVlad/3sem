@@ -1,7 +1,7 @@
 PROJECT = exe
 
 PRECOMP = includes/precomp.h
-SOURCES = src/main.c src/list.c src/read_from_file.c src/sem.c src/shm.c
+SOURCES = src/main.c src/list.c src/read_from_file.c src/sem.c src/shm.c src/work.c src/thread.c src/fifo.c src/synch.c
 INCLUDES += -I includes
 DEFINES = -DPARSE_COMMAND_LINE -DNDEBUG #-DCONSOLE
 CFLAGS = -Wall -Wextra

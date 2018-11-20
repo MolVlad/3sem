@@ -10,6 +10,8 @@ typedef struct Data
 	char name[MAX_SIZE_NAME];
 	int timeToWash;
 	int timeToWipe;
+
+	int itIsAll;
 } Data;
 typedef const char * TypeOfDesired;
 
