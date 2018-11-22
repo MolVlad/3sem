@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 			segment[i].data = current->data;
 			segment[i].semid = semid;
 			result = pthread_create(&thids[i], NULL, tranmsitTableware, &segment[i]);
-			if(!result)
+			if(result)
 			{
 				perror("pthread_create");
 				return -1;
