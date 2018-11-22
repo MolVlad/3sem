@@ -19,6 +19,7 @@ key_t waitForWiper()
 		result = open(id, O_WRONLY);
 	}
 	while(result == -1);
+	close(result);
 
 	return getTheKey(id);
 }
@@ -33,7 +34,8 @@ key_t waitForWasher()
 
 	printf("%s\n", id);
 	mkfifo(id, PERMISSION);
-	open(id, O_RDONLY);
+	int fd = open(id, O_RDONLY);
+	close(fd);
 
 	return getTheKey(id);
 }
