@@ -36,7 +36,7 @@ int find(const char * current_dir, const char * desired, int possibleDepth)
 	int result;
 	while(dirent != NULL)
 	{
-		char * path = (char *)calloc(strlen(current_dir) + strlen(dirent->d_name), sizeof(char));
+		char * path = (char *)calloc(strlen(current_dir) + strlen(dirent->d_name) + 2, sizeof(char));
 		strcpy(path, current_dir);
 		strcat(path, "/");
 		strcat(path, dirent->d_name);
