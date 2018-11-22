@@ -7,6 +7,7 @@
 #include<errno.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<pthread.h>
 
 #define PERMISSION 0777
 #define MSG_SIZE 2
@@ -16,12 +17,66 @@
 do {								\
 	if(retValue == -1)					\
 	{							\
-		printf("%s failure\n", nameFunction);		\
-		return 1;					\
+		perror("nameFunction");				\
+		exit(1);					\
 	}							\
-	else							\
-		printf("%s succeeded\n", nameFunction);		\
 } while(0)							\
+
+
+struct MsgBufRequest
+{
+	long type;
+	struct DataForRequest
+	{
+		int pid;
+		int num[MSG_SIZE];
+	} data;
+};
+
+struct MsgBufAnswer
+{
+	long type;
+	struct DataForAnswer
+	{
+		int answer;
+	} data;
+};
+
+typedef struct Segment
+{
+	int msgid;
+	struct DataForRequest data;
+} Segment;
+
+void copyData(struct DataForRequest * destination, struct DataForRequest * data)
+{
+	destination->pid = data->pid;
+
+	int i;
+	for(i = 0; i < MSG_SIZE; i++)
+		destination->num[i] = data->num[i];
+}
+
+void *processRequest(void * arg)
+{
+	Segment * segment = (Segment *)arg;
+
+	printf("Message from %d\n", segment->data.pid);
+	int answer = segment->data.num[0] * segment->data.num[1];
+
+	struct MsgBufAnswer bufAnswer;
+	bufAnswer.type = segment->data.pid;
+	bufAnswer.data.answer = answer;
+
+	printf("Accepted %d and %d\n", segment->data.num[0], segment->data.num[1]);
+	printf("Res = %d\n", answer);
+
+	int result = msgsnd(segment->msgid, (struct msgbuf *)&bufAnswer, sizeof(struct DataForAnswer), 0);
+	CHECK("msgsnd", result);
+
+	free(segment);
+	pthread_exit(0);
+}
 
 int main(int argc, char *argv[])
 {
@@ -33,7 +88,6 @@ int main(int argc, char *argv[])
 
 		key_t key = ftok(file, 0);
 		CHECK("ftok", key);
-		printf("Key = %d\n", key);
 
 		int msgid = msgget(key, PERMISSION | IPC_CREAT | IPC_EXCL);
 		if(msgid < 0)
@@ -52,52 +106,36 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				printf("Some error");
+				perror("msgget");
 				return 4;
 			}
 		}
-		else
-			printf("Message queue get succesfully\n");
-
-		struct msgBufRequest
-		{
-			long type;
-			struct Data
-			{
-				int pid;
-				int num[MSG_SIZE];
-			} data;
-		} bufRequest;
-
-		struct msgBufAnswer
-		{
-			long type;
-			int answer;
-		} bufAnswer;
-
 		printf("Let's get started processing requests\n");
-		int length, answer, result;
+
+		struct MsgBufRequest bufRequest;
+		struct MsgBufAnswer bufAnswer;
+
+		int length, result;
+		pthread_t thid;
 		while(1)
 		{
-			length = msgrcv(msgid, (struct msg_buf *)&bufRequest, sizeof(struct Data), MESSAGE_FOR_SERVER, 0);
+			length = msgrcv(msgid, (struct msg_buf *)&bufRequest, sizeof(struct DataForRequest), MESSAGE_FOR_SERVER, 0);
 			if(length)
 			{
-				printf("Message from %d\n", bufRequest.data.pid);
+				struct Segment * segment = (struct Segment *)calloc(1, sizeof(struct Segment));
+				copyData(&segment->data, &bufRequest.data);
+				segment->msgid = msgid;
 
-				if(length < sizeof(struct Data))
+				if(length < sizeof(struct DataForRequest))
 					printf("Too short message\n");
 				else
 				{
-					answer = bufRequest.data.num[0] + bufRequest.data.num[1];
-
-					bufAnswer.type = bufRequest.data.pid;
-					bufAnswer.answer = answer;
-
-					printf("Accepted %d and %d\n", bufRequest.data.num[0], bufRequest.data.num[1]);
-					printf("Sum = %d\n", answer);
-
-					result = msgsnd(msgid, (struct msgbuf *)&bufAnswer, sizeof(int), 0);
-					CHECK("msgsnd", result);
+					result = pthread_create(&thid, NULL, processRequest, segment);
+					if(result)
+					{
+						printf("pthread_create error\n");
+						return -1;
+					}
 				}
 			}
 		}
@@ -114,29 +152,10 @@ int main(int argc, char *argv[])
 		int msgid;
 		do msgid = msgget(key, PERMISSION);
 		while((msgid == -1) && (errno ==ENOENT));
+		CHECK("msgget", msgid);
 
-		if(msgid == -1)
-		{
-			printf("Some error");
-			return 4;
-		}
-		printf("msgget succeed\n");
-
-		struct msgBufRequest
-		{
-			long type;
-			struct Data
-			{
-				int pid;
-				int num[MSG_SIZE];
-			} data;
-		} bufRequest;
-
-		struct msgBufAnswer
-		{
-			long type;
-			int answer;
-		} bufAnswer;
+		struct MsgBufRequest bufRequest;
+		struct MsgBufAnswer bufAnswer;
 
 		int a,b;
 		printf("Scan a = ");
@@ -144,30 +163,29 @@ int main(int argc, char *argv[])
 		printf("Scan b = ");
 		scanf("%d", &b);
 
-//		a = 5, b = 5;
-
 		int pid = getpid();
 
 		printf("Let's get transmitted\n");
+
 		bufRequest.type = MESSAGE_FOR_SERVER;
 		bufRequest.data.pid = pid;
 		bufRequest.data.num[0] = a;
 		bufRequest.data.num[1] = b;
-		int result = msgsnd(msgid, (struct msgbuf *)&bufRequest, sizeof(struct Data), 0);
+
+		int result = msgsnd(msgid, (struct msgbuf *)&bufRequest, sizeof(struct DataForRequest), 0);
 		CHECK("msgsnd", result);
 
 		printf("Let's get received\n");
-		int length, i, answer;
-		length = msgrcv(msgid, (struct msg_buf *)&bufAnswer, sizeof(int), pid, 0);
+		int length = msgrcv(msgid, (struct msg_buf *)&bufAnswer, sizeof(struct DataForAnswer), pid, 0);
 		CHECK("msgrcv", length);
 
-		if(length < sizeof(int))
+		if(length < sizeof(struct DataForAnswer))
 		{
 			printf("Too short message\n");
 			return 2;
 		}
 		else
-			printf("Answer = %d\n", bufAnswer.answer);
+			printf("Answer = %d\n", bufAnswer.data.answer);
 	}
 	else
 	{
@@ -177,7 +195,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-
-
-
-
