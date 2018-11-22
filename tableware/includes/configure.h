@@ -14,11 +14,9 @@
 do {								\
 	if(retValue == -1)					\
 	{							\
-		printf("%s failure\n", nameFunction);		\
+		perror(nameFunction);		\
 		exit(1);					\
 	}							\
-	else							\
-		printf("%s succeeded\n", nameFunction);		\
 } while(0)							\
 
 #endif /* __CONFIGURE_H__ */

@@ -10,7 +10,6 @@ key_t waitForWiper()
 
 	char id[SIZE_ID];
 	getID(id);
-	printf("%s\n", id);
 	int result = writeID(callboardFIFO, id);
 	CHECK("writeID", result);
 
@@ -32,7 +31,6 @@ key_t waitForWasher()
 	int result = readID(callboardFIFO, id);
 	CHECK("readID", result);
 
-	printf("%s\n", id);
 	mkfifo(id, PERMISSION);
 	int fd = open(id, O_RDONLY);
 	close(fd);

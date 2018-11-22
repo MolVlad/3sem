@@ -6,7 +6,6 @@ key_t getTheKey(const char * keyFileName)
 {
 	key_t key = ftok(keyFileName, 0);
 	CHECK("ftok", key);
-	printf("Key = %d\n", key);
 
 	return key;
 }
@@ -18,7 +17,7 @@ int createSem(key_t key)
 	{
 		if(errno == EEXIST)
 		{
-			printf("Already exist. Need to remove\n");
+			printf("Sem already exist. Need to remove\n");
 
 			semid = semget(key, NUM_OF_SEM, PERMISSION);
 			CHECK("semget", semid);
@@ -30,12 +29,10 @@ int createSem(key_t key)
 		}
 		else
 		{
-			printf("Some error");
+			perror("semget");
 			return 2;
 		}
 	}
-	else
-		printf("Sem create succesfully\n");
 
 	semOperation(semid, spaceOnTheTable, SPACE_ON_THE_TABLE);
 
@@ -50,10 +47,9 @@ int connectToSem(key_t key)
 
 	if(semid == -1)
 	{
-		printf("Some error");
+		perror("semget");
 		exit(4);
 	}
-	printf("semget succeed\n");
 
 	return semid;
 }

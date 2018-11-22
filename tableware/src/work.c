@@ -12,10 +12,9 @@ void sayThatIsAll(Data * pieceOfMemory, int semid)
 }
 void *tranmsitTableware(void * arg)
 {
-	printf("In thread for tableware transmit\n");
+	printf("In thread for transmit:\n");
 	Segment * segment = (Segment *)arg;
 
-	printData(segment->pieceOfMemory);
 	printData(segment->data);
 
 	semOperation(segment->semid, readyToReadFromMemory, -1);

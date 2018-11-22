@@ -11,7 +11,7 @@ int createShm(key_t key)
 	{
 		if(errno == EEXIST)
 		{
-			printf("Already exist. Need to remove\n");
+			printf("Shm already exist. Need to remove\n");
 
 			shmid = shmget(key, sizeof(Data), PERMISSION);
 			CHECK("shmget", shmid);
@@ -23,12 +23,10 @@ int createShm(key_t key)
 		}
 		else
 		{
-			printf("Some error");
+			perror("shmget");
 			exit(2);
 		}
 	}
-	else
-		printf("Shm create succesfully\n");
 
 	return shmid;
 }
@@ -38,11 +36,9 @@ Data * attachMemory(int shmid)
 	Data * pieceOfMemory = (Data *)shmat(shmid, NULL, 0);
 	if(pieceOfMemory == (Data *) (-1))
 	{
-		printf("Attach memory error\n");
+		perror("shmat");
 		exit(-5);
 	}
-	else
-		printf("Attach memory succesfully\n");
 
 	return pieceOfMemory;
 }
@@ -56,10 +52,9 @@ int connectToShm(key_t key)
 
 	if(shmid == -1)
 	{
-		printf("Some error");
+		perror("shmget");
 		exit(4);
 	}
-	printf("shmget succeed\n");
 
 	return shmid;
 }
