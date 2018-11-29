@@ -4,6 +4,7 @@
 #include"sem.h"
 #include"synch.h"
 
+/* Function for synchronization */
 key_t waitForWiper()
 {
 	int callboardFIFO = openOrCreateFIFO(CALLBOARD_FIFO);
@@ -23,8 +24,10 @@ key_t waitForWiper()
 	return getTheKey(id);
 }
 
+/* Function for synchronization */
 key_t waitForWasher()
 {
+	//Create FIFO callboard
 	int callboardFIFO = openOrCreateFIFO(CALLBOARD_FIFO);
 
 	char id[SIZE_ID];

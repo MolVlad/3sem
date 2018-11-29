@@ -22,10 +22,12 @@ int main(int argc, char *argv[])
 
 		key_t key = waitForWiper();
 
+		/* Create list of tableware types */
 		List * listTimes = createList("listTimes");
 		readTimesList(listTimes);
 		printList(listTimes);
 
+		/* Create list of tableware to wash */
 		List * listTableware = createList("listTableware");
 		readTablewareList(listTableware, listTimes);
 		printList(listTableware);
@@ -35,9 +37,6 @@ int main(int argc, char *argv[])
 		int shmid = createShm(key);
 		Data * pieceOfMemory = attachMemory(shmid);
 
-		putInMemory(pieceOfMemory, listTableware->first->data);
-		printData(pieceOfMemory);
-		printf("size = %d\n", listTableware->size);
 		Segment * segment;
 		pthread_t * thids;
 		int numberOfThreads = listTableware->size;

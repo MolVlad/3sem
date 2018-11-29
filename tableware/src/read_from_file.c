@@ -3,6 +3,7 @@
 #include"libs.h"
 #include"list.h"
 
+/* Function for reading list of tableware's times from .txt file */
 void readTimesList(List * listTimes)
 {
 	FILE *file = fileOpenAndCheck(TABLEWARE_TIMES);
@@ -22,6 +23,7 @@ void readTimesList(List * listTimes)
 	fclose(file);
 }
 
+/* Function for reading list of tableware to wash from .txt file */
 void readTablewareList(List * listTableware, List * listTimes)
 {
 	FILE *file = fileOpenAndCheck(TABLEWARE_LIST);
@@ -48,6 +50,7 @@ void readTablewareList(List * listTableware, List * listTimes)
 	fclose(file);
 }
 
+/* Function to make the code shorter */
 FILE * fileOpenAndCheck(const char * fileName)
 {
 	FILE *file = fopen(fileName, "r");

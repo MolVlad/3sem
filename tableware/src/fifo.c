@@ -2,6 +2,7 @@
 #include"configure.h"
 #include"fifo.h"
 
+/* Function for open FIFO (or create if necessary) */
 int openOrCreateFIFO(const char * name)
 {
 	int fd = open(name, O_RDWR);
@@ -16,6 +17,7 @@ int openOrCreateFIFO(const char * name)
 	return fd;
 }
 
+/* Function for return unique number */
 void getID(char * id)
 {
 	int pid = getpid();
@@ -28,6 +30,7 @@ void getID(char * id)
 	}
 }
 
+/* Function for write ID in FIFO */
 int writeID(int fd, char * id)
 {
 	int n = write(fd, id, SIZE_ID);
@@ -40,6 +43,7 @@ int writeID(int fd, char * id)
 	return 0;
 }
 
+/* Function for write ID from FIFO */
 int readID(int fd, char * id)
 {
 	int n = read(fd, id, SIZE_ID);
