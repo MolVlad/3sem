@@ -1,27 +1,16 @@
 #include"libs.h"
-
-#define INIT_STRING_SIZE 10
-#define TRESHOLD_STRING_SIZE 80
-#define AFTER_TRESHOLD_STRING_SIZE 40
-#define OUTPUT_STREAM 1
-
-#define DEBUG_STRING 1
-
-typedef char Flag;
-typedef char Data;
-typedef struct
-{
-	Data * data;
-
-	int currentSize;
-	int maxSize;
-} String;
+#include"my_string.h"
+#include"configure.h"
 
 String * createString()
 {
 	String * ret = (String *)calloc(1, sizeof(String));
 	ret->data = (Data *)calloc(INIT_STRING_SIZE + 1, sizeof(Data));
 	ret->maxSize = INIT_STRING_SIZE;
+
+	#ifdef DEBUG_STRING
+	printf("Create String, max size = %d\n", ret->maxSize);
+	#endif /* DEBUG_STRING */
 
 	return ret;
 }
@@ -30,7 +19,7 @@ void deleteString(String * string)
 {
 
 	#ifdef DEBUG_STRING
-	printf("deleteString size: %d\n", string->currentSize);
+	printf("Delete String with current size: %d\n", string->currentSize);
 	#endif /* DEBUG_STRING */
 
 	free(string->data);
@@ -39,6 +28,10 @@ void deleteString(String * string)
 
 void clearString(String * string)
 {
+	#ifdef DEBUG_STRING
+	printf("Clear String with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
+
 	if(string->maxSize > TRESHOLD_STRING_SIZE)
 	{
 		string->data =  (Data *)realloc(string->data, (AFTER_TRESHOLD_STRING_SIZE + 1) * sizeof(Data));
@@ -49,7 +42,7 @@ void clearString(String * string)
 			perror("realloc");
 			exit(1);
 		}
-		printf("clearString realloc: %d -> %d\n", string->maxSize, AFTER_TRESHOLD_STRING_SIZE);
+		printf("clearString's realloc: %d -> %d\n", string->maxSize, AFTER_TRESHOLD_STRING_SIZE);
 		#endif /* DEBUG_STRING */
 
 		string->maxSize = AFTER_TRESHOLD_STRING_SIZE;
@@ -78,7 +71,7 @@ void putInString(String * string, Data * data)
 			perror("realloc");
 			exit(1);
 		}
-		printf("putInString realloc: %d -> %d\n", string->maxSize, string->maxSize * 2);
+		printf("putInString's realloc: %d -> %d\n", string->maxSize, string->maxSize * 2);
 		#endif /* DEBUG_STRING */
 
 		string->maxSize *= 2;
@@ -90,40 +83,34 @@ void putInString(String * string, Data * data)
 
 int scanString(String * string)
 {
-	Flag isAll = 0;
+	Flag isAll = FALSE;
 	Data c;
+
+	clearString(string);
 
 	do
 	{
 		c = getchar();
 		if(c == '\n')
-			isAll = 1;
+			isAll = TRUE;
 		else
 			putInString(string, &c);
 	}
-	while(!isAll);
+	while(isAll == FALSE);
+
+	#ifdef DEBUG_STRING
+	printf("Scan String with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
 
 	return string->currentSize;
 }
 
 void printString(String * string)
 {
+	#ifdef DEBUG_STRING
+	printf("Print String with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
+
 	write(OUTPUT_STREAM, string->data, string->currentSize);
 	printf("\n");
-}
-
-int main()
-{
-	String * string = createString();
-
-	scanString(string);
-	printString(string);
-
-	clearString(string);
-	scanString(string);
-	printString(string);
-
-	deleteString(string);
-
-	return 0;
 }
