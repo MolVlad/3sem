@@ -3,15 +3,29 @@
 #include"my_string.h"
 #include"console.h"
 #include"print.h"
+#include"htable.h"
+
+HTableMap * htableMap;
 
 int main()
 {
 	String * string = createString();
+	if(string == NULL)
+	{
+		printf("createString error\n");
+		return 1;
+	}
+
+	htableMap = createHTable();
+	if(htableMap == NULL)
+	{
+		printf("createHTable error\n");
+		return 1;
+	}
 
 	printGreeting();
-	consoleFiniteStateMachine(INIT);
 
-	Flag isAll = FALSE;
+	Flag isAll = consoleFiniteStateMachine(INIT);
 	do
 	{
 		scanString(string);
@@ -25,7 +39,9 @@ int main()
 	}
 	while(isAll == FALSE);
 
+	printHTable(htableMap);
 	deleteString(string);
+	deleteHTable(htableMap);
 
 	return 0;
 }

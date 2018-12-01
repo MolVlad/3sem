@@ -113,6 +113,8 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 
 enum ConsoleCommand parseCommand(String * string)
 {
+	assert(string);
+
 	if(strcmp(string->data, "y") == 0)
 		return YES;
 	if(strcmp(string->data, "n") == 0)

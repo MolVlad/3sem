@@ -4,22 +4,26 @@
 #include"account.h"
 #include"htable.h"
 
-extern HTableMap * htableMap;
-
 Flag checkAccount()
 {
 	printf("Let's log in\n");
 
-	htableMap = createHTable();
-	deleteHTable(htableMap);
-
 	String * login = createString();
+	assert(login);
 	String * password = createString();
+	assert(login);
 
+	int i;
+	for(i = 0; i < 10; i++)
+	{
+
+	}
 	printf("Login = ");
 	scanString(login);
 	printf("Password = ");
 	scanString(password);
+
+	insertToHTable(htableMap, convertToHTableData(login, password));
 
 /*	HTableData * trueData = findInHTable(htableMap, login);
 	if(trueData == NULL)
@@ -36,15 +40,14 @@ Flag createAccount()
 	printf("Let's create account\n");
 
 	String * login = createString();
+	assert(login);
 	String * password = createString();
+	assert(login);
 
 	printf("Login = ");
 	scanString(login);
 	printf("Password = ");
 	scanString(password);
 
-
 	return TRUE;
 }
-
-

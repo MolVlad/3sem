@@ -18,9 +18,10 @@ typedef struct
 String * createString();
 void deleteString(String * string);
 void clearString(String * string);
-void copyData(Data * destination, Data * data);
+void copyStringElement(Data * destination, Data * element);
 void putInString(String * string, Data * data);
 int scanString(String * string);
 void printString(String * string);
+String * copyString(String * original);
 
 #endif /* __MY_STRING_H__ */
