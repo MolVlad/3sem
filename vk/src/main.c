@@ -5,7 +5,7 @@
 #include"print.h"
 #include"htable.h"
 
-HTableMap * htableMap;
+HTableMap * htableMap = NULL;
 
 int main()
 {

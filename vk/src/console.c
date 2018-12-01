@@ -12,8 +12,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 	static enum ConsoleState state = WELCOME_PAGE;
 	static Flag isAll = FALSE;
 	Flag isOK;
-
-	#ifdef DEBUG_CONSOLE
+#ifdef DEBUG_CONSOLE
 	printf("consoleFiniteStateMachine\n");
 	printConsoleState(state);
 	printConsoleCommand(command);
@@ -38,7 +37,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 						printf("Success\n");
 						state = MAIN_MENU;
 					}
-					else
+					else if(isOK == FALSE)
 					{
 						printf("Wrong login or password\n");
 						state = WELCOME_PAGE;
@@ -51,7 +50,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 						printf("Success\n");
 						state = MAIN_MENU;
 					}
-					else
+					else if(isOK == FALSE)
 					{
 						printf("Already exits\n");
 						state = WELCOME_PAGE;

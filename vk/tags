@@ -18,8 +18,8 @@ EXIT	includes/console.h	/^	EXIT,$/;"	e	enum:ConsoleCommand
 FALSE	includes/configure.h	/^	FALSE = 0,$/;"	e	enum:Flag
 Flag	includes/configure.h	/^typedef enum Flag$/;"	g
 Flag	includes/configure.h	/^} Flag;$/;"	t	typeref:enum:Flag
-HASH_FUNCTION_INIT_VALUE	includes/htable.h	31;"	d
-HASH_FUNCTION_PRIME_NUMBER	includes/htable.h	32;"	d
+HASH_FUNCTION_INIT_VALUE	includes/htable.h	28;"	d
+HASH_FUNCTION_PRIME_NUMBER	includes/htable.h	29;"	d
 HTABLE_SIZE	includes/configure.h	9;"	d
 HTABLE_STORAGE	includes/configure.h	10;"	d
 HTableData	includes/htable.h	/^} HTableData;$/;"	t	typeref:struct:__anon1
@@ -32,7 +32,6 @@ INIT_STRING_SIZE	includes/my_string.h	4;"	d
 LIBS	Makefile	/^LIBS =$/;"	m
 MAIN_MENU	includes/console.h	/^	MAIN_MENU,$/;"	e	enum:ConsoleState
 NO	includes/console.h	/^	NO,$/;"	e	enum:ConsoleCommand
-NameType	includes/htable.h	/^typedef String NameType;$/;"	t
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
 OUTPUT_STREAM	includes/my_string.h	7;"	d
 PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
@@ -55,38 +54,35 @@ __MENU_H__	includes/menu.h	2;"	d
 __MY_STRING_H__	includes/my_string.h	2;"	d
 __PRECOMP_H__	includes/libs.h	2;"	d
 __PRINT_H__	includes/print.h	2;"	d
-areNamesSame	src/htable.c	/^Flag areNamesSame(NameType * first, NameType * second)$/;"	f
 areStringSame	src/my_string.c	/^Flag areStringSame(String * first, String * second)$/;"	f
 array	includes/htable.h	/^	HTableNode ** array;$/;"	m	struct:__anon2
 checkAccount	src/account.c	/^Flag checkAccount()$/;"	f
 clearHistory	src/menu.c	/^void clearHistory()$/;"	f
 clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
-compareHTableNodeName	src/htable.c	/^HTableNode * compareHTableNodeName(HTableNode * compared, NameType * name)$/;"	f
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
 convertToHTableData	src/htable.c	/^HTableData * convertToHTableData(String * login, String * password)$/;"	f
-copyName	src/htable.c	/^NameType * copyName(NameType * original)$/;"	f
 copyString	src/my_string.c	/^String * copyString(String * original)$/;"	f
 copyStringElement	src/my_string.c	/^void copyStringElement(Data * destination, Data * element)$/;"	f
 createAccount	src/account.c	/^Flag createAccount()$/;"	f
 createHTable	src/htable.c	/^HTableMap * createHTable()$/;"	f
-createHTableNode	src/htable.c	/^HTableNode * createHTableNode(NameType * name, HTableData * data)$/;"	f
+createHTableNode	src/htable.c	/^HTableNode * createHTableNode(HTableData * data)$/;"	f
 createString	src/my_string.c	/^String * createString()$/;"	f
 currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon3
 data	includes/htable.h	/^	HTableData * data;$/;"	m	struct:HTableNode
 data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon3
 deleteHTable	src/htable.c	/^void deleteHTable(HTableMap * htableMap)$/;"	f
+deleteHTableData	src/htable.c	/^void deleteHTableData(HTableData * data)$/;"	f
 deleteHTableNode	src/htable.c	/^void deleteHTableNode(HTableNode * node)$/;"	f
 deleteMessage	src/menu.c	/^void deleteMessage()$/;"	f
-deleteNameType	src/htable.c	/^void deleteNameType(NameType * name)$/;"	f
 deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
-findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, NameType * name)$/;"	f
-hashFunction	src/htable.c	/^HashType hashFunction(NameType * name)$/;"	f
-htableMap	src/main.c	/^HTableMap * htableMap;$/;"	v
+findHTableNodeInChein	src/htable.c	/^HTableData * findHTableNodeInChein(HTableNode * compared, String * login)$/;"	f
+findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, String * login)$/;"	f
+hashFunction	src/htable.c	/^HashType hashFunction(String * login)$/;"	f
+htableMap	src/main.c	/^HTableMap * htableMap = NULL;$/;"	v
 insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
 login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
 main	src/main.c	/^int main()$/;"	f
 maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon3
-name	includes/htable.h	/^	NameType * name;$/;"	m	struct:HTableNode
 nextInChain	includes/htable.h	/^	struct HTableNode * nextInChain;$/;"	m	struct:HTableNode	typeref:struct:HTableNode::HTableNode
 parseCommand	src/console.c	/^enum ConsoleCommand parseCommand(String * string)$/;"	f
 password	includes/htable.h	/^	String * password;$/;"	m	struct:__anon1
@@ -98,7 +94,6 @@ printGreeting	src/print.c	/^void printGreeting()$/;"	f
 printHTable	src/htable.c	/^void printHTable(HTableMap * htableMap)$/;"	f
 printHTableNode	src/htable.c	/^void printHTableNode(HTableNode * node)$/;"	f
 printHTableNodeData	src/htable.c	/^void printHTableNodeData(HTableData * data)$/;"	f
-printHTableNodeName	src/htable.c	/^void printHTableNodeName(NameType * name)$/;"	f
 printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
 printString	src/my_string.c	/^void printString(String * string)$/;"	f
@@ -106,11 +101,12 @@ printStringToFile	src/my_string.c	/^void printStringToFile(FILE * file, String *
 putInHTable	src/htable.c	/^int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)$/;"	f
 putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
 readDialogue	src/menu.c	/^void readDialogue()$/;"	f
+readHTableFromFile	src/htable.c	/^void readHTableFromFile(HTableMap * htableMap, const char * fileName)$/;"	f
 saveHTable	src/htable.c	/^void saveHTable(HTableMap * htableMap, const char * fileName)$/;"	f
 saveHTableNode	src/htable.c	/^void saveHTableNode(FILE * file, HTableNode * node)$/;"	f
 saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(FILE * file, HTableData * data)$/;"	f
-saveHTableNodeName	src/htable.c	/^void saveHTableNodeName(FILE * file, NameType * name)$/;"	f
 scanString	src/my_string.c	/^int scanString(String * string)$/;"	f
+scanStringFromFile	src/my_string.c	/^Flag scanStringFromFile(FILE * file, String * string)$/;"	f
 sendMessage	src/menu.c	/^void sendMessage()$/;"	f
 size	includes/htable.h	/^	int size;$/;"	m	struct:__anon2
 userList	src/menu.c	/^void userList()$/;"	f

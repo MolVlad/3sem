@@ -18,17 +18,22 @@ Flag createAccount()
 	printf("Password = ");
 	scanString(password);
 
+
+	Flag isOK;
+
 	HTableData * desired = findInHTable(htableMap, login);
 	if(desired == NULL)
 	{
 		insertToHTable(htableMap, convertToHTableData(login, password));
-		return TRUE;
+		isOK = TRUE;
 	}
+	else
+		isOK = FALSE;
 
 	deleteString(login);
 	deleteString(password);
 
-	return FALSE;
+	return isOK;
 }
 
 Flag checkAccount()
@@ -45,13 +50,19 @@ Flag checkAccount()
 	printf("Password = ");
 	scanString(password);
 
+	Flag isOK;
+
 	HTableData * desired = findInHTable(htableMap, login);
 
 	if(desired == NULL)
-		return FALSE;
+		isOK = FALSE;
+	else if(areStringSame(desired->password, password) == TRUE)
+		isOK = TRUE;
+	else
+		isOK = FALSE;
 
-	if(areStringSame(desired->password, password) == TRUE)
-		return TRUE;
+	deleteString(login);
+	deleteString(password);
 
-	return FALSE;
+	return isOK;
 }

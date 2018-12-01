@@ -89,8 +89,8 @@ void deleteHTable(HTableMap * htableMap)
 	printf("deleteHTable\n");
 	#endif /* DEBUG_HTABLE */
 
-	int i;
-	for(i = 0; i < htableMap->size; i++)
+	int i, size = htableMap->size;
+	for(i = 0; i < size; i++)
 		if(htableMap->array[i] != NULL)
 			deleteHTableNode(htableMap->array[i]);
 
@@ -110,13 +110,32 @@ void deleteHTableNode(HTableNode * node)
 
 	assert(node);
 
-	if(node->nextInChain)
+	if(node->nextInChain != NULL)
 		deleteHTableNode(node->nextInChain);
 
+	deleteHTableData(node->data);
 	free(node);
 
 	#ifdef DEBUG_HTABLE
 	printf("deleteHTableNode successful\n");
+	#endif /* DEBUG_HTABLE */
+}
+
+void deleteHTableData(HTableData * data)
+{
+	#ifdef DEBUG_HTABLE
+	printf("deleteHTableData successful\n");
+	#endif /* DEBUG_HTABLE */
+
+	assert(data);
+
+	deleteString(data->login);
+	deleteString(data->password);
+
+	free(data);
+
+	#ifdef DEBUG_HTABLE
+	printf("deleteHTableData successful\n");
 	#endif /* DEBUG_HTABLE */
 }
 
@@ -253,6 +272,8 @@ void saveHTable(HTableMap * htableMap, const char * fileName)
 			saveHTableNode(file, htableMap->array[i]);
 	}
 
+	fclose(file);
+
 	#ifdef DEBUG_HTABLE
 	printf("saveHTable successful\n");
 	#endif /* DEBUG_HTABLE */
@@ -328,6 +349,7 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName)
 
 	deleteString(login);
 	deleteString(password);
+	fclose(file);
 
 	#ifdef DEBUG_HTABLE
 	printf("readHTableFromFile successful\n");

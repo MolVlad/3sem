@@ -39,6 +39,7 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName);
 
 // Private function
 void deleteHTableNode(HTableNode * node);
+void deleteHTableData(HTableData * data);
 int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node);
 HashType hashFunction(String * login);
 HTableData * convertToHTableData(String * login, String * password);
