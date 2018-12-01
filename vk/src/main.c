@@ -10,18 +10,11 @@ HTableMap * htableMap;
 int main()
 {
 	String * string = createString();
-	if(string == NULL)
-	{
-		printf("createString error\n");
-		return 1;
-	}
+	assert(string);
 
 	htableMap = createHTable();
-	if(htableMap == NULL)
-	{
-		printf("createHTable error\n");
-		return 1;
-	}
+	assert(htableMap);
+	readHTableFromFile(htableMap, HTABLE_STORAGE);
 
 	printGreeting();
 

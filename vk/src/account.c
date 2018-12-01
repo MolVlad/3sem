@@ -25,6 +25,9 @@ Flag createAccount()
 		return TRUE;
 	}
 
+	deleteString(login);
+	deleteString(password);
+
 	return FALSE;
 }
 
@@ -47,7 +50,7 @@ Flag checkAccount()
 	if(desired == NULL)
 		return FALSE;
 
-	if(areNamesSame(desired->password, password) == TRUE)
+	if(areStringSame(desired->password, password) == TRUE)
 		return TRUE;
 
 	return FALSE;

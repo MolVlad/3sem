@@ -9,7 +9,6 @@ typedef struct
 } HTableData;
 
 typedef unsigned int HashType;
-typedef String NameType;
 
 typedef struct HTableNode
 {
@@ -35,29 +34,19 @@ void deleteHTable(HTableMap * htableMap);
 void insertToHTable(HTableMap * htableMap, HTableData * data);
 void printHTable(HTableMap * htableMap);
 void saveHTable(HTableMap * htableMap, const char * fileName);
-HTableData * findInHTable(HTableMap * htableMap, NameType * name);
+HTableData * findInHTable(HTableMap * htableMap, String * login);
+void readHTableFromFile(HTableMap * htableMap, const char * fileName);
 
 // Private function
 void deleteHTableNode(HTableNode * node);
-void deleteNameType(NameType * name);
 int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node);
-NameType * copyName(NameType * original);
-HashType hashFunction(NameType * name);
+HashType hashFunction(String * login);
 HTableData * convertToHTableData(String * login, String * password);
-HTableNode * createHTableNode(NameType * name, HTableData * data);
+HTableNode * createHTableNode(HTableData * data);
 void printHTableNode(HTableNode * node);
 void printHTableNodeData(HTableData * data);
-void printHTableNodeName(NameType * name);
 void saveHTableNode(FILE * file, HTableNode * node);
-void saveHTableNodeName(FILE * file, NameType * name);
 void saveHTableNodeData(FILE * file, HTableData * data);
-HTableData * findHTableNodeInChein(HTableNode * compared, NameType * name);
-Flag areNamesSame(NameType * first, NameType * second);
-
-
-
-
-
-void readHTableFromFile(HTableMap * htableMap, const char * fileName);
+HTableData * findHTableNodeInChein(HTableNode * compared, String * login);
 
 #endif /* __HTABLE_H__ */

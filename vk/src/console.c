@@ -5,6 +5,7 @@
 #include"print.h"
 #include"menu.h"
 #include"account.h"
+#include"htable.h"
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {
@@ -85,6 +86,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					break;
 				case USERS_LIST:
 					userList();
+					printHTable(htableMap);
 					state = MAIN_MENU;
 					break;
 				case DELETE_MSG:

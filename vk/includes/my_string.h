@@ -21,6 +21,7 @@ void clearString(String * string);
 void copyStringElement(Data * destination, Data * element);
 void putInString(String * string, Data * data);
 int scanString(String * string);
+Flag scanStringFromFile(FILE * file, String * string);
 void printString(String * string);
 String * copyString(String * original);
 void printStringToFile(FILE * file, String * string);

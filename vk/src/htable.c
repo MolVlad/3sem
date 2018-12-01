@@ -34,10 +34,7 @@ void insertToHTable(HTableMap * htableMap, HTableData * data)
 
 	HashType hash = hashFunction(data->login);
 
-	NameType * name = copyName(data->login);
-	assert(name);
-
-	HTableNode * node = createHTableNode(name, data);
+	HTableNode * node = createHTableNode(data);
 	assert(node);
 	putInHTable(htableMap, hash, node);
 
@@ -77,7 +74,6 @@ void printHTableNode(HTableNode * node)
 	if(node->nextInChain != NULL)
 		printHTableNode(node->nextInChain);
 
-	printf("Node data:\n");
 	printHTableNodeData(node->data);
 
 	#ifdef DEBUG_HTABLE
@@ -117,7 +113,6 @@ void deleteHTableNode(HTableNode * node)
 	if(node->nextInChain)
 		deleteHTableNode(node->nextInChain);
 
-	deleteNameType(node->name);
 	free(node);
 
 	#ifdef DEBUG_HTABLE
@@ -125,24 +120,9 @@ void deleteHTableNode(HTableNode * node)
 	#endif /* DEBUG_HTABLE */
 }
 
-void deleteNameType(NameType * name)
+HashType hashFunction(String * login)
 {
-	#ifdef DEBUG_HTABLE
-	printf("deleteNameType\n");
-	#endif /* DEBUG_HTABLE */
-
-	assert(name);
-
-	deleteString(name);
-
-	#ifdef DEBUG_HTABLE
-	printf("deleteNameType successful\n");
-	#endif /* DEBUG_HTABLE */
-}
-
-HashType hashFunction(NameType * name)
-{
-	assert(name);
+	assert(login);
 
 	#ifdef DEBUG_HTABLE
 	printf("hashFunction\n");
@@ -153,8 +133,8 @@ HashType hashFunction(NameType * name)
 	hash = HASH_FUNCTION_INIT_VALUE;
 
 	int i;
-	for(i = 0; i < name->currentSize; i++)
-		hash += name->data[i] * HASH_FUNCTION_PRIME_NUMBER;
+	for(i = 0; i < login->currentSize; i++)
+		hash += login->data[i] * HASH_FUNCTION_PRIME_NUMBER;
 
 	hash = hash % HTABLE_SIZE;
 
@@ -165,9 +145,8 @@ HashType hashFunction(NameType * name)
 	return hash;
 }
 
-HTableNode * createHTableNode(NameType * name, HTableData * data)
+HTableNode * createHTableNode(HTableData * data)
 {
-	assert(name);
 	assert(data);
 
 	#ifdef DEBUG_HTABLE
@@ -177,7 +156,6 @@ HTableNode * createHTableNode(NameType * name, HTableData * data)
 	HTableNode * ret = (HTableNode *)calloc(1, sizeof(HTableNode));
 	assert(ret);
 
-	ret->name = name;
 	ret->data = data;
 
 	#ifdef DEBUG_HTABLE
@@ -222,24 +200,6 @@ int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)
 	return 0;
 }
 
-NameType * copyName(NameType * original)
-{
-	assert(original);
-
-	#ifdef DEBUG_HTABLE
-	printf("copyName\n");
-	#endif /* DEBUG_HTABLE */
-
-	NameType * ret = copyString(original);
-	assert(ret);
-
-	#ifdef DEBUG_HTABLE
-	printf("copyName successful\n");
-	#endif /* DEBUG_HTABLE */
-
-	return ret;
-}
-
 HTableData * convertToHTableData(String * login, String * password)
 {
 	assert(login);
@@ -262,13 +222,6 @@ HTableData * convertToHTableData(String * login, String * password)
 	#endif /* DEBUG_HTABLE */
 
 	return ret;
-}
-
-void printHTableNodeName(NameType * name)
-{
-	assert(name);
-
-	printString(name);
 }
 
 void printHTableNodeData(HTableData * data)
@@ -315,22 +268,13 @@ void saveHTableNode(FILE * file, HTableNode * node)
 	#endif /* DEBUG_HTABLE */
 
 	if(node->nextInChain != NULL)
-		printHTableNode(node->nextInChain);
+		saveHTableNode(file, node->nextInChain);
 
-	saveHTableNodeName(file, node->name);
 	saveHTableNodeData(file, node->data);
 
 	#ifdef DEBUG_HTABLE
 	printf("saveHTableNode successful\n");
 	#endif /* DEBUG_HTABLE */
-}
-
-void saveHTableNodeName(FILE * file, NameType * name)
-{
-	assert(file);
-	assert(name);
-
-	printStringToFile(file, name);
 }
 
 void saveHTableNodeData(FILE * file, HTableData * data)
@@ -359,30 +303,40 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName)
 	String * password = createString();
 	assert(login);
 
-
+	HTableData * desired;
 
 	Flag isAll = FALSE;
 	while(isAll == FALSE)
 	{
-		
+		isAll = scanStringFromFile(file, login);
+		isAll = scanStringFromFile(file, password);
+		if(isAll == TRUE)
+			break;
+
+		#ifdef DEBUG_HTABLE
+		printf("scanned:\n");
+		printf("login = ");
+		printString(login);
+		printf("password = ");
+		printString(password);
+		#endif /* DEBUG_HTABLE */
+
+		desired = findInHTable(htableMap, login);
+		if(desired == NULL)
+			insertToHTable(htableMap, convertToHTableData(login, password));
 	}
+
+	deleteString(login);
+	deleteString(password);
 
 	#ifdef DEBUG_HTABLE
 	printf("readHTableFromFile successful\n");
 	#endif /* DEBUG_HTABLE */
 }
 
-Flag areNamesSame(NameType * first, NameType * second)
+HTableData * findHTableNodeInChein(HTableNode * compared, String * login)
 {
-	assert(first);
-	assert(second);
-
-	return areStringSame(first, second);
-}
-
-HTableData * findHTableNodeInChein(HTableNode * compared, NameType * name)
-{
-	assert(name);
+	assert(login);
 
 	#ifdef DEBUG_HTABLE
 	printf("compareHTableNodeName\n");
@@ -391,26 +345,26 @@ HTableData * findHTableNodeInChein(HTableNode * compared, NameType * name)
 	if(compared == NULL)
 		return NULL;
 
-	if(areNamesSame(compared->name, name) == TRUE)
+	if(areStringSame(compared->data->login, login) == TRUE)
 		return compared->data;
 
 	if(compared->nextInChain != NULL)
-		return findHTableNodeInChein(compared->nextInChain, name);
+		return findHTableNodeInChein(compared->nextInChain, login);
 
 	return NULL;
 }
 
-HTableData * findInHTable(HTableMap * htableMap, NameType * name)
+HTableData * findInHTable(HTableMap * htableMap, String * login)
 {
-	assert(name);
+	assert(login);
 
 	#ifdef DEBUG_HTABLE
 	printf("findInHTable\n");
 	#endif /* DEBUG_HTABLE */
 
-	HashType hash = hashFunction(name);
+	HashType hash = hashFunction(login);
 
-	HTableData * ret = findHTableNodeInChein(htableMap->array[hash], name);
+	HTableData * ret = findHTableNodeInChein(htableMap->array[hash], login);
 
 	#ifdef DEBUG_HTABLE
 	printf("findInHTable: is it found = %d\n", (ret != NULL));

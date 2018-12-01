@@ -107,6 +107,45 @@ void putInString(String * string, Data * data)
 	#endif /* DEBUG_STRING */
 }
 
+Flag scanStringFromFile(FILE * file, String * string)
+{
+	#ifdef DEBUG_STRING
+	printf("scanStringFromFile\n");
+	#endif /* DEBUG_STRING */
+
+	assert(string);
+	assert(file);
+
+	Flag isAll = FALSE;
+	Flag isEOF= FALSE;
+	Data c;
+
+	clearString(string);
+
+	do
+	{
+		c = fgetc(file);
+		if(c == '\n')
+			isAll = TRUE;
+		else if(c == EOF)
+		{
+			isAll = TRUE;
+			isEOF = TRUE;
+		}
+		else
+			putInString(string, &c);
+	}
+	while(isAll == FALSE);
+
+	#ifdef DEBUG_STRING
+	printf("Scanned String from file with current size = %d\n", string->currentSize);
+	if(isEOF == TRUE)
+		printf("scanStringFromFile found EOF");
+	#endif /* DEBUG_STRING */
+
+	return isEOF;
+}
+
 int scanString(String * string)
 {
 	#ifdef DEBUG_STRING
@@ -199,7 +238,7 @@ Flag areStringSame(String * first, String * second)
 		ret = TRUE;
 
 	#ifdef DEBUG_STRING
-	printf("areStringSame: %d\n", ret;);
+	printf("areStringSame: %d\n", ret);
 	#endif /* DEBUG_STRING */
 
 	return ret;
