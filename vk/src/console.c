@@ -24,7 +24,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 			switch(command)
 			{
 				case INIT:
-					printf("Do you have an account? (y/n)\n");
+					printf("Do you have an account? (y/n) <exit> for close\n");
 					return isAll;
 				case EXIT:
 					printGoodbye();
@@ -34,9 +34,6 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					isOK = checkAccount();
 					if(isOK == TRUE)
 					{
-						
-					}
-					/*{
 						printf("Success\n");
 						state = MAIN_MENU;
 					}
@@ -44,11 +41,11 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					{
 						printf("Wrong login or password\n");
 						state = WELCOME_PAGE;
-					}*/
+					}
 					break;
 				case NO:
 					isOK = createAccount();
-					/*if(isOK == TRUE)
+					if(isOK == TRUE)
 					{
 						printf("Success\n");
 						state = MAIN_MENU;
@@ -57,7 +54,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					{
 						printf("Already exits\n");
 						state = WELCOME_PAGE;
-					}*/
+					}
 					break;
 				default:
 					printError();

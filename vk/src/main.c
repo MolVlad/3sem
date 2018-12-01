@@ -40,6 +40,7 @@ int main()
 	while(isAll == FALSE);
 
 	printHTable(htableMap);
+	saveHTable(htableMap, HTABLE_STORAGE);
 	deleteString(string);
 	deleteHTable(htableMap);
 

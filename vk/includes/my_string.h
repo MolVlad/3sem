@@ -23,5 +23,7 @@ void putInString(String * string, Data * data);
 int scanString(String * string);
 void printString(String * string);
 String * copyString(String * original);
+void printStringToFile(FILE * file, String * string);
+Flag areStringSame(String * first, String * second);
 
 #endif /* __MY_STRING_H__ */

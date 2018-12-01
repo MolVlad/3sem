@@ -1,6 +1,6 @@
 #include"libs.h"
-#include"my_string.h"
 #include"configure.h"
+#include"my_string.h"
 
 String * createString()
 {
@@ -148,6 +148,18 @@ void printString(String * string)
 	printf("%s\n", string->data);
 }
 
+void printStringToFile(FILE * file, String * string)
+{
+	assert(file);
+	assert(string);
+
+	#ifdef DEBUG_STRING
+	printf("Print String to file with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
+
+	fprintf(file, "%s\n", string->data);
+}
+
 String * copyString(String * original)
 {
 	#ifdef DEBUG_STRING
@@ -171,6 +183,23 @@ String * copyString(String * original)
 
 	#ifdef DEBUG_STRING
 	printf("copyString successful\n");
+	#endif /* DEBUG_STRING */
+
+	return ret;
+}
+
+Flag areStringSame(String * first, String * second)
+{
+	#ifdef DEBUG_STRING
+	printf("areStringSame\n");
+	#endif /* DEBUG_STRING */
+
+	Flag ret = FALSE;
+	if(strcmp(first->data, second->data) == 0)
+		ret = TRUE;
+
+	#ifdef DEBUG_STRING
+	printf("areStringSame: %d\n", ret;);
 	#endif /* DEBUG_STRING */
 
 	return ret;

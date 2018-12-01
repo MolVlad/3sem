@@ -6,7 +6,7 @@
 //#define DEBUG_MENU 1
 //#define DEBUG_HTABLE 1
 
-#define HTABLE_SIZE 100
+#define HTABLE_SIZE 1
 #define HTABLE_STORAGE "txt/htable_storage"
 
 typedef enum Flag

@@ -13,9 +13,7 @@ typedef String NameType;
 
 typedef struct HTableNode
 {
-	NameType * name;
 	struct HTableNode * nextInChain;
-
 	HTableData * data;
 } HTableNode;
 
@@ -36,6 +34,8 @@ HTableMap * createHTable();
 void deleteHTable(HTableMap * htableMap);
 void insertToHTable(HTableMap * htableMap, HTableData * data);
 void printHTable(HTableMap * htableMap);
+void saveHTable(HTableMap * htableMap, const char * fileName);
+HTableData * findInHTable(HTableMap * htableMap, NameType * name);
 
 // Private function
 void deleteHTableNode(HTableNode * node);
@@ -48,16 +48,16 @@ HTableNode * createHTableNode(NameType * name, HTableData * data);
 void printHTableNode(HTableNode * node);
 void printHTableNodeData(HTableData * data);
 void printHTableNodeName(NameType * name);
+void saveHTableNode(FILE * file, HTableNode * node);
+void saveHTableNodeName(FILE * file, NameType * name);
+void saveHTableNodeData(FILE * file, HTableData * data);
+HTableData * findHTableNodeInChein(HTableNode * compared, NameType * name);
+Flag areNamesSame(NameType * first, NameType * second);
 
 
 
 
 
-
-
-HTableData * findInHTable(HTableMap * htableMap, NameType * name);
-void removeFromHTable(HTableMap * htableMap, NameType * name);
 void readHTableFromFile(HTableMap * htableMap, const char * fileName);
-void saveHTable(HTableMap * htableMap, const char * fileName);
 
 #endif /* __HTABLE_H__ */

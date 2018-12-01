@@ -55,10 +55,13 @@ __MENU_H__	includes/menu.h	2;"	d
 __MY_STRING_H__	includes/my_string.h	2;"	d
 __PRECOMP_H__	includes/libs.h	2;"	d
 __PRINT_H__	includes/print.h	2;"	d
+areNamesSame	src/htable.c	/^Flag areNamesSame(NameType * first, NameType * second)$/;"	f
+areStringSame	src/my_string.c	/^Flag areStringSame(String * first, String * second)$/;"	f
 array	includes/htable.h	/^	HTableNode ** array;$/;"	m	struct:__anon2
 checkAccount	src/account.c	/^Flag checkAccount()$/;"	f
 clearHistory	src/menu.c	/^void clearHistory()$/;"	f
 clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
+compareHTableNodeName	src/htable.c	/^HTableNode * compareHTableNodeName(HTableNode * compared, NameType * name)$/;"	f
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
 convertToHTableData	src/htable.c	/^HTableData * convertToHTableData(String * login, String * password)$/;"	f
 copyName	src/htable.c	/^NameType * copyName(NameType * original)$/;"	f
@@ -76,6 +79,7 @@ deleteHTableNode	src/htable.c	/^void deleteHTableNode(HTableNode * node)$/;"	f
 deleteMessage	src/menu.c	/^void deleteMessage()$/;"	f
 deleteNameType	src/htable.c	/^void deleteNameType(NameType * name)$/;"	f
 deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
+findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, NameType * name)$/;"	f
 hashFunction	src/htable.c	/^HashType hashFunction(NameType * name)$/;"	f
 htableMap	src/main.c	/^HTableMap * htableMap;$/;"	v
 insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
@@ -98,9 +102,14 @@ printHTableNodeName	src/htable.c	/^void printHTableNodeName(NameType * name)$/;"
 printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
 printString	src/my_string.c	/^void printString(String * string)$/;"	f
+printStringToFile	src/my_string.c	/^void printStringToFile(FILE * file, String * string)$/;"	f
 putInHTable	src/htable.c	/^int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)$/;"	f
 putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
 readDialogue	src/menu.c	/^void readDialogue()$/;"	f
+saveHTable	src/htable.c	/^void saveHTable(HTableMap * htableMap, const char * fileName)$/;"	f
+saveHTableNode	src/htable.c	/^void saveHTableNode(FILE * file, HTableNode * node)$/;"	f
+saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(FILE * file, HTableData * data)$/;"	f
+saveHTableNodeName	src/htable.c	/^void saveHTableNodeName(FILE * file, NameType * name)$/;"	f
 scanString	src/my_string.c	/^int scanString(String * string)$/;"	f
 sendMessage	src/menu.c	/^void sendMessage()$/;"	f
 size	includes/htable.h	/^	int size;$/;"	m	struct:__anon2
