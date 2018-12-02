@@ -4,8 +4,10 @@
 #include"console.h"
 #include"print.h"
 #include"htable.h"
+#include"btree.h"
 
 HTableMap * htableMap = NULL;
+BTreeMap * btreeMap = NULL;
 
 int main()
 {
@@ -15,6 +17,9 @@ int main()
 	htableMap = createHTable();
 	assert(htableMap);
 	readHTableFromFile(htableMap, HTABLE_STORAGE);
+
+	btreeMap = createBTree();
+	assert(btreeMap);
 
 	printGreeting();
 
@@ -34,8 +39,11 @@ int main()
 
 	printHTable(htableMap);
 	saveHTable(htableMap, HTABLE_STORAGE);
+	printBTree(btreeMap);
+
 	deleteString(string);
 	deleteHTable(htableMap);
+	deleteBTree(btreeMap);
 
 	return 0;
 }

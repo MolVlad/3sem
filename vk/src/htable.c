@@ -104,11 +104,11 @@ void deleteHTable(HTableMap * htableMap)
 
 void deleteHTableNode(HTableNode * node)
 {
+	assert(node);
+
 	#ifdef DEBUG_HTABLE
 	printf("deleteHTableNode\n");
 	#endif /* DEBUG_HTABLE */
-
-	assert(node);
 
 	if(node->nextInChain != NULL)
 		deleteHTableNode(node->nextInChain);
@@ -123,11 +123,11 @@ void deleteHTableNode(HTableNode * node)
 
 void deleteHTableData(HTableData * data)
 {
-	#ifdef DEBUG_HTABLE
-	printf("deleteHTableData successful\n");
-	#endif /* DEBUG_HTABLE */
-
 	assert(data);
+
+	#ifdef DEBUG_HTABLE
+	printf("deleteHTableData\n");
+	#endif /* DEBUG_HTABLE */
 
 	deleteString(data->login);
 	deleteString(data->password);

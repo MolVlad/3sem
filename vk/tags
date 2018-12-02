@@ -5,6 +5,10 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 AFTER_TRESHOLD_STRING_SIZE	includes/my_string.h	6;"	d
+BTreeData	includes/btree.h	/^} BTreeData;$/;"	t	typeref:struct:__anon3
+BTreeMap	includes/btree.h	/^} BTreeMap;$/;"	t	typeref:struct:__anon4
+BTreeNode	includes/btree.h	/^typedef struct BTreeNode$/;"	s
+BTreeNode	includes/btree.h	/^} BTreeNode;$/;"	t	typeref:struct:BTreeNode
 CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
 CLEAR_HISTORY	includes/console.h	/^	CLEAR_HISTORY,$/;"	e	enum:ConsoleCommand
 COMP	Makefile	/^COMP = gcc$/;"	m
@@ -20,8 +24,8 @@ Flag	includes/configure.h	/^typedef enum Flag$/;"	g
 Flag	includes/configure.h	/^} Flag;$/;"	t	typeref:enum:Flag
 HASH_FUNCTION_INIT_VALUE	includes/htable.h	28;"	d
 HASH_FUNCTION_PRIME_NUMBER	includes/htable.h	29;"	d
-HTABLE_SIZE	includes/configure.h	9;"	d
-HTABLE_STORAGE	includes/configure.h	10;"	d
+HTABLE_SIZE	includes/configure.h	10;"	d
+HTABLE_STORAGE	includes/configure.h	11;"	d
 HTableData	includes/htable.h	/^} HTableData;$/;"	t	typeref:struct:__anon1
 HTableMap	includes/htable.h	/^} HTableMap;$/;"	t	typeref:struct:__anon2
 HTableNode	includes/htable.h	/^typedef struct HTableNode$/;"	s
@@ -39,14 +43,15 @@ PROJECT	Makefile	/^PROJECT = exe$/;"	m
 READ_DIALOGUE	includes/console.h	/^	READ_DIALOGUE,$/;"	e	enum:ConsoleCommand
 RM	Makefile	/^RM = rm -rf$/;"	m
 SEND_MSG	includes/console.h	/^	SEND_MSG,$/;"	e	enum:ConsoleCommand
-SOURCES	Makefile	/^SOURCES = src\/main.c src\/my_string.c src\/console.c src\/print.c src\/menu.c src\/account.c src\/htable.c$/;"	m
-String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon3
+SOURCES	Makefile	/^SOURCES = src\/main.c src\/my_string.c src\/console.c src\/print.c src\/menu.c src\/account.c src\/htable.c src\/btree.c$/;"	m
+String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon5
 TRESHOLD_STRING_SIZE	includes/my_string.h	5;"	d
 TRUE	includes/configure.h	/^	TRUE,$/;"	e	enum:Flag
 USERS_LIST	includes/console.h	/^	USERS_LIST,$/;"	e	enum:ConsoleCommand
 WELCOME_PAGE	includes/console.h	/^	WELCOME_PAGE = 0,$/;"	e	enum:ConsoleState
 YES	includes/console.h	/^	YES,$/;"	e	enum:ConsoleCommand
 __ACCOUNT_H__	includes/account.h	2;"	d
+__BTREE_H__	includes/btree.h	2;"	d
 __CONFIGURE_H__	includes/configure.h	2;"	d
 __CONSOLE_STATE_H__	includes/console.h	2;"	d
 __HTABLE_H__	includes/htable.h	2;"	d
@@ -56,36 +61,54 @@ __PRECOMP_H__	includes/libs.h	2;"	d
 __PRINT_H__	includes/print.h	2;"	d
 areStringSame	src/my_string.c	/^Flag areStringSame(String * first, String * second)$/;"	f
 array	includes/htable.h	/^	HTableNode ** array;$/;"	m	struct:__anon2
+btreeMap	src/main.c	/^BTreeMap * btreeMap = NULL;$/;"	v
 checkAccount	src/account.c	/^Flag checkAccount()$/;"	f
 clearHistory	src/menu.c	/^void clearHistory()$/;"	f
 clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
+convertToBTreeData	src/btree.c	/^BTreeData * convertToBTreeData(String * login, char * ip, int pid)$/;"	f
 convertToHTableData	src/htable.c	/^HTableData * convertToHTableData(String * login, String * password)$/;"	f
 copyString	src/my_string.c	/^String * copyString(String * original)$/;"	f
 copyStringElement	src/my_string.c	/^void copyStringElement(Data * destination, Data * element)$/;"	f
 createAccount	src/account.c	/^Flag createAccount()$/;"	f
+createBTree	src/btree.c	/^BTreeMap * createBTree()$/;"	f
+createBTreeNode	src/btree.c	/^BTreeNode * createBTreeNode(BTreeData * data)$/;"	f
 createHTable	src/htable.c	/^HTableMap * createHTable()$/;"	f
 createHTableNode	src/htable.c	/^HTableNode * createHTableNode(HTableData * data)$/;"	f
 createString	src/my_string.c	/^String * createString()$/;"	f
-currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon3
+currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon5
+data	includes/btree.h	/^	BTreeData * data;$/;"	m	struct:BTreeNode
 data	includes/htable.h	/^	HTableData * data;$/;"	m	struct:HTableNode
-data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon3
+data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon5
+deleteBTree	src/btree.c	/^void deleteBTree(BTreeMap * btreeMap)$/;"	f
+deleteBTreeData	src/btree.c	/^void deleteBTreeData(BTreeData * data)$/;"	f
+deleteBTreeNode	src/btree.c	/^void deleteBTreeNode(BTreeNode * node)$/;"	f
 deleteHTable	src/htable.c	/^void deleteHTable(HTableMap * htableMap)$/;"	f
 deleteHTableData	src/htable.c	/^void deleteHTableData(HTableData * data)$/;"	f
 deleteHTableNode	src/htable.c	/^void deleteHTableNode(HTableNode * node)$/;"	f
 deleteMessage	src/menu.c	/^void deleteMessage()$/;"	f
 deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
+findBTreeNode	src/btree.c	/^BTreeData * findBTreeNode(BTreeNode * compared, String * login)$/;"	f
 findHTableNodeInChein	src/htable.c	/^HTableData * findHTableNodeInChein(HTableNode * compared, String * login)$/;"	f
+findInBTree	src/btree.c	/^BTreeData * findInBTree(BTreeMap * btreeMap, String * login)$/;"	f
 findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, String * login)$/;"	f
 hashFunction	src/htable.c	/^HashType hashFunction(String * login)$/;"	f
 htableMap	src/main.c	/^HTableMap * htableMap = NULL;$/;"	v
+insertToBTree	src/btree.c	/^void insertToBTree(BTreeMap * btreeMap, BTreeData * data)$/;"	f
 insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
+ip	includes/btree.h	/^	char * ip;$/;"	m	struct:__anon3
+left	includes/btree.h	/^	struct BTreeNode * left;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
+login	includes/btree.h	/^	String * login;$/;"	m	struct:__anon3
 login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
 main	src/main.c	/^int main()$/;"	f
-maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon3
+maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon5
 nextInChain	includes/htable.h	/^	struct HTableNode * nextInChain;$/;"	m	struct:HTableNode	typeref:struct:HTableNode::HTableNode
 parseCommand	src/console.c	/^enum ConsoleCommand parseCommand(String * string)$/;"	f
 password	includes/htable.h	/^	String * password;$/;"	m	struct:__anon1
+pid	includes/btree.h	/^	int pid;$/;"	m	struct:__anon3
+printBTree	src/btree.c	/^void printBTree(BTreeMap * btreeMap)$/;"	f
+printBTreeNode	src/btree.c	/^void printBTreeNode(BTreeNode * node)$/;"	f
+printBTreeNodeData	src/btree.c	/^void printBTreeNodeData(BTreeData * data)$/;"	f
 printConsoleCommand	src/console.c	/^void printConsoleCommand(enum ConsoleCommand command)$/;"	f
 printConsoleState	src/console.c	/^void printConsoleState(enum ConsoleState state)$/;"	f
 printError	src/print.c	/^void printError()$/;"	f
@@ -98,10 +121,13 @@ printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
 printString	src/my_string.c	/^void printString(String * string)$/;"	f
 printStringToFile	src/my_string.c	/^void printStringToFile(FILE * file, String * string)$/;"	f
+putInBTree	src/btree.c	/^int putInBTree(BTreeMap * btreeMap, BTreeNode * node)$/;"	f
 putInHTable	src/htable.c	/^int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)$/;"	f
 putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
 readDialogue	src/menu.c	/^void readDialogue()$/;"	f
 readHTableFromFile	src/htable.c	/^void readHTableFromFile(HTableMap * htableMap, const char * fileName)$/;"	f
+right	includes/btree.h	/^	struct BTreeNode * right;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
+root	includes/btree.h	/^	BTreeNode * root;$/;"	m	struct:__anon4
 saveHTable	src/htable.c	/^void saveHTable(HTableMap * htableMap, const char * fileName)$/;"	f
 saveHTableNode	src/htable.c	/^void saveHTableNode(FILE * file, HTableNode * node)$/;"	f
 saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(FILE * file, HTableData * data)$/;"	f

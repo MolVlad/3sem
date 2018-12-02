@@ -3,6 +3,7 @@
 #include"my_string.h"
 #include"account.h"
 #include"htable.h"
+#include"btree.h"
 
 Flag createAccount()
 {
@@ -29,6 +30,22 @@ Flag createAccount()
 	}
 	else
 		isOK = FALSE;
+
+	if(isOK == TRUE)
+	{
+		int pid = fork();
+		if(pid == -1)
+		{
+			perror("fork");
+		}
+		if(pid == 0)
+		{
+			printf("fork!!\n");
+			exit(0);
+		}
+		else
+			insertToBTree(btreeMap, convertToBTreeData(login, "ip", pid));
+	}
 
 	deleteString(login);
 	deleteString(password);
@@ -60,6 +77,22 @@ Flag checkAccount()
 		isOK = TRUE;
 	else
 		isOK = FALSE;
+
+	if(isOK == TRUE)
+	{
+		int pid = fork();
+		if(pid == -1)
+		{
+			perror("fork");
+		}
+		if(pid == 0)
+		{
+			printf("fork!!\n");
+			exit(0);
+		}
+		else
+			insertToBTree(btreeMap, convertToBTreeData(login, "ip", pid));
+	}
 
 	deleteString(login);
 	deleteString(password);

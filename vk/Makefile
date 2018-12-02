@@ -1,6 +1,6 @@
 PROJECT = exe
 
-SOURCES = src/main.c src/my_string.c src/console.c src/print.c src/menu.c src/account.c src/htable.c
+SOURCES = src/main.c src/my_string.c src/console.c src/print.c src/menu.c src/account.c src/htable.c src/btree.c
 INCLUDES += -I includes
 DEFINES =
 CFLAGS = -Wall -Wextra
@@ -22,7 +22,7 @@ link: $(OBJS)
 all: clean link
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(PROJECT)
 
 %.o: %.c
 	$(COMP) -c $(CFLAGS) $(@:.o=.c) $(LIBS) -o $@
