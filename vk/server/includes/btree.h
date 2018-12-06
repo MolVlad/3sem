@@ -35,7 +35,7 @@ void deleteBTreeData(BTreeData * data);
 BTreeData * convertToBTreeData(String * login, char * ip, int pid);
 BTreeNode * createBTreeNode(BTreeData * data);
 void printBTreeNode(BTreeNode * node);
-void printBTreeNodeData(BTreeData * data);
+void printBTreeData(BTreeData * data);
 BTreeData * findBTreeNode(BTreeNode * compared, String * login);
 int putInBTree(BTreeMap * btreeMap, BTreeNode * node);
 

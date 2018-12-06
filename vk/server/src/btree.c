@@ -114,7 +114,7 @@ void printBTreeNode(BTreeNode * node)
 	printBTreeNode(node->left);
 	printBTreeNode(node->right);
 
-	printBTreeNodeData(node->data);
+	printBTreeData(node->data);
 
 	#ifdef DEBUG_BTREE
 	printf("printBTreeNode successful\n");
@@ -221,7 +221,7 @@ BTreeData * convertToBTreeData(String * login, char * ip, int pid)
 	return ret;
 }
 
-void printBTreeNodeData(BTreeData * data)
+void printBTreeData(BTreeData * data)
 {
 	assert(data);
 

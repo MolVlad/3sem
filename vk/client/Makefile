@@ -1,7 +1,7 @@
-PROJECT = exe
+PROJECT = client
 
-SOURCES = src/main.c src/my_string.c src/console.c src/print.c src/menu.c src/account.c src/htable.c src/btree.c
-INCLUDES += -I includes
+SOURCES = src/main.c src/console.c src/print.c src/menu.c ../libs/src/my_string.c
+INCLUDES += -I includes -I ../libs/includes
 DEFINES =
 CFLAGS = -Wall -Wextra
 LIBS =

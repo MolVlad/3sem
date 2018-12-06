@@ -4,15 +4,13 @@
 #include"console.h"
 #include"print.h"
 #include"menu.h"
-#include"account.h"
-#include"htable.h"
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {
 	static enum ConsoleState state = WELCOME_PAGE;
 	static Flag isAll = FALSE;
 	Flag isOK;
-#ifdef DEBUG_CONSOLE
+	#ifdef DEBUG_CONSOLE
 	printf("consoleFiniteStateMachine\n");
 	printConsoleState(state);
 	printConsoleCommand(command);
@@ -85,7 +83,6 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					break;
 				case USERS_LIST:
 					userList();
-					printHTable(htableMap);
 					state = MAIN_MENU;
 					break;
 				case DELETE_MSG:

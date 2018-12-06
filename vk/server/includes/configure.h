@@ -2,8 +2,6 @@
 #define __CONFIGURE_H__
 
 //#define DEBUG_STRING 1
-//#define DEBUG_CONSOLE 1
-//#define DEBUG_MENU 1
 //#define DEBUG_HTABLE 1
 //#define DEBUG_BTREE 1
 
