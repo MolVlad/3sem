@@ -226,7 +226,7 @@ void printBTreeData(BTreeData * data)
 	assert(data);
 
 	printf("login = ");
-	printString(data->login);
+	printStringToStream(STDOUT, data->login);
 	printf("pid = %d\n", data->pid);
 	printf("ip = %s\n", data->ip);
 }

@@ -1,0 +1,29 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AFTER_TRESHOLD_STRING_SIZE	includes/my_string.h	6;"	d
+Data	includes/my_string.h	/^typedef char Data;$/;"	t
+INIT_STRING_SIZE	includes/my_string.h	4;"	d
+OUTPUT_STREAM	includes/my_string.h	7;"	d
+String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon1
+TRESHOLD_STRING_SIZE	includes/my_string.h	5;"	d
+__MY_STRING_H__	includes/my_string.h	2;"	d
+__PRECOMP_H__	includes/libs.h	2;"	d
+areStringSame	src/my_string.c	/^Flag areStringSame(String * first, String * second)$/;"	f
+clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
+copyString	src/my_string.c	/^String * copyString(String * original)$/;"	f
+copyStringElement	src/my_string.c	/^void copyStringElement(Data * destination, Data * element)$/;"	f
+createString	src/my_string.c	/^String * createString()$/;"	f
+currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon1
+data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon1
+deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
+maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon1
+printString	src/my_string.c	/^void printString(String * string)$/;"	f
+printStringToFile	src/my_string.c	/^void printStringToFile(FILE * file, String * string)$/;"	f
+putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
+scanString	src/my_string.c	/^int scanString(String * string)$/;"	f
+scanStringFromFile	src/my_string.c	/^Flag scanStringFromFile(FILE * file, String * string)$/;"	f
+scanStringFromStream	src/my_string.c	/^int scanStringFromStream(int stream, String * string)$/;"	f

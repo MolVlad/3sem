@@ -12,10 +12,10 @@ Flag createAccount()
 	String * password = createString();
 	assert(login);
 
-	printf("Login = ");
-	scanString(login);
-	printf("Password = ");
-	scanString(password);
+	printf("Login:\n");
+	scanStringFromStream(STDIN, login);
+	printf("Password:\n");
+	scanStringFromStream(STDIN, password);
 
 	Flag isOK = TRUE;
 
@@ -61,10 +61,10 @@ Flag checkAccount()
 	String * password = createString();
 	assert(login);
 
-	printf("Login = ");
-	scanString(login);
-	printf("Password = ");
-	scanString(password);
+	printf("Login:\n");
+	scanStringFromStream(STDIN, login);
+	printf("Password:\n");
+	scanStringFromStream(STDIN, password);
 
 	Flag isOK = TRUE;
 

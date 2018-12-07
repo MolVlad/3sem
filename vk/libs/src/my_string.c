@@ -61,7 +61,7 @@ void clearString(String * string)
 	}
 
 	string->currentSize = 0;
-	string->data[0] = '\0';
+	memset(&string->data[0], '\0', sizeof(Data) * (string->maxSize + 1));
 
 	#ifdef DEBUG_STRING
 	printf("clearString successful\n");
@@ -80,10 +80,6 @@ void copyStringElement(Data * destination, Data * element)
 
 void putInString(String * string, Data * data)
 {
-	#ifdef DEBUG_STRING
-	printf("putInString\n");
-	#endif /* DEBUG_STRING */
-
 	assert(string);
 	assert(data);
 
@@ -101,102 +97,6 @@ void putInString(String * string, Data * data)
 
 	copyStringElement(&string->data[string->currentSize], data);
 	string->currentSize++;
-
-	#ifdef DEBUG_STRING
-	printf("putInString successful\n");
-	#endif /* DEBUG_STRING */
-}
-
-Flag scanStringFromFile(FILE * file, String * string)
-{
-	#ifdef DEBUG_STRING
-	printf("scanStringFromFile\n");
-	#endif /* DEBUG_STRING */
-
-	assert(string);
-	assert(file);
-
-	Flag isAll = FALSE;
-	Flag isEOF= FALSE;
-	Data c;
-
-	clearString(string);
-
-	do
-	{
-		c = fgetc(file);
-		if(c == '\n')
-			isAll = TRUE;
-		else if(c == EOF)
-		{
-			isAll = TRUE;
-			isEOF = TRUE;
-		}
-		else
-			putInString(string, &c);
-	}
-	while(isAll == FALSE);
-
-	#ifdef DEBUG_STRING
-	printf("Scanned String from file with current size = %d\n", string->currentSize);
-	if(isEOF == TRUE)
-		printf("scanStringFromFile found EOF");
-	#endif /* DEBUG_STRING */
-
-	return isEOF;
-}
-
-int scanString(String * string)
-{
-	#ifdef DEBUG_STRING
-	printf("scanString\n");
-	#endif /* DEBUG_STRING */
-
-	assert(string);
-
-	Flag isAll = FALSE;
-	Data c;
-
-	clearString(string);
-
-	do
-	{
-		c = getchar();
-		if(c == '\n')
-			isAll = TRUE;
-		else
-			putInString(string, &c);
-	}
-	while(isAll == FALSE);
-
-	#ifdef DEBUG_STRING
-	printf("Scanned String with current size = %d\n", string->currentSize);
-	#endif /* DEBUG_STRING */
-
-	return string->currentSize;
-}
-
-void printString(String * string)
-{
-	assert(string);
-
-	#ifdef DEBUG_STRING
-	printf("Print String with current size = %d\n", string->currentSize);
-	#endif /* DEBUG_STRING */
-
-	printf("%s\n", string->data);
-}
-
-void printStringToFile(FILE * file, String * string)
-{
-	assert(file);
-	assert(string);
-
-	#ifdef DEBUG_STRING
-	printf("Print String to file with current size = %d\n", string->currentSize);
-	#endif /* DEBUG_STRING */
-
-	fprintf(file, "%s\n", string->data);
 }
 
 String * copyString(String * original)
@@ -243,3 +143,101 @@ Flag areStringSame(String * first, String * second)
 
 	return ret;
 }
+
+int scanStringFromStream(int stream, String * string)
+{
+	#ifdef DEBUG_STRING
+	printf("scanString\tstream = %d\n", stream);
+	#endif /* DEBUG_STRING */
+
+	assert(string);
+
+	clearString(string);
+
+	Flag isAll = FALSE;
+	Data c;
+	int n;
+	do
+	{
+		n = read(stream, &c, 1);
+		if(n == -1)
+			return -1;
+		else if(c == EOF)
+			return -2;
+		else if(c == '\n')
+			isAll = TRUE;
+		else
+			putInString(string, &c);
+	}
+	while(isAll == FALSE);
+
+	#ifdef DEBUG_STRING
+	printf("Scanned String from file with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
+
+	return string->currentSize;
+}
+
+Flag scanStringFromFile(FILE * file, String * string)
+{
+	#ifdef DEBUG_STRING
+	printf("scanStringFromFile\n");
+	#endif /* DEBUG_STRING */
+
+	assert(string);
+	assert(file);
+
+	Flag isAll = FALSE;
+	Flag isEOF= FALSE;
+	Data c;
+
+	clearString(string);
+
+	do
+	{
+		c = fgetc(file);
+		if(c == '\n')
+			isAll = TRUE;
+		else if(c == EOF)
+		{
+			isAll = TRUE;
+			isEOF = TRUE;
+		}
+		else
+			putInString(string, &c);
+	}
+	while(isAll == FALSE);
+
+	#ifdef DEBUG_STRING
+	printf("Scanned String from file with current size = %d\n", string->currentSize);
+	if(isEOF == TRUE)
+		printf("scanStringFromFile found EOF");
+	#endif /* DEBUG_STRING */
+
+	return isEOF;
+}
+
+void printStringToStream(int stream, String * string)
+{
+	assert(string);
+
+	#ifdef DEBUG_STRING
+	printf("Print String with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
+
+	write(stream, string->data, string->currentSize);
+	write(stream, "\n", 1);
+}
+
+void printStringToFile(FILE * file, String * string)
+{
+	assert(file);
+	assert(string);
+
+	#ifdef DEBUG_STRING
+	printf("Print String to file with current size = %d\n", string->currentSize);
+	#endif /* DEBUG_STRING */
+
+	fprintf(file, "%s\n", string->data);
+}
+

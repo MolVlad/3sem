@@ -247,10 +247,10 @@ void printHTableNodeData(HTableData * data)
 {
 	assert(data);
 
-	printf("login = ");
-	printString(data->login);
-	printf("password = ");
-	printString(data->password);
+	printf("login:\n");
+	printStringToStream(STDOUT, data->login);
+	printf("password:\n");
+	printStringToStream(STDOUT, data->password);
 }
 
 void saveHTable(HTableMap * htableMap, const char * fileName)
@@ -330,16 +330,17 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName)
 	while(isAll == FALSE)
 	{
 		isAll = scanStringFromFile(file, login);
-		isAll = scanStringFromFile(file, password);
 		if(isAll == TRUE)
 			break;
 
+		isAll = scanStringFromFile(file, password);
+
 		#ifdef DEBUG_HTABLE
 		printf("scanned:\n");
-		printf("login = ");
-		printString(login);
-		printf("password = ");
-		printString(password);
+		printf("login:\n");
+		printStringToStream(STDOUT, login);
+		printf("password:\n");
+		printStringToStream(STDOUT, password);
 		#endif /* DEBUG_HTABLE */
 
 		desired = findInHTable(htableMap, login);
