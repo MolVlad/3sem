@@ -262,26 +262,25 @@ void saveHTable(HTableMap * htableMap, const char * fileName)
 	printf("saveHTable\n");
 	#endif /* DEBUG_HTABLE */
 
-	FILE * file = fopen(fileName, "w");
-	assert(file);
+	int fd = open(fileName, O_WRONLY);
+	CHECK("open", fd);
 
 	int i;
 	for(i = 0; i < HTABLE_SIZE; i++)
 	{
 		if(htableMap->array[i] != NULL)
-			saveHTableNode(file, htableMap->array[i]);
+			saveHTableNode(fd, htableMap->array[i]);
 	}
 
-	fclose(file);
+	close(fd);
 
 	#ifdef DEBUG_HTABLE
 	printf("saveHTable successful\n");
 	#endif /* DEBUG_HTABLE */
 }
 
-void saveHTableNode(FILE * file, HTableNode * node)
+void saveHTableNode(int fd, HTableNode * node)
 {
-	assert(file);
 	assert(node);
 
 	#ifdef DEBUG_HTABLE
@@ -289,22 +288,21 @@ void saveHTableNode(FILE * file, HTableNode * node)
 	#endif /* DEBUG_HTABLE */
 
 	if(node->nextInChain != NULL)
-		saveHTableNode(file, node->nextInChain);
+		saveHTableNode(fd, node->nextInChain);
 
-	saveHTableNodeData(file, node->data);
+	saveHTableNodeData(fd, node->data);
 
 	#ifdef DEBUG_HTABLE
 	printf("saveHTableNode successful\n");
 	#endif /* DEBUG_HTABLE */
 }
 
-void saveHTableNodeData(FILE * file, HTableData * data)
+void saveHTableNodeData(int fd, HTableData * data)
 {
-	assert(file);
 	assert(data);
 
-	printStringToFile(file, data->login);
-	printStringToFile(file, data->password);
+	printStringToStream(fd, data->login);
+	printStringToStream(fd, data->password);
 }
 
 void readHTableFromFile(HTableMap * htableMap, const char * fileName)
@@ -316,8 +314,8 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName)
 	printf("readHTableFromFile\n");
 	#endif /* DEBUG_HTABLE */
 
-	FILE * file = fopen(fileName, "r");
-	assert(file);
+	int fd = open(fileName, O_RDONLY);
+	CHECK("open", fd);
 
 	String * login = createString();
 	assert(login);
@@ -326,14 +324,12 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName)
 
 	HTableData * desired;
 
+	int result;
 	Flag isAll = FALSE;
 	while(isAll == FALSE)
 	{
-		isAll = scanStringFromFile(file, login);
-		if(isAll == TRUE)
-			break;
-
-		isAll = scanStringFromFile(file, password);
+		result = scanStringFromStream(fd, login);
+		result = scanStringFromStream(fd, password);
 
 		#ifdef DEBUG_HTABLE
 		printf("scanned:\n");
@@ -343,14 +339,19 @@ void readHTableFromFile(HTableMap * htableMap, const char * fileName)
 		printStringToStream(STDOUT, password);
 		#endif /* DEBUG_HTABLE */
 
-		desired = findInHTable(htableMap, login);
-		if(desired == NULL)
-			insertToHTable(htableMap, convertToHTableData(login, password));
+		if(result == -1)
+			isAll = TRUE;
+		else
+		{
+			desired = findInHTable(htableMap, login);
+			if(desired == NULL)
+				insertToHTable(htableMap, convertToHTableData(login, password));
+		}
 	}
 
 	deleteString(login);
 	deleteString(password);
-	fclose(file);
+	close(fd);
 
 	#ifdef DEBUG_HTABLE
 	printf("readHTableFromFile successful\n");

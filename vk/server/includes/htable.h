@@ -46,8 +46,8 @@ HTableData * convertToHTableData(String * login, String * password);
 HTableNode * createHTableNode(HTableData * data);
 void printHTableNode(HTableNode * node);
 void printHTableNodeData(HTableData * data);
-void saveHTableNode(FILE * file, HTableNode * node);
-void saveHTableNodeData(FILE * file, HTableData * data);
+void saveHTableNode(int fd, HTableNode * node);
+void saveHTableNodeData(int fd, HTableData * data);
 HTableData * findHTableNodeInChein(HTableNode * compared, String * login);
 
 #endif /* __HTABLE_H__ */

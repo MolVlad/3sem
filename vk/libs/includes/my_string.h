@@ -17,15 +17,13 @@ typedef struct
 
 String * createString();
 void deleteString(String * string);
-void clearString(String * string);
-void copyStringElement(Data * destination, Data * element);
-void putInString(String * string, Data * data);
-int scanString(String * string);
-Flag scanStringFromFile(FILE * file, String * string);
 int scanStringFromStream(int stream, String * string);
 void printStringToStream(int stream, String * string);
+void clearString(String * string);
 String * copyString(String * original);
-void printStringToFile(FILE * file, String * string);
 Flag areStringSame(String * first, String * second);
+
+void copyStringElement(Data * destination, Data * element);
+void putInString(String * string, Data * data);
 
 #endif /* __MY_STRING_H__ */

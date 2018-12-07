@@ -144,65 +144,28 @@ Flag areStringSame(String * first, String * second)
 	return ret;
 }
 
-int scanStringFromStream(int stream, String * string)
-{
-	#ifdef DEBUG_STRING
-	printf("scanString\tstream = %d\n", stream);
-	#endif /* DEBUG_STRING */
-
-	assert(string);
-
-	clearString(string);
-
-	Flag isAll = FALSE;
-	Data c;
-	int n;
-	do
-	{
-		n = read(stream, &c, 1);
-		if(n == -1)
-			return -1;
-		else if(c == EOF)
-			return -2;
-		else if(c == '\n')
-			isAll = TRUE;
-		else
-			putInString(string, &c);
-	}
-	while(isAll == FALSE);
-
-	#ifdef DEBUG_STRING
-	printf("Scanned String from file with current size = %d\n", string->currentSize);
-	#endif /* DEBUG_STRING */
-
-	return string->currentSize;
-}
-
-Flag scanStringFromFile(FILE * file, String * string)
+int scanStringFromStream(int fd, String * string)
 {
 	#ifdef DEBUG_STRING
 	printf("scanStringFromFile\n");
 	#endif /* DEBUG_STRING */
 
 	assert(string);
-	assert(file);
 
 	Flag isAll = FALSE;
-	Flag isEOF= FALSE;
 	Data c;
 
 	clearString(string);
 
+	int result;
 	do
 	{
-		c = fgetc(file);
+		result = read(fd, &c, 1);
+		if(result == 0)
+			return -1;
+
 		if(c == '\n')
 			isAll = TRUE;
-		else if(c == EOF)
-		{
-			isAll = TRUE;
-			isEOF = TRUE;
-		}
 		else
 			putInString(string, &c);
 	}
@@ -210,11 +173,9 @@ Flag scanStringFromFile(FILE * file, String * string)
 
 	#ifdef DEBUG_STRING
 	printf("Scanned String from file with current size = %d\n", string->currentSize);
-	if(isEOF == TRUE)
-		printf("scanStringFromFile found EOF");
 	#endif /* DEBUG_STRING */
 
-	return isEOF;
+	return string->maxSize;
 }
 
 void printStringToStream(int stream, String * string)
@@ -228,16 +189,3 @@ void printStringToStream(int stream, String * string)
 	write(stream, string->data, string->currentSize);
 	write(stream, "\n", 1);
 }
-
-void printStringToFile(FILE * file, String * string)
-{
-	assert(file);
-	assert(string);
-
-	#ifdef DEBUG_STRING
-	printf("Print String to file with current size = %d\n", string->currentSize);
-	#endif /* DEBUG_STRING */
-
-	fprintf(file, "%s\n", string->data);
-}
-
