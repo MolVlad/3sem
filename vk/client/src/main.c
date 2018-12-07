@@ -39,7 +39,6 @@ int main(int argc, char **argv)
 	do
 	{
 		scanStringFromStream(STDIN, string, -1);
-
 		isAll = consoleFiniteStateMachine(parseCommand(string));
 	}
 	while(isAll == FALSE);

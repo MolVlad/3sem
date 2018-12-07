@@ -49,6 +49,18 @@ void printHTableNode(HTableNode * node)
 	printHTableNodeData(node->data);
 }
 
+void printHTableNodeData(HTableData * data)
+{
+	assert(data);
+
+	printf("login:\n");
+	printStringToStream(STDOUT, data->login);
+	printf("\n");
+	printf("password:\n");
+	printStringToStream(STDOUT, data->password);
+	printf("\n");
+}
+
 void deleteHTable(HTableMap * htableMap)
 {
 	assert(htableMap);
@@ -151,18 +163,6 @@ HTableData * convertToHTableData(String * login, String * password)
 	return ret;
 }
 
-void printHTableNodeData(HTableData * data)
-{
-	assert(data);
-
-	printf("login:\n");
-	printStringToStream(STDOUT, data->login);
-	printf("\n");
-	printf("password:\n");
-	printStringToStream(STDOUT, data->password);
-	printf("\n");
-}
-
 void saveHTable(HTableMap * htableMap, const char * fileName)
 {
 	assert(htableMap);
@@ -177,6 +177,8 @@ void saveHTable(HTableMap * htableMap, const char * fileName)
 		if(htableMap->array[i] != NULL)
 			saveHTableNode(fd, htableMap->array[i]);
 	}
+
+	printf("Htable saved\n");
 
 	close(fd);
 }
@@ -196,9 +198,9 @@ void saveHTableNodeData(int fd, HTableData * data)
 	assert(data);
 
 	printStringToStream(fd, data->login);
-	printf("\n");
+	write(fd, "\n", 1);
 	printStringToStream(fd, data->password);
-	printf("\n");
+	write(fd, "\n", 1);
 }
 
 void readHTableFromFile(HTableMap * htableMap, const char * fileName)

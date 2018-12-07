@@ -33,7 +33,9 @@ int main()
 	unsigned int clilen = sizeof(cliaddr);
 	HeaderMessageStruct header;
 
-	while(1)
+	/////for valgrind test
+	int k = 1;
+	while(k--)
 	{
 		int newsockfd = accept(sockfd, (struct sockaddr *) &cliaddr, &clilen);
 		CHECK("accept", newsockfd);
@@ -42,6 +44,10 @@ int main()
 		CHECK("fork", pid);
 		if(pid == 0)
 		{
+			printf("pid = %d, ppid = %d\n", getpid(), getppid());
+
+			close(sockfd);
+
 			result = read(newsockfd, &header, sizeof(HeaderMessageStruct));
 			if(result != sizeof(HeaderMessageStruct))
 			{
@@ -59,23 +65,33 @@ int main()
 
 			printf("login:\n");
 			clearString(login);
-			scanStringFromStream(newsockfd, login, header.loginSize);
+			result = scanStringFromStream(newsockfd, login, header.loginSize);
+			if(result != header.loginSize)
+			{
+				printf("scan error: result = %d\n", result);
+				exit(0);
+			}
 			printStringToStream(STDOUT, login);
 			printf("\n");
 
 			printf("password:\n");
 			clearString(password);
-			scanStringFromStream(newsockfd, password, header.passwordSize);
+			result = scanStringFromStream(newsockfd, password, header.passwordSize);
+			if(result != header.passwordSize)
+			{
+				printf("read error\n");
+				exit(0);
+			}
 			printStringToStream(STDOUT, password);
 			printf("\n");
 
-			printf("data:\n");
-			clearString(data);
-			scanStringFromStream(newsockfd, data, header.dataSize);
-			printStringToStream(STDOUT, data);
-			printf("\n");
+			if(header.dataSize != 0)
+			{
+				printf("Init error\n");
+				exit(0);
+			}
 
-			Flag isOK = FALSE;
+			Flag isOK;
 			if(header.type == REG)
 			{
 				printf("\nUser want to reg!!\n");
@@ -103,7 +119,7 @@ int main()
 					isOK = FALSE;
 			}
 			else
-				return -1;
+				exit(-1);
 
 			if(isOK == TRUE)
 			{
@@ -124,23 +140,49 @@ int main()
 					printf("type = %d, login size = %d\n", header.type, header.loginSize);
 					printf("password size = %d, data size = %d\n", header.passwordSize, header.dataSize);
 
-					printf("login:\n");
-					clearString(login);
-					scanStringFromStream(newsockfd, login, header.loginSize);
-					printStringToStream(STDOUT, login);
-					printf("\n");
+					if(header.loginSize)
+					{
+						printf("login:\n");
+						clearString(login);
+						result = scanStringFromStream(newsockfd, login, header.loginSize);
+						if(result != header.loginSize)
+						{
+							printf("read error\n");
+							exit(0);
+						}
+						printStringToStream(STDOUT, login);
+						printf("\n");
+					}
 
-					printf("password:\n");
-					clearString(password);
-					scanStringFromStream(newsockfd, password, header.passwordSize);
-					printStringToStream(STDOUT, password);
-					printf("\n");
+					if(header.passwordSize)
+					{
+						printf("password:\n");
+						clearString(password);
+						result = scanStringFromStream(newsockfd, password, header.passwordSize);
+						if(result != header.passwordSize)
+						{
+							printf("read error\n");
+							exit(0);
+						}
+						printStringToStream(STDOUT, password);
+						printf("\n");
+					}
 
-					printf("login:\n");
-					clearString(data);
-					scanStringFromStream(newsockfd, data, header.dataSize);
-					printStringToStream(STDOUT, data);
-					printf("\n");
+					if(header.dataSize)
+					{
+						printf("data:\n");
+						clearString(data);
+						result = scanTextFromStream(newsockfd, data, header.dataSize);
+						if(result != header.dataSize)
+						{
+							printf("read error, result = %d\n", result);
+							exit(0);
+						}
+						printStringToStream(STDOUT, data);
+						printf("\n");
+					}
+
+					isAll = TRUE;
 				}
 			}
 			else
@@ -151,15 +193,16 @@ int main()
 			deleteString(login);
 			deleteString(password);
 			deleteString(data);
-
-			printf("\nHTABLE\n");
-			printHTable(htableMap);
+			deleteHTable(htableMap);
+			deleteBTree(btreeMap);
 
 			exit(0);
 		}
 		else
 		{
-
+			int status;
+			waitpid(pid, &status, 0);
+			printf("waitpid\n");
 		}
 
 		close(newsockfd);

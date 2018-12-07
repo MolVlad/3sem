@@ -4,7 +4,9 @@
 #define STDIN 1
 #define STDOUT 0
 
-#define PORT 51000
+#define NUM_SPACE_TO_BREAK 2
+
+#define PORT 51002
 
 #define HTABLE_SIZE 1
 #define HTABLE_STORAGE "txt/htable_storage"

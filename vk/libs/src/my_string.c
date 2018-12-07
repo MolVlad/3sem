@@ -82,7 +82,7 @@ int stringCompare(String * first, String * second)
 	return strcmp(first->data, second->data);
 }
 
-int scanStringFromStream(int fd, String * string, int maxNum)
+/*int scanStringFromStream(int fd, String * string, int maxNum)
 {
 	assert(string);
 
@@ -103,20 +103,89 @@ int scanStringFromStream(int fd, String * string, int maxNum)
 		if(read(fd, &c, sizeof(Data)) == 0)
 			return -1;
 
-		if(c == '\n')
-			isAll = TRUE;
-		else
-			putInString(string, &c);
-
 		if(isLimitedNumber == TRUE)
 		{
 			maxNum--;
 			if(maxNum == 0)
 				isAll = TRUE;
+
+			putInString(string, &c);
 		}
+		else if(c == '\n')
+			isAll = TRUE;
+		else
+			putInString(string, &c);
 	}
 
-	return string->maxSize;
+	return string->currentSize;
+}
+*/
+
+int scanStringFromStream(int fd, String * string, int maxNum)
+{
+	assert(string);
+	clearString(string);
+
+	Data c;
+
+	if(maxNum == 0)
+		return 0;
+	else if(maxNum < 0)
+		do {
+			if(read(fd, &c, sizeof(Data)) == 0)
+				return -1;
+
+			if(c != '\n')
+				putInString(string, &c);
+		} while(c != '\n');
+	else
+		while(maxNum > 0)
+		{
+		if(read(fd, &c, sizeof(Data)) == 0)
+			return -1;
+
+		maxNum--;
+		putInString(string, &c);
+
+		}
+
+	return string->currentSize;
+}
+
+int scanTextFromStream(int fd, String * string, int maxNum)
+{
+	assert(string);
+	clearString(string);
+
+	int spaceCounter = 0;
+	Data c;
+
+	if(maxNum == 0)
+		return 0;
+	else if(maxNum > 0)
+		while(maxNum)
+		{
+			if(read(fd, &c, sizeof(Data)) == 0)
+				return -1;
+
+			maxNum--;
+			putInString(string, &c);
+		}
+	else
+		while(spaceCounter != NUM_SPACE_TO_BREAK)
+		{
+			if(read(fd, &c, sizeof(Data)) == 0)
+				return -1;
+
+			if(c == '\n')
+				spaceCounter++;
+			else
+				spaceCounter = 0;
+
+			putInString(string, &c);
+		}
+
+	return string->currentSize;
 }
 
 int printStringToStream(int stream, String * string)

@@ -17,6 +17,7 @@ typedef struct
 String * createString();
 void deleteString(String * string);
 int scanStringFromStream(int stream, String * string, int maxNum);
+int scanTextFromStream(int fd, String * string, int maxNum);
 int printStringToStream(int stream, String * string);
 void clearString(String * string);
 String * copyString(String * original);

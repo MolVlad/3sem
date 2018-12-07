@@ -37,19 +37,13 @@ void sendViaNet(enum MessageType type)
 
 			break;
 		case MSG:
-			printf("login:\n");
-			login = createString();
-			assert(login);
-			result = scanStringFromStream(STDIN, login, -1);
-			CHECK("scanStringFromStream", result);
-			header.loginSize = login->currentSize;
-
+			header.loginSize = 0;
 			header.passwordSize = 0;
 
 			printf("data:\n");
 			data = createString();
 			assert(data);
-			result = scanStringFromStream(STDIN, data, -1);
+			result = scanTextFromStream(STDIN, data, -1);
 			CHECK("scanStringFromStream", result);
 			header.dataSize = data->currentSize;
 
@@ -67,6 +61,7 @@ void sendViaNet(enum MessageType type)
 	{
 		result = printStringToStream(sockfd, login);
 		CHECK("printStringToStream login", result);
+		result = printStringToStream(STDOUT, login);
 		deleteString(login);
 	}
 
