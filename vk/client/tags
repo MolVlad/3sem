@@ -5,6 +5,7 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
+CHECK	includes/configure.h	11;"	d
 CLEAR_HISTORY	includes/console.h	/^	CLEAR_HISTORY,$/;"	e	enum:ConsoleCommand
 COMP	Makefile	/^COMP = gcc$/;"	m
 ConsoleCommand	includes/console.h	/^enum ConsoleCommand$/;"	g
@@ -16,18 +17,24 @@ EXIT	includes/console.h	/^	EXIT,$/;"	e	enum:ConsoleCommand
 FALSE	includes/configure.h	/^	FALSE = 0,$/;"	e	enum:Flag
 Flag	includes/configure.h	/^typedef enum Flag$/;"	g
 Flag	includes/configure.h	/^} Flag;$/;"	t	typeref:enum:Flag
+HeaderMessageStruct	src/main.c	/^} HeaderMessageStruct;$/;"	t	typeref:struct:__anon1	file:
 INIT	includes/console.h	/^	INIT,$/;"	e	enum:ConsoleCommand
 LIBS	Makefile	/^LIBS =$/;"	m
 MAIN_MENU	includes/console.h	/^	MAIN_MENU,$/;"	e	enum:ConsoleState
+MessageType	src/main.c	/^enum MessageType$/;"	g	file:
 NO	includes/console.h	/^	NO,$/;"	e	enum:ConsoleCommand
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
+PORT	src/main.c	7;"	d	file:
 PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
 PROJECT	Makefile	/^PROJECT = client$/;"	m
 READ_DIALOGUE	includes/console.h	/^	READ_DIALOGUE,$/;"	e	enum:ConsoleCommand
 RM	Makefile	/^RM = rm -rf$/;"	m
 SEND_MSG	includes/console.h	/^	SEND_MSG,$/;"	e	enum:ConsoleCommand
 SOURCES	Makefile	/^SOURCES = src\/main.c src\/console.c src\/print.c src\/menu.c ..\/libs\/src\/my_string.c$/;"	m
+STDIN	includes/configure.h	8;"	d
+STDOUT	includes/configure.h	9;"	d
 TRUE	includes/configure.h	/^	TRUE,$/;"	e	enum:Flag
+TYPE_INIT	src/main.c	/^	TYPE_INIT = 0,$/;"	e	enum:MessageType	file:
 USERS_LIST	includes/console.h	/^	USERS_LIST,$/;"	e	enum:ConsoleCommand
 WELCOME_PAGE	includes/console.h	/^	WELCOME_PAGE = 0,$/;"	e	enum:ConsoleState
 YES	includes/console.h	/^	YES,$/;"	e	enum:ConsoleCommand
@@ -39,9 +46,12 @@ checkAccount	src/menu.c	/^Flag checkAccount()$/;"	f
 clearHistory	src/menu.c	/^void clearHistory()$/;"	f
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
 createAccount	src/menu.c	/^Flag createAccount()$/;"	f
+dataSize	src/main.c	/^	int dataSize;$/;"	m	struct:__anon1	file:
 deleteMessage	src/menu.c	/^void deleteMessage()$/;"	f
-main	src/main.c	/^int main()$/;"	f
+loginSize	src/main.c	/^	int loginSize;$/;"	m	struct:__anon1	file:
+main	src/main.c	/^int main(int argc, char **argv)$/;"	f
 parseCommand	src/console.c	/^enum ConsoleCommand parseCommand(String * string)$/;"	f
+passwordSize	src/main.c	/^	int passwordSize;$/;"	m	struct:__anon1	file:
 printConsoleCommand	src/console.c	/^void printConsoleCommand(enum ConsoleCommand command)$/;"	f
 printConsoleState	src/console.c	/^void printConsoleState(enum ConsoleState state)$/;"	f
 printError	src/print.c	/^void printError()$/;"	f
@@ -51,4 +61,5 @@ printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
 readDialogue	src/menu.c	/^void readDialogue()$/;"	f
 sendMessage	src/menu.c	/^void sendMessage()$/;"	f
+type	src/main.c	/^	enum MessageType type;$/;"	m	struct:__anon1	typeref:enum:__anon1::MessageType	file:
 userList	src/menu.c	/^void userList()$/;"	f

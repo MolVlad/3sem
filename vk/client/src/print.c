@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"configure.h"
+#include"config.h"
 #include"print.h"
 
 void printGreeting()

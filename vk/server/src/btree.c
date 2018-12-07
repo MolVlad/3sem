@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"configure.h"
+#include"config.h"
 #include"my_string.h"
 #include"btree.h"
 
@@ -57,7 +57,7 @@ int putInBTree(BTreeMap * btreeMap, BTreeNode * node)
 	while(pointer != NULL)
 	{
 		parent = pointer;
-		if(pointer->data->pid > node->data->pid)
+		if(stringCompare(pointer->data->login, node->data->login) > 0)
 		{
 			#ifdef DEBUG_BTREE
 			printf("Move to right\n");
@@ -259,7 +259,7 @@ BTreeData * findBTreeNode(BTreeNode * compared, String * login)
 	if(compared == NULL)
 		return NULL;
 
-	if(areStringSame(compared->data->login, login) == TRUE)
+	if(stringCompare(compared->data->login, login) == 0)
 		return compared->data;
 
 	if(compared->left != NULL)

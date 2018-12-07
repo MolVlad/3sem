@@ -1,6 +1,8 @@
 #ifndef __MENU_H__
 #define __MENU_H__
 
+void sendViaNet(enum MessageType type);
+
 Flag checkAccount();
 Flag createAccount();
 void sendMessage();

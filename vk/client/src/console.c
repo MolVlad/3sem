@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"configure.h"
+#include"config.h"
 #include"my_string.h"
 #include"console.h"
 #include"print.h"
@@ -10,11 +10,6 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 	static enum ConsoleState state = WELCOME_PAGE;
 	static Flag isAll = FALSE;
 	Flag isOK;
-	#ifdef DEBUG_CONSOLE
-	printf("consoleFiniteStateMachine\n");
-	printConsoleState(state);
-	printConsoleCommand(command);
-	#endif /* DEBUG_CONSOLE */
 
 	switch(state)
 	{

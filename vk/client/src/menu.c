@@ -1,133 +1,120 @@
 #include"libs.h"
-#include"configure.h"
+#include"config.h"
 #include"my_string.h"
 #include"menu.h"
 
-Flag createAccount()
+extern int sockfd;
+
+void sendViaNet(enum MessageType type)
 {
-	printf("Let's create account\n");
+	int result;
 
-	String * login = createString();
-	assert(login);
-	String * password = createString();
-	assert(login);
+	HeaderMessageStruct header;
+	bzero(&header, sizeof(HeaderMessageStruct));
+	header.type = type;
 
-	printf("Login:\n");
-	scanStringFromStream(STDIN, login);
-	printf("Password:\n");
-	scanStringFromStream(STDIN, password);
+	String * login, * password, * data;
 
-	Flag isOK = TRUE;
-
-	/*
-	HTableData * desired = findInHTable(htableMap, login);
-	if(desired == NULL)
+	switch(type)
 	{
-		insertToHTable(htableMap, convertToHTableData(login, password));
-		isOK = TRUE;
-	}
-	else
-		isOK = FALSE;
+		case REG:
+		case LOGIN:
+			printf("login:\n");
+			login = createString();
+			assert(login);
+			result = scanStringFromStream(STDIN, login, -1);
+			CHECK("scanStringFromStream", result);
+			header.loginSize = login->currentSize;
 
-	if(isOK == TRUE)
+			printf("password:\n");
+			password = createString();
+			assert(password);
+			result = scanStringFromStream(STDIN, password, -1);
+			CHECK("scanStringFromStream", result);
+			header.passwordSize = password->currentSize;
+
+			header.dataSize = 0;
+
+			break;
+		case MSG:
+			printf("login:\n");
+			login = createString();
+			assert(login);
+			result = scanStringFromStream(STDIN, login, -1);
+			CHECK("scanStringFromStream", result);
+			header.loginSize = login->currentSize;
+
+			header.passwordSize = 0;
+
+			printf("data:\n");
+			data = createString();
+			assert(data);
+			result = scanStringFromStream(STDIN, data, -1);
+			CHECK("scanStringFromStream", result);
+			header.dataSize = data->currentSize;
+
+			break;
+	}
+
+	result = write(sockfd, &header, sizeof(HeaderMessageStruct));
+	if(result != sizeof(HeaderMessageStruct))
 	{
-		int pid = fork();
-		if(pid == -1)
-		{
-			perror("fork");
-		}
-		if(pid == 0)
-		{
-			printf("fork!!\n");
-			exit(0);
-		}
-		else
-			insertToBTree(btreeMap, convertToBTreeData(login, "ip", pid));
+		printf("write header error\n");
+		exit(0);
 	}
-	*/
 
-	deleteString(login);
-	deleteString(password);
+	if(header.loginSize)
+	{
+		result = printStringToStream(sockfd, login);
+		CHECK("printStringToStream login", result);
+		deleteString(login);
+	}
 
-	return isOK;
+	if(header.passwordSize)
+	{
+		result = printStringToStream(sockfd, password);
+		CHECK("printStringToStream password", result);
+		deleteString(password);
+	}
+
+	if(header.dataSize)
+	{
+		result = printStringToStream(sockfd, data);
+		CHECK("printStringToStream data", result);
+		deleteString(data);
+	}
 }
 
 Flag checkAccount()
 {
-	printf("Let's log in\n");
+	sendViaNet(LOGIN);
+	return TRUE;
+}
 
-	String * login = createString();
-	assert(login);
-	String * password = createString();
-	assert(login);
-
-	printf("Login:\n");
-	scanStringFromStream(STDIN, login);
-	printf("Password:\n");
-	scanStringFromStream(STDIN, password);
-
-	Flag isOK = TRUE;
-
-	/*
-	HTableData * desired = findInHTable(htableMap, login);
-
-	if(desired == NULL)
-		isOK = FALSE;
-	else if(areStringSame(desired->password, password) == TRUE)
-		isOK = TRUE;
-	else
-		isOK = FALSE;
-
-	if(isOK == TRUE)
-	{
-		int pid = fork();
-		if(pid == -1)
-		{
-			perror("fork");
-		}
-		if(pid == 0)
-		{
-			printf("fork!!\n");
-			exit(0);
-		}
-		else
-			insertToBTree(btreeMap, convertToBTreeData(login, "ip", pid));
-	}
-	*/
-	deleteString(login);
-	deleteString(password);
-
-	return isOK;
+Flag createAccount()
+{
+	sendViaNet(REG);
+	return TRUE;
 }
 
 void sendMessage()
 {
-	#ifdef DEBUG_MENU
-	printf("sendMessage\n");
-	#endif /* DEBUG_MENU */
+	sendViaNet(MSG);
 }
 void readDialogue()
 {
-	#ifdef DEBUG_MENU
-	printf("readDialogue\n");
-	#endif /* DEBUG_MENU */
+
 }
 void userList()
 {
-	#ifdef DEBUG_MENU
-	printf("userList\n");
-	#endif /* DEBUG_MENU */
+
 }
 
 void deleteMessage()
 {
-	#ifdef DEBUG_MENU
-	printf("deleteMessage");
-	#endif /* DEBUG_MENU */
+
 }
 void clearHistory()
 {
-	#ifdef DEBUG_MENU
-	printf("clearHistory");
-	#endif /* DEBUG_MENU */
+
 }
