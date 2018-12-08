@@ -4,6 +4,19 @@
 #include"htable.h"
 #include"btree.h"
 
+int scanHeader(int fd, HeaderMessageStruct * header)
+{
+	int result = read(fd, header, sizeof(HeaderMessageStruct));
+	if(result != sizeof(HeaderMessageStruct))
+		return -1;
+
+	printf("\nMessage!\nHeader:\n");
+	printf("type = %d, login size = %d\n", header->type, header->loginSize);
+	printf("password size = %d, data size = %d\n", header->passwordSize, header->dataSize);
+
+	return 0;
+}
+
 int main()
 {
 	HTableMap * htableMap = createHTable();
@@ -29,14 +42,12 @@ int main()
 	CHECK("listen", result);
 	printf("listen!\n");
 
-	struct sockaddr_in cliaddr;
-	unsigned int clilen = sizeof(cliaddr);
-	HeaderMessageStruct header;
-
-	/////for valgrind test
-	int k = 1;
+	///////////////// сюда добавить выход по сигналу
+	int k = 3;
 	while(k--)
 	{
+		struct sockaddr_in cliaddr;
+		unsigned int clilen = sizeof(cliaddr);
 		int newsockfd = accept(sockfd, (struct sockaddr *) &cliaddr, &clilen);
 		CHECK("accept", newsockfd);
 
@@ -48,43 +59,23 @@ int main()
 
 			close(sockfd);
 
-			result = read(newsockfd, &header, sizeof(HeaderMessageStruct));
-			if(result != sizeof(HeaderMessageStruct))
-			{
-				printf("read error\n");
-				exit(0);
-			}
-
-			printf("\nUser!!!\n");
-			printf("type = %d, login size = %d\n", header.type, header.loginSize);
-			printf("password size = %d, data size = %d\n", header.passwordSize, header.dataSize);
+			HeaderMessageStruct header;
+			result = scanHeader(newsockfd, &header);
+			CHECK("scanHeader", result);
 
 			String * login = createString();
 			String* password = createString();
 			String * data = createString();
 
 			printf("login:\n");
-			clearString(login);
-			result = scanStringFromStream(newsockfd, login, header.loginSize);
-			if(result != header.loginSize)
-			{
-				printf("scan error: result = %d\n", result);
-				exit(0);
-			}
-			printStringToStream(STDOUT, login);
-			printf("\n");
+			result = stringGetAndPrint(newsockfd, login, header.loginSize);
+			CHECK("stringGetAndCheck login", result);
 
 			printf("password:\n");
-			clearString(password);
-			result = scanStringFromStream(newsockfd, password, header.passwordSize);
-			if(result != header.passwordSize)
-			{
-				printf("read error\n");
-				exit(0);
-			}
-			printStringToStream(STDOUT, password);
-			printf("\n");
+			result = stringGetAndPrint(newsockfd, password, header.passwordSize);
+			CHECK("stringGetAndCheck password", result);
 
+			//it should be equal to zero at first time (there are no data)
 			if(header.dataSize != 0)
 			{
 				printf("Init error\n");
@@ -99,6 +90,7 @@ int main()
 				HTableData * desired = findInHTable(htableMap, login);
 				if(desired == NULL)
 				{
+					/////??????????????????? не работает
 					insertToHTable(htableMap, convertToHTableData(login, password));
 					isOK = TRUE;
 				}
@@ -129,57 +121,27 @@ int main()
 				Flag isAll = FALSE;
 				while(isAll == FALSE)
 				{
-					result = read(newsockfd, &header, sizeof(HeaderMessageStruct));
-					if(result != sizeof(HeaderMessageStruct))
-					{
-						printf("read error\n");
-						exit(0);
-					}
-
-					printf("\nMessage!!!\n");
-					printf("type = %d, login size = %d\n", header.type, header.loginSize);
-					printf("password size = %d, data size = %d\n", header.passwordSize, header.dataSize);
-
+					result = scanHeader(newsockfd, &header);
+					CHECK("scanHeader", result);
 					if(header.loginSize)
 					{
 						printf("login:\n");
-						clearString(login);
-						result = scanStringFromStream(newsockfd, login, header.loginSize);
-						if(result != header.loginSize)
-						{
-							printf("read error\n");
-							exit(0);
-						}
-						printStringToStream(STDOUT, login);
-						printf("\n");
+						result = stringGetAndPrint(newsockfd, login, header.loginSize);
+						CHECK("stringGetAndCheck login", result);
 					}
 
 					if(header.passwordSize)
 					{
 						printf("password:\n");
-						clearString(password);
-						result = scanStringFromStream(newsockfd, password, header.passwordSize);
-						if(result != header.passwordSize)
-						{
-							printf("read error\n");
-							exit(0);
-						}
-						printStringToStream(STDOUT, password);
-						printf("\n");
+						result = stringGetAndPrint(newsockfd, password, header.passwordSize);
+						CHECK("stringGetAndCheck password", result);
 					}
 
 					if(header.dataSize)
 					{
 						printf("data:\n");
-						clearString(data);
-						result = scanTextFromStream(newsockfd, data, header.dataSize);
-						if(result != header.dataSize)
-						{
-							printf("read error, result = %d\n", result);
-							exit(0);
-						}
-						printStringToStream(STDOUT, data);
-						printf("\n");
+						result = stringGetAndPrint(newsockfd, data, header.dataSize);
+						CHECK("stringGetAndCheck data", result);
 					}
 
 					isAll = TRUE;

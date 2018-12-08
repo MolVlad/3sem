@@ -82,45 +82,7 @@ int stringCompare(String * first, String * second)
 	return strcmp(first->data, second->data);
 }
 
-/*int scanStringFromStream(int fd, String * string, int maxNum)
-{
-	assert(string);
-
-	Flag isLimitedNumber;
-	if(maxNum == 0)
-		return 0;
-	if(maxNum < 0)
-		isLimitedNumber = FALSE;
-	else
-		isLimitedNumber = TRUE;
-
-	clearString(string);
-
-	Flag isAll = FALSE;
-	Data c;
-	while(isAll == FALSE)
-	{
-		if(read(fd, &c, sizeof(Data)) == 0)
-			return -1;
-
-		if(isLimitedNumber == TRUE)
-		{
-			maxNum--;
-			if(maxNum == 0)
-				isAll = TRUE;
-
-			putInString(string, &c);
-		}
-		else if(c == '\n')
-			isAll = TRUE;
-		else
-			putInString(string, &c);
-	}
-
-	return string->currentSize;
-}
-*/
-
+//maxNum < 0 means that this parameter no effect
 int scanStringFromStream(int fd, String * string, int maxNum)
 {
 	assert(string);
@@ -152,6 +114,7 @@ int scanStringFromStream(int fd, String * string, int maxNum)
 	return string->currentSize;
 }
 
+//maxNum < 0 means that this parameter no effect
 int scanTextFromStream(int fd, String * string, int maxNum)
 {
 	assert(string);
@@ -196,5 +159,27 @@ int printStringToStream(int stream, String * string)
 	if(n != string->currentSize)
 		return -1;
 
+	return 0;
+}
+
+//maxNum < 0 means that this parameter no effect
+int stringGetAndPrint(int fd, String * string, int maxNum)
+{
+	assert(string);
+
+	int result;
+
+	if(string->currentSize != 0)
+		clearString(string);
+
+	result = scanStringFromStream(fd, string, maxNum);
+	if((result != maxNum) && (maxNum >= 0))
+		return -1;
+
+	result = printStringToStream(STDOUT, string);
+	if(result == -1)
+		return -1;
+
+	printf("\n");
 	return 0;
 }

@@ -22,6 +22,7 @@ int printStringToStream(int stream, String * string);
 void clearString(String * string);
 String * copyString(String * original);
 int stringCompare(String * first, String * second);
+int stringGetAndPrint(int fd, String * string, int size);
 
 void putInString(String * string, Data * data);
 

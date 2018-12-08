@@ -5,6 +5,11 @@
 
 extern int sockfd;
 
+True receiveAnswer()
+{
+
+}
+
 void sendViaNet(enum MessageType type)
 {
 	int result;
@@ -21,16 +26,14 @@ void sendViaNet(enum MessageType type)
 		case LOGIN:
 			printf("login:\n");
 			login = createString();
-			assert(login);
 			result = scanStringFromStream(STDIN, login, -1);
-			CHECK("scanStringFromStream", result);
+			CHECK("scanStringFromStream login", result);
 			header.loginSize = login->currentSize;
 
 			printf("password:\n");
 			password = createString();
-			assert(password);
 			result = scanStringFromStream(STDIN, password, -1);
-			CHECK("scanStringFromStream", result);
+			CHECK("scanStringFromStream password", result);
 			header.passwordSize = password->currentSize;
 
 			header.dataSize = 0;
@@ -61,7 +64,6 @@ void sendViaNet(enum MessageType type)
 	{
 		result = printStringToStream(sockfd, login);
 		CHECK("printStringToStream login", result);
-		result = printStringToStream(STDOUT, login);
 		deleteString(login);
 	}
 
@@ -83,13 +85,13 @@ void sendViaNet(enum MessageType type)
 Flag checkAccount()
 {
 	sendViaNet(LOGIN);
-	return TRUE;
+	return receiveAnswer();
 }
 
 Flag createAccount()
 {
 	sendViaNet(REG);
-	return TRUE;
+	return receiveAnswer();
 }
 
 void sendMessage()

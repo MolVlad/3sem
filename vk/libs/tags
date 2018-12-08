@@ -5,23 +5,44 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 AFTER_TRESHOLD_STRING_SIZE	includes/my_string.h	6;"	d
+BACKLOG	includes/config.h	14;"	d
+CHECK	includes/config.h	32;"	d
 Data	includes/my_string.h	/^typedef char Data;$/;"	t
+FALSE	includes/config.h	/^	FALSE = 0,$/;"	e	enum:Flag
+Flag	includes/config.h	/^typedef enum Flag$/;"	g
+Flag	includes/config.h	/^} Flag;$/;"	t	typeref:enum:Flag
+HTABLE_SIZE	includes/config.h	11;"	d
+HTABLE_STORAGE	includes/config.h	12;"	d
+HeaderMessageStruct	includes/config.h	/^} HeaderMessageStruct;$/;"	t	typeref:struct:__anon2
 INIT_STRING_SIZE	includes/my_string.h	4;"	d
-OUTPUT_STREAM	includes/my_string.h	7;"	d
+LOGIN	includes/config.h	/^	LOGIN = 0,$/;"	e	enum:MessageType
+MSG	includes/config.h	/^	MSG,$/;"	e	enum:MessageType
+MessageType	includes/config.h	/^enum MessageType$/;"	g
+NUM_SPACE_TO_BREAK	includes/config.h	7;"	d
+PORT	includes/config.h	9;"	d
+REG	includes/config.h	/^	REG,$/;"	e	enum:MessageType
+STDIN	includes/config.h	4;"	d
+STDOUT	includes/config.h	5;"	d
 String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon1
 TRESHOLD_STRING_SIZE	includes/my_string.h	5;"	d
+TRUE	includes/config.h	/^	TRUE,$/;"	e	enum:Flag
+__CONFIG_H__	includes/config.h	2;"	d
 __MY_STRING_H__	includes/my_string.h	2;"	d
 __PRECOMP_H__	includes/libs.h	2;"	d
 clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
 copyString	src/my_string.c	/^String * copyString(String * original)$/;"	f
-copyStringElement	src/my_string.c	/^void copyStringElement(Data * destination, Data * element)$/;"	f
 createString	src/my_string.c	/^String * createString()$/;"	f
 currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon1
 data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon1
+dataSize	includes/config.h	/^	int dataSize;$/;"	m	struct:__anon2
 deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
+loginSize	includes/config.h	/^	int loginSize;$/;"	m	struct:__anon2
 maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon1
+passwordSize	includes/config.h	/^	int passwordSize;$/;"	m	struct:__anon2
 printStringToStream	src/my_string.c	/^int printStringToStream(int stream, String * string)$/;"	f
 putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
 scanStringFromStream	src/my_string.c	/^int scanStringFromStream(int fd, String * string, int maxNum)$/;"	f
+scanTextFromStream	src/my_string.c	/^int scanTextFromStream(int fd, String * string, int maxNum)$/;"	f
 stringCompare	src/my_string.c	/^int stringCompare(String * first, String * second)$/;"	f
-stringGetAndCheck	src/my_string.c	/^String * stringGetAndCheck(int fdFrom, int size)$/;"	f
+stringGetAndPrint	src/my_string.c	/^int stringGetAndPrint(int fd, String * string, int maxNum)$/;"	f
+type	includes/config.h	/^	enum MessageType type;$/;"	m	struct:__anon2	typeref:enum:__anon2::MessageType
