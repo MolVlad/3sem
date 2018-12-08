@@ -10,6 +10,7 @@ typedef struct
 
 typedef unsigned int HashType;
 
+//node in array
 typedef struct HTableNode
 {
 	struct HTableNode * nextInChain;
