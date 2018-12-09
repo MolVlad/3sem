@@ -9,7 +9,7 @@ enum ConsoleState
 
 enum ConsoleCommand
 {
-	INIT,
+	INITIALIZATION,
 	ERROR,
 
 	EXIT,

@@ -4,28 +4,36 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACK	includes/config.h	/^	ACK = 0,$/;"	e	enum:ReverseMessageType
 AFTER_TRESHOLD_STRING_SIZE	includes/my_string.h	6;"	d
 BACKLOG	includes/config.h	14;"	d
-CHECK	includes/config.h	32;"	d
+CHECK	includes/config.h	52;"	d
 Data	includes/my_string.h	/^typedef char Data;$/;"	t
+END	includes/config.h	/^	END,$/;"	e	enum:MessageType
 FALSE	includes/config.h	/^	FALSE = 0,$/;"	e	enum:Flag
 Flag	includes/config.h	/^typedef enum Flag$/;"	g
 Flag	includes/config.h	/^} Flag;$/;"	t	typeref:enum:Flag
 HTABLE_SIZE	includes/config.h	11;"	d
 HTABLE_STORAGE	includes/config.h	12;"	d
 HeaderMessageStruct	includes/config.h	/^} HeaderMessageStruct;$/;"	t	typeref:struct:__anon2
+HeaderReverseMessageStruct	includes/config.h	/^} HeaderReverseMessageStruct;$/;"	t	typeref:struct:__anon3
+INIT	includes/config.h	/^	INIT = 0,$/;"	e	enum:ServerState
 INIT_STRING_SIZE	includes/my_string.h	4;"	d
 LOGIN	includes/config.h	/^	LOGIN = 0,$/;"	e	enum:MessageType
 MSG	includes/config.h	/^	MSG,$/;"	e	enum:MessageType
 MessageType	includes/config.h	/^enum MessageType$/;"	g
+NACK	includes/config.h	/^	NACK,$/;"	e	enum:ReverseMessageType
 NUM_SPACE_TO_BREAK	includes/config.h	7;"	d
 PORT	includes/config.h	9;"	d
 REG	includes/config.h	/^	REG,$/;"	e	enum:MessageType
+ReverseMessageType	includes/config.h	/^enum ReverseMessageType$/;"	g
 STDIN	includes/config.h	4;"	d
 STDOUT	includes/config.h	5;"	d
+ServerState	includes/config.h	/^enum ServerState$/;"	g
 String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon1
 TRESHOLD_STRING_SIZE	includes/my_string.h	5;"	d
 TRUE	includes/config.h	/^	TRUE,$/;"	e	enum:Flag
+WAITING_REQUESTS	includes/config.h	/^	WAITING_REQUESTS,$/;"	e	enum:ServerState
 __CONFIG_H__	includes/config.h	2;"	d
 __MY_STRING_H__	includes/my_string.h	2;"	d
 __PRECOMP_H__	includes/libs.h	2;"	d
@@ -35,6 +43,7 @@ createString	src/my_string.c	/^String * createString()$/;"	f
 currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon1
 data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon1
 dataSize	includes/config.h	/^	int dataSize;$/;"	m	struct:__anon2
+dataSize	includes/config.h	/^	int dataSize;$/;"	m	struct:__anon3
 deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
 loginSize	includes/config.h	/^	int loginSize;$/;"	m	struct:__anon2
 maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon1
@@ -46,3 +55,4 @@ scanTextFromStream	src/my_string.c	/^int scanTextFromStream(int fd, String * str
 stringCompare	src/my_string.c	/^int stringCompare(String * first, String * second)$/;"	f
 stringGetAndPrint	src/my_string.c	/^int stringGetAndPrint(int fd, String * string, int maxNum)$/;"	f
 type	includes/config.h	/^	enum MessageType type;$/;"	m	struct:__anon2	typeref:enum:__anon2::MessageType
+type	includes/config.h	/^	enum ReverseMessageType type;$/;"	m	struct:__anon3	typeref:enum:__anon3::ReverseMessageType

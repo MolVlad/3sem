@@ -4,46 +4,31 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-BACKLOG	src/main.c	8;"	d	file:
 BTreeData	includes/btree.h	/^} BTreeData;$/;"	t	typeref:struct:__anon3
 BTreeMap	includes/btree.h	/^} BTreeMap;$/;"	t	typeref:struct:__anon4
 BTreeNode	includes/btree.h	/^typedef struct BTreeNode$/;"	s
 BTreeNode	includes/btree.h	/^} BTreeNode;$/;"	t	typeref:struct:BTreeNode
-BUF_SIZE	src/main.c	9;"	d	file:
 CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
-CHECK	includes/configure.h	14;"	d
 COMP	Makefile	/^COMP = gcc$/;"	m
 DEFINES	Makefile	/^DEFINES =$/;"	m
-FALSE	includes/configure.h	/^	FALSE = 0,$/;"	e	enum:Flag
-Flag	includes/configure.h	/^typedef enum Flag$/;"	g
-Flag	includes/configure.h	/^} Flag;$/;"	t	typeref:enum:Flag
-HASH_FUNCTION_INIT_VALUE	includes/htable.h	28;"	d
-HASH_FUNCTION_PRIME_NUMBER	includes/htable.h	29;"	d
-HTABLE_SIZE	includes/configure.h	8;"	d
-HTABLE_STORAGE	includes/configure.h	9;"	d
+HASH_FUNCTION_INIT_VALUE	includes/htable.h	29;"	d
+HASH_FUNCTION_PRIME_NUMBER	includes/htable.h	30;"	d
 HTableData	includes/htable.h	/^} HTableData;$/;"	t	typeref:struct:__anon1
 HTableMap	includes/htable.h	/^} HTableMap;$/;"	t	typeref:struct:__anon2
 HTableNode	includes/htable.h	/^typedef struct HTableNode$/;"	s
 HTableNode	includes/htable.h	/^} HTableNode;$/;"	t	typeref:struct:HTableNode
 HashType	includes/htable.h	/^typedef unsigned int HashType;$/;"	t
-HeaderMessageStruct	src/main.c	/^} HeaderMessageStruct;$/;"	t	typeref:struct:__anon5	file:
 LIBS	Makefile	/^LIBS =$/;"	m
-LOGIN	src/main.c	/^	LOGIN = 0,$/;"	e	enum:MessageType	file:
-MessageType	src/main.c	/^enum MessageType$/;"	g	file:
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
-PORT	src/main.c	7;"	d	file:
 PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
 PROJECT	Makefile	/^PROJECT = server$/;"	m
-REG	src/main.c	/^	REG,$/;"	e	enum:MessageType	file:
 RM	Makefile	/^RM = rm -rf$/;"	m
-SOURCES	Makefile	/^SOURCES = src\/main.c src\/htable.c src\/btree.c ..\/libs\/src\/my_string.c$/;"	m
-STDIN	includes/configure.h	11;"	d
-STDOUT	includes/configure.h	12;"	d
-TRUE	includes/configure.h	/^	TRUE,$/;"	e	enum:Flag
+SOURCES	Makefile	/^SOURCES = src\/main.c src\/htable.c src\/btree.c ..\/libs\/src\/my_string.c src\/communication.c$/;"	m
 __BTREE_H__	includes/btree.h	2;"	d
-__CONFIGURE_H__	includes/configure.h	2;"	d
+__COMMUNICATION_H__	includes/communication.h	2;"	d
 __HTABLE_H__	includes/htable.h	2;"	d
 array	includes/htable.h	/^	HTableNode ** array;$/;"	m	struct:__anon2
+btreeMap	src/main.c	/^BTreeMap * btreeMap;$/;"	v
 convertToBTreeData	src/btree.c	/^BTreeData * convertToBTreeData(String * login, char * ip, int pid)$/;"	f
 convertToHTableData	src/htable.c	/^HTableData * convertToHTableData(String * login, String * password)$/;"	f
 createBTree	src/btree.c	/^BTreeMap * createBTree()$/;"	f
@@ -52,7 +37,6 @@ createHTable	src/htable.c	/^HTableMap * createHTable()$/;"	f
 createHTableNode	src/htable.c	/^HTableNode * createHTableNode(HTableData * data)$/;"	f
 data	includes/btree.h	/^	BTreeData * data;$/;"	m	struct:BTreeNode
 data	includes/htable.h	/^	HTableData * data;$/;"	m	struct:HTableNode
-dataSize	src/main.c	/^	int dataSize;$/;"	m	struct:__anon5	file:
 deleteBTree	src/btree.c	/^void deleteBTree(BTreeMap * btreeMap)$/;"	f
 deleteBTreeData	src/btree.c	/^void deleteBTreeData(BTreeData * data)$/;"	f
 deleteBTreeNode	src/btree.c	/^void deleteBTreeNode(BTreeNode * node)$/;"	f
@@ -64,17 +48,16 @@ findHTableNodeInChein	src/htable.c	/^HTableData * findHTableNodeInChein(HTableNo
 findInBTree	src/btree.c	/^BTreeData * findInBTree(BTreeMap * btreeMap, String * login)$/;"	f
 findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, String * login)$/;"	f
 hashFunction	src/htable.c	/^HashType hashFunction(String * login)$/;"	f
+htableMap	src/main.c	/^HTableMap * htableMap;$/;"	v
 insertToBTree	src/btree.c	/^void insertToBTree(BTreeMap * btreeMap, BTreeData * data)$/;"	f
 insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
 ip	includes/btree.h	/^	char * ip;$/;"	m	struct:__anon3
 left	includes/btree.h	/^	struct BTreeNode * left;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
 login	includes/btree.h	/^	String * login;$/;"	m	struct:__anon3
 login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
-loginSize	src/main.c	/^	int loginSize;$/;"	m	struct:__anon5	file:
 main	src/main.c	/^int main()$/;"	f
 nextInChain	includes/htable.h	/^	struct HTableNode * nextInChain;$/;"	m	struct:HTableNode	typeref:struct:HTableNode::HTableNode
 password	includes/htable.h	/^	String * password;$/;"	m	struct:__anon1
-passwordSize	src/main.c	/^	int passwordSize;$/;"	m	struct:__anon5	file:
 pid	includes/btree.h	/^	int pid;$/;"	m	struct:__anon3
 printBTree	src/btree.c	/^void printBTree(BTreeMap * btreeMap)$/;"	f
 printBTreeData	src/btree.c	/^void printBTreeData(BTreeData * data)$/;"	f
@@ -85,10 +68,13 @@ printHTableNodeData	src/htable.c	/^void printHTableNodeData(HTableData * data)$/
 putInBTree	src/btree.c	/^int putInBTree(BTreeMap * btreeMap, BTreeNode * node)$/;"	f
 putInHTable	src/htable.c	/^int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)$/;"	f
 readHTableFromFile	src/htable.c	/^void readHTableFromFile(HTableMap * htableMap, const char * fileName)$/;"	f
+responceViaNet	src/communication.c	/^void responceViaNet(enum ReverseMessageType type, int newsockfd)$/;"	f
 right	includes/btree.h	/^	struct BTreeNode * right;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
 root	includes/btree.h	/^	BTreeNode * root;$/;"	m	struct:__anon4
 saveHTable	src/htable.c	/^void saveHTable(HTableMap * htableMap, const char * fileName)$/;"	f
 saveHTableNode	src/htable.c	/^void saveHTableNode(int fd, HTableNode * node)$/;"	f
 saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(int fd, HTableData * data)$/;"	f
+scanHeader	src/communication.c	/^int scanHeader(HeaderMessageStruct * header, int newsockfd)$/;"	f
+sendResponce	src/communication.c	/^int sendResponce(Flag flag, int newsockfd)$/;"	f
+serverFiniteStateMachine	src/communication.c	/^Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)$/;"	f
 size	includes/htable.h	/^	int size;$/;"	m	struct:__anon2
-type	src/main.c	/^	enum MessageType type;$/;"	m	struct:__anon5	typeref:enum:__anon5::MessageType	file:

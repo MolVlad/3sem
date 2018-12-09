@@ -17,7 +17,8 @@ String * createString()
 
 void deleteString(String * string)
 {
-	assert(string);
+	if(string == NULL)
+		return;
 
 	free(string->data);
 	free(string);
@@ -174,7 +175,7 @@ int stringGetAndPrint(int fd, String * string, int maxNum)
 
 	result = scanStringFromStream(fd, string, maxNum);
 	if((result != maxNum) && (maxNum >= 0))
-		return -1;
+		return -2;
 
 	result = printStringToStream(STDOUT, string);
 	if(result == -1)

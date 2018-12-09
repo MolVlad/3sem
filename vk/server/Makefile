@@ -1,6 +1,6 @@
 PROJECT = server
 
-SOURCES = src/main.c src/htable.c src/btree.c ../libs/src/my_string.c
+SOURCES = src/main.c src/htable.c src/btree.c ../libs/src/my_string.c src/communication.c
 INCLUDES += -I includes -I ../libs/includes
 DEFINES =
 CFLAGS = -Wall -Wextra

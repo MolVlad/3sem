@@ -5,6 +5,8 @@
 #include"print.h"
 #include"menu.h"
 
+extern int sockfd;
+
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {
 	static enum ConsoleState state = WELCOME_PAGE;
@@ -16,7 +18,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 		case WELCOME_PAGE:
 			switch(command)
 			{
-				case INIT:
+				case INITIALIZATION:
 					printf("Do you have an account? (y/n) <exit> for close\n");
 					return isAll;
 				case EXIT:
@@ -54,18 +56,20 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					state = WELCOME_PAGE;
 			}
 
-			consoleFiniteStateMachine(INIT);
+			consoleFiniteStateMachine(INITIALIZATION);
 
 			break;
 		case MAIN_MENU:
 			switch(command)
 			{
-				case INIT:
+				case INITIALIZATION:
 					printMainMenuCommandList();
 					state = MAIN_MENU;
 					return isAll;
 				case EXIT:
-					printLogOut();
+					logOut(sockfd);
+					//reconnect
+					setConnect();
 					state = WELCOME_PAGE;
 					break;
 				case SEND_MSG:
@@ -93,7 +97,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					state = MAIN_MENU;
 			}
 
-			consoleFiniteStateMachine(INIT);
+			consoleFiniteStateMachine(INITIALIZATION);
 
 			break;
 	}
@@ -146,8 +150,8 @@ void printConsoleCommand(enum ConsoleCommand command)
 
 	switch(command)
 	{
-		case INIT:
-			printf("INIT\n");
+		case INITIALIZATION:
+			printf("INITIALIZATION\n");
 			break;
 		case ERROR:
 			printf("ERROR\n");

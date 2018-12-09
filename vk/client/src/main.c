@@ -3,32 +3,21 @@
 #include"my_string.h"
 #include"console.h"
 #include"print.h"
+#include"menu.h"
 
 int sockfd = 0;
+char * ip;
 
 int main(int argc, char **argv)
 {
-	char ip[] = "127.0.0.1";
+	ip = (char *)calloc(16, sizeof(char));
 
 	if(argc == 2)
 		strcpy(ip, argv[1]);
+	else
+		strcpy(ip, "127.0.0.1");
 
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	CHECK("socket", sockfd);
-
-	struct sockaddr_in servaddr;
-	bzero(&servaddr, sizeof(servaddr));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(PORT);
-	if(inet_aton(ip, &servaddr.sin_addr) == 0)
-	{
-		printf("Invalid IP address\n");
-		close(sockfd);
-		exit(1);
-	}
-
-	int result = connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
-	CHECK("connect", result);
+	setConnect(sockfd);
 
 	String * string = createString();
 	assert(string);
@@ -45,6 +34,8 @@ int main(int argc, char **argv)
 
 	deleteString(string);
 	close(sockfd);
+
+	free(ip);
 
 	return 0;
 }

@@ -6,18 +6,25 @@
 
 #define NUM_SPACE_TO_BREAK 2
 
-#define PORT 51002
+#define PORT 51000
 
 #define HTABLE_SIZE 1
 #define HTABLE_STORAGE "txt/htable_storage"
 
 #define BACKLOG 1000
 
+enum ServerState
+{
+	INIT = 0,
+	WAITING_REQUESTS,
+};
+
 enum MessageType
 {
 	LOGIN = 0,
 	REG,
 	MSG,
+	END,
 };
 
 typedef struct
@@ -28,6 +35,19 @@ typedef struct
 	int passwordSize;
 	int dataSize;
 } HeaderMessageStruct;
+
+enum ReverseMessageType
+{
+	ACK = 0,
+	NACK,
+};
+
+typedef struct
+{
+	enum ReverseMessageType type;
+
+	int dataSize;
+} HeaderReverseMessageStruct;
 
 #define CHECK(nameFunction, retValue)				\
 do								\

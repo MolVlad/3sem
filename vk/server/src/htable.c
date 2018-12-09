@@ -259,6 +259,7 @@ HTableData * findHTableNodeInChein(HTableNode * compared, String * login)
 HTableData * findInHTable(HTableMap * htableMap, String * login)
 {
 	assert(login);
+	assert(htableMap);
 
 	HashType hash = hashFunction(login);
 
