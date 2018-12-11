@@ -9,21 +9,21 @@
 ////////////ждем ответа в очереди сообщений
 Flag sendToHandler(String * recipient, String * data, int fifo)
 {
-	Flag isOK;
+	Flag isOK = TRUE;
 
 	return isOK;
 }
 
 Flag createAccount(String * login, String * password, int fifo)
 {
-	Flag isOK;
+	Flag isOK = TRUE;
 
 	return isOK;
 }
 
 Flag checkAccount(String * login, String * password, int fifo)
 {
-	Flag isOK;
+	Flag isOK = TRUE;
 
 	return isOK;
 }

@@ -8,8 +8,16 @@
 int sockfd = 0;
 char * ip;
 
+void sigHandler(int nsig)
+{
+	printf("Print to stream error with SIGPIPE. nsig = %d\n", nsig);
+	exit(-1);
+}
+
 int main(int argc, char **argv)
 {
+	(void) signal(SIGPIPE, sigHandler);
+
 	ip = (char *)calloc(16, sizeof(char));
 
 	if(argc == 2)

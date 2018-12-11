@@ -10,7 +10,8 @@
 #define PORT 51000
 
 #define FILE_FOR_KEY  "../txt/ftok.txt"
-#define FIFO "../fifo"
+#define FIFO "../txt/fifo"
+#define FILE_LIST "../txt/list.txt"
 
 #define PERMISSION 0777
 

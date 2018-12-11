@@ -5,12 +5,10 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
-CLEAR_HISTORY	includes/console.h	/^	CLEAR_HISTORY,$/;"	e	enum:ConsoleCommand
 COMP	Makefile	/^COMP = gcc$/;"	m
 ConsoleCommand	includes/console.h	/^enum ConsoleCommand$/;"	g
 ConsoleState	includes/console.h	/^enum ConsoleState$/;"	g
 DEFINES	Makefile	/^DEFINES =$/;"	m
-DELETE_MSG	includes/console.h	/^	DELETE_MSG,$/;"	e	enum:ConsoleCommand
 ERROR	includes/console.h	/^	ERROR,$/;"	e	enum:ConsoleCommand
 EXIT	includes/console.h	/^	EXIT,$/;"	e	enum:ConsoleCommand
 INITIALIZATION	includes/console.h	/^	INITIALIZATION,$/;"	e	enum:ConsoleCommand
@@ -20,7 +18,6 @@ NO	includes/console.h	/^	NO,$/;"	e	enum:ConsoleCommand
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
 PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
 PROJECT	Makefile	/^PROJECT = client$/;"	m
-READ_DIALOGUE	includes/console.h	/^	READ_DIALOGUE,$/;"	e	enum:ConsoleCommand
 RM	Makefile	/^RM = rm -rf$/;"	m
 SEND_MSG	includes/console.h	/^	SEND_MSG,$/;"	e	enum:ConsoleCommand
 SOURCES	Makefile	/^SOURCES = src\/main.c src\/console.c src\/print.c src\/menu.c ..\/libs\/src\/my_string.c$/;"	m
@@ -31,25 +28,20 @@ __CONSOLE_STATE_H__	includes/console.h	2;"	d
 __MENU_H__	includes/menu.h	2;"	d
 __PRINT_H__	includes/print.h	2;"	d
 checkAccount	src/menu.c	/^Flag checkAccount()$/;"	f
-clearHistory	src/menu.c	/^void clearHistory()$/;"	f
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
 createAccount	src/menu.c	/^Flag createAccount()$/;"	f
-deleteMessage	src/menu.c	/^void deleteMessage()$/;"	f
 ip	src/main.c	/^char * ip;$/;"	v
 logOut	src/menu.c	/^void logOut(int socketFd)$/;"	f
 main	src/main.c	/^int main(int argc, char **argv)$/;"	f
 parseCommand	src/console.c	/^enum ConsoleCommand parseCommand(String * string)$/;"	f
-printConsoleCommand	src/console.c	/^void printConsoleCommand(enum ConsoleCommand command)$/;"	f
-printConsoleState	src/console.c	/^void printConsoleState(enum ConsoleState state)$/;"	f
 printError	src/print.c	/^void printError()$/;"	f
 printGoodbye	src/print.c	/^void printGoodbye()$/;"	f
 printGreeting	src/print.c	/^void printGreeting()$/;"	f
 printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
-readDialogue	src/menu.c	/^void readDialogue()$/;"	f
 receiveAnswer	src/menu.c	/^Flag receiveAnswer()$/;"	f
 scanHeaderReverse	src/menu.c	/^int scanHeaderReverse(int fd, HeaderReverseMessageStruct * header)$/;"	f
-sendMessage	src/menu.c	/^void sendMessage()$/;"	f
+sendMessage	src/menu.c	/^Flag sendMessage()$/;"	f
 sendViaNet	src/menu.c	/^void sendViaNet(enum MessageType type)$/;"	f
 setConnect	src/menu.c	/^void setConnect()$/;"	f
 sockfd	src/main.c	/^int sockfd = 0;$/;"	v

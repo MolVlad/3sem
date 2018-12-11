@@ -48,14 +48,17 @@ void replyViaNet(enum ReverseMessageType type, int newsockfd)
 		case NACK:
 			header.dataSize = 0;
 			break;
+		case LIST:
+			printf("error: replyViaNet with type = LIST\n");
+			exit(-1);
+			break;
 	}
 
 	int result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
-	CHECK("write to sockfd", result);
 	if(result != sizeof(HeaderReverseMessageStruct))
 	{
-		printf("write header error\n");
-		exit(0);
+		printf("write header error. result = %d\n", result);
+		exit(-1);
 	}
 }
 
@@ -64,7 +67,10 @@ int scanHeader(HeaderMessageStruct * header, int newsockfd)
 {
 	int result = read(newsockfd, header, sizeof(HeaderMessageStruct));
 	if(result != sizeof(HeaderMessageStruct))
+	{
+		printf("Read header error. result = %d\n", result);
 		return -1;
+	}
 
 	printf("Message. Header: ");
 	printf("type = %d, login size = %d, ", header->type, header->loginSize);
@@ -81,8 +87,8 @@ void sendList(int newsockfd)
 	CHECK("open list", list);
 
 	///////////взять семафор
-	result = scanTextFromStream(list, data, -1);
-	CHECK("scanStringFromStream data", result);
+	int result = scanTextFromStream(list, data, -1);
+	CHECK("scanTextFromStream data", result);
 	//////////отдать семафор
 
 	HeaderReverseMessageStruct header;
@@ -90,11 +96,10 @@ void sendList(int newsockfd)
 	header.type = LIST;
 	header.dataSize = data->currentSize;
 
-	int result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
-	CHECK("write to sockfd", result);
+	result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
 	if(result != sizeof(HeaderReverseMessageStruct))
 	{
-		printf("write header error\n");
+		printf("Header write error. result = %d\n", result);
 		exit(0);
 	}
 

@@ -7,6 +7,8 @@
 #include"sem.h"
 #include"fifo.h"
 
+HTableMap * htableMap;
+
 key_t getTheKey(const char * keyFileName)
 {
 	key_t key = ftok(keyFileName, 0);
@@ -15,9 +17,18 @@ key_t getTheKey(const char * keyFileName)
 	return key;
 }
 
+void sigHandler(int nsig)
+{
+	printf("Exit from handler with signal SIGINT, nsig = %d\n", nsig);
+	saveHTable(htableMap, HTABLE_STORAGE);
+	exit(0);
+}
+
 int main()
 {
-	HTableMap * htableMap = createHTable();
+	(void) signal(SIGINT, sigHandler);
+
+	htableMap = createHTable();
 	assert(htableMap);
 	readHTableFromFile(htableMap, HTABLE_STORAGE);
 
@@ -30,7 +41,7 @@ int main()
 
 	int fifo = createFIFO(FIFO);
 
-
+	while(1);
 
 
 
@@ -70,7 +81,6 @@ int main()
 	CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
 	remove(FIFO);
 	printHTable(htableMap);
-	saveHTable(htableMap, HTABLE_STORAGE);
 	deleteHTable(htableMap);
 	deleteBTree(btreeMap);
 

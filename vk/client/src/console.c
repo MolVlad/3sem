@@ -4,8 +4,7 @@
 #include"console.h"
 #include"print.h"
 #include"menu.h"
-
-extern int sockfd;
+#include"global.h"
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {

@@ -7,6 +7,6 @@ enum ServerState
 	WAITING_REQUESTS,
 };
 
-Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd, int fifo);
+Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd);
 
 #endif /* __STATE_H__ */

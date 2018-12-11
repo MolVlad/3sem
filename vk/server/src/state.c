@@ -4,8 +4,9 @@
 #include"state.h"
 #include"handler_communication.h"
 #include"user_communication.h"
+#include"global.h"
 
-Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd, int fifo)
+Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 {
 	static enum ServerState state = INIT;
 	static Flag isAll = FALSE;
@@ -51,7 +52,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd, int f
 				case REG:	//case with registration
 					printf("\nUser want to register\n");
 
-					isOK = createAccount(login, password, fifo);
+					isOK = createAccount(login, password);
 					if(isOK == TRUE)
 					{
 						state = WAITING_REQUESTS;
@@ -67,7 +68,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd, int f
 				case LOGIN:	//case with login
 					printf("\nUser want to login\n");
 
-					isOK = checkAccount(login, password, fifo);
+					isOK = checkAccount(login, password);
 					if(isOK == TRUE)
 					{
 						state = WAITING_REQUESTS;
@@ -82,6 +83,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd, int f
 					break;
 				default:
 					printf("Wrond msg type for init state\n");
+					exit(-1);
 					break;
 			}
 
@@ -90,7 +92,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd, int f
 			switch(header->type)
 			{
 				case MSG:
-					isOK = sendToHandler(login, data, fifo);
+					isOK = sendToHandler(login, data);
 					if(isOK == TRUE)
 					{
 						state = WAITING_REQUESTS;

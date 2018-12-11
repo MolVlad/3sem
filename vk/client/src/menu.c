@@ -3,9 +3,7 @@
 #include"my_string.h"
 #include"menu.h"
 #include"print.h"
-
-extern int sockfd;
-extern char * ip;
+#include"global.h"
 
 void setConnect()
 {
@@ -31,11 +29,11 @@ void setConnect()
 int scanHeaderReverse(int fd, HeaderReverseMessageStruct * header)
 {
 	int result = read(fd, header, sizeof(HeaderReverseMessageStruct));
-	if(result != sizeof(HeaderMessageStruct))
+	if(result != sizeof(HeaderReverseMessageStruct))
+	{
+		printf("Scan header reverse error. Result = %d\n", result);
 		return -1;
-
-	printf("\nAnswer!\nHeader:\n");
-	printf("type = %d, data size = %d\n", header->type, header->dataSize);
+	}
 
 	return 0;
 }
@@ -149,13 +147,16 @@ void sendViaNet(enum MessageType type)
 			break;
 	}
 
+	printf("before header\n");
+
 	result = write(sockfd, &header, sizeof(HeaderMessageStruct));
-	CHECK("write to sockfd", result);
 	if(result != sizeof(HeaderMessageStruct))
 	{
-		printf("write header error\n");
-		exit(0);
+		printf("write header error. result = %d\n", result);
+		exit(-1);
 	}
+
+	printf("after header before login\n");
 
 	if(header.loginSize)
 	{
@@ -163,17 +164,23 @@ void sendViaNet(enum MessageType type)
 		CHECK("printStringToStream login", result);
 	}
 
+	printf("before password\n");
+
 	if(header.passwordSize)
 	{
 		result = printStringToStream(sockfd, password);
 		CHECK("printStringToStream password", result);
 	}
 
+	printf("before data\n");
+
 	if(header.dataSize)
 	{
 		result = printStringToStream(sockfd, data);
 		CHECK("printStringToStream data", result);
 	}
+
+	printf("after data\n");
 
 	deleteString(login);
 	deleteString(password);
@@ -207,6 +214,6 @@ Flag sendMessage()
 
 void userList()
 {
-	sendViaNet(LIST);
+	sendViaNet(LIST_REQUEST);
 	receiveAnswer();
 }

@@ -10,14 +10,27 @@
 
 #define REQUEST_NUMBER 5
 
+int handlerPid;
+int fifo;
+
+void sigHandler(int nsig)
+{
+	printf("Exit from server with signal SIGINT, nsig = %d\n", nsig);
+	kill(handlerPid, SIGINT);
+	exit(0);
+}
+
 int main()
 {
+	(void) signal(SIGINT, sigHandler);
+
 	int sockfd = raiseServer();
 
 	int result = createThreadToFightZombie();
 	CHECK("createThreadToFightZombie", result);
 
-	if(fork() == 0)
+	handlerPid = fork();
+	if(handlerPid == 0)
 		execlp("handler/handler", "handler", NULL);
 
 	//for debug via valgrind
@@ -53,7 +66,7 @@ int main()
 					isAll = TRUE;
 				}
 				else
-					isAll = serverFiniteStateMachine(&header, newsockfd, fifo);
+					isAll = serverFiniteStateMachine(&header, newsockfd);
 			}
 
 			close(fifo);
