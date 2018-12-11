@@ -1,5 +1,6 @@
 #include"libs.h"
 #include"config.h"
+#include"general_config.h"
 #include"my_string.h"
 #include"htable.h"
 

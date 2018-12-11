@@ -1,29 +1,25 @@
-#ifndef __CONFIG_H__
-#define __CONFIG_H__
+#ifndef __GENERAL_CONFIG_H__
+#define __GENERAL_CONFIG_H__
 
 #define STDIN 1
 #define STDOUT 0
 
+//number of \n in the string after that it ends
 #define NUM_SPACE_TO_BREAK 2
 
 #define PORT 51000
 
-#define HTABLE_SIZE 1
-#define HTABLE_STORAGE "txt/htable_storage"
+#define FILE_FOR_KEY  "../txt/ftok.txt"
+#define FIFO "../fifo"
 
-#define BACKLOG 1000
-
-enum ServerState
-{
-	INIT = 0,
-	WAITING_REQUESTS,
-};
+#define PERMISSION 0777
 
 enum MessageType
 {
 	LOGIN = 0,
 	REG,
 	MSG,
+	LIST_REQUEST,
 	END,
 };
 
@@ -40,6 +36,7 @@ enum ReverseMessageType
 {
 	ACK = 0,
 	NACK,
+	LIST,
 };
 
 typedef struct
@@ -48,6 +45,12 @@ typedef struct
 
 	int dataSize;
 } HeaderReverseMessageStruct;
+
+typedef enum Flag
+{
+	FALSE = 0,
+	TRUE,
+} Flag;
 
 #define CHECK(nameFunction, retValue)				\
 do								\
@@ -59,10 +62,4 @@ do								\
 	}							\
 }while(0)							\
 
-typedef enum Flag
-{
-	FALSE = 0,
-	TRUE,
-} Flag;
-
-#endif /* __CONFIG_H__ */
+#endif /* __GENERAL_CONFIG_H__ */

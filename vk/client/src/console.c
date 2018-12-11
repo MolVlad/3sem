@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"config.h"
+#include"general_config.h"
 #include"my_string.h"
 #include"console.h"
 #include"print.h"
@@ -73,23 +73,21 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					state = WELCOME_PAGE;
 					break;
 				case SEND_MSG:
-					sendMessage();
-					state = MAIN_MENU;
-					break;
-				case READ_DIALOGUE:
-					readDialogue();
+					isOK = sendMessage();
+					if(isOK == TRUE)
+					{
+						printf("Success\n");
+						state = MAIN_MENU;
+					}
+					else if(isOK == FALSE)
+					{
+						printf("User is unavailable\n");
+						state = WELCOME_PAGE;
+					}
 					state = MAIN_MENU;
 					break;
 				case USERS_LIST:
 					userList();
-					state = MAIN_MENU;
-					break;
-				case DELETE_MSG:
-					deleteMessage();
-					state = MAIN_MENU;
-					break;
-				case CLEAR_HISTORY:
-					clearHistory();
 					state = MAIN_MENU;
 					break;
 				default:
@@ -117,68 +115,8 @@ enum ConsoleCommand parseCommand(String * string)
 		return EXIT;
 	if(strcmp(string->data, "send") == 0)
 		return SEND_MSG;
-	if(strcmp(string->data, "read") == 0)
-		return READ_DIALOGUE;
 	if(strcmp(string->data, "users") == 0)
 		return USERS_LIST;
-	if(strcmp(string->data, "delete") == 0)
-		return DELETE_MSG;
-	if(strcmp(string->data, "clear") == 0)
-		return CLEAR_HISTORY;
 
 	return ERROR;
-}
-
-void printConsoleState(enum ConsoleState state)
-{
-	printf("ConsoleState = ");
-
-	switch(state)
-	{
-		case WELCOME_PAGE:
-			printf("WELCOME_PAGE\n");
-			break;
-		case MAIN_MENU:
-			printf("MAIN_MENU\n");
-			break;
-	}
-}
-
-void printConsoleCommand(enum ConsoleCommand command)
-{
-	printf("ConsoleCommand = ");
-
-	switch(command)
-	{
-		case INITIALIZATION:
-			printf("INITIALIZATION\n");
-			break;
-		case ERROR:
-			printf("ERROR\n");
-			break;
-		case YES:
-			printf("YES\n");
-			break;
-		case NO:
-			printf("NO\n");
-			break;
-		case EXIT:
-			printf("EXIT\n");
-			break;
-		case SEND_MSG:
-			printf("SEND_MSG\n");
-			break;
-		case READ_DIALOGUE:
-			printf("READ_DIALOGUE\n");
-			break;
-		case USERS_LIST:
-			printf("USERS_LIST\n");
-			break;
-		case DELETE_MSG:
-			printf("DELETE_MSG\n");
-			break;
-		case CLEAR_HISTORY:
-			printf("CLEAR_HISTORY\n");
-			break;
-	}
 }

@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"config.h"
+#include"general_config.h"
 #include"my_string.h"
 #include"menu.h"
 #include"print.h"
@@ -40,14 +40,20 @@ int scanHeaderReverse(int fd, HeaderReverseMessageStruct * header)
 	return 0;
 }
 
-
-
 Flag receiveAnswer()
 {
 	Flag ret;
 
 	HeaderReverseMessageStruct header;
-	scanHeaderReverse(sockfd, &header);
+	int result = scanHeaderReverse(sockfd, &header);
+	if(result == -1)
+	{
+		printf("Connection error: \n");
+		printf("failed to accept header\n");
+		exit(-1);
+	}
+
+	String * data;
 
 	switch(header.type)
 	{
@@ -68,9 +74,17 @@ Flag receiveAnswer()
 			//it should be equal to zero in the init message (there are no data)
 			if(header.dataSize != 0)
 			{
-				printf("ACK error, there are data\n");
+				printf("NACK error, there are data\n");
 				break;
 			}
+
+			break;
+		case LIST:
+			data = createString();
+			result = scanStringFromStream(sockfd, data, header.dataSize);
+			CHECK("scanStringFromStream", result);
+			printf("List of users online:\n");
+			printStringToStream(STDOUT, data);
 
 			break;
 	}
@@ -110,7 +124,12 @@ void sendViaNet(enum MessageType type)
 
 			break;
 		case MSG:
-			header.loginSize = 0;
+			printf("recipient:\n");
+			login = createString();
+			result = scanStringFromStream(STDIN, login, -1);
+			CHECK("scanStringFromStream login", result);
+			header.loginSize = login->currentSize;
+
 			header.passwordSize = 0;
 
 			printf("data:\n");
@@ -121,6 +140,7 @@ void sendViaNet(enum MessageType type)
 			header.dataSize = data->currentSize;
 
 			break;
+		case LIST_REQUEST:
 		case END:
 			header.loginSize = 0;
 			header.passwordSize = 0;
@@ -163,6 +183,7 @@ void sendViaNet(enum MessageType type)
 void logOut(int socketFd)
 {
 	printLogOut();
+	sendViaNet(END);
 	close(socketFd);
 }
 
@@ -178,24 +199,14 @@ Flag createAccount()
 	return receiveAnswer();
 }
 
-void sendMessage()
+Flag sendMessage()
 {
 	sendViaNet(MSG);
+	return receiveAnswer();
 }
-void readDialogue()
-{
 
-}
 void userList()
 {
-
-}
-
-void deleteMessage()
-{
-
-}
-void clearHistory()
-{
-
+	sendViaNet(LIST);
+	receiveAnswer();
 }

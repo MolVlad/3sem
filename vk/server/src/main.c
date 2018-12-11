@@ -1,39 +1,28 @@
 #include"libs.h"
 #include"config.h"
+#include"general_config.h"
 #include"my_string.h"
-#include"htable.h"
-#include"btree.h"
-#include"communication.h"
+#include"handler_communication.h"
+#include"user_communication.h"
+#include"zombie.h"
+#include"state.h"
+#include"fifo.h"
 
-HTableMap * htableMap;
-BTreeMap * btreeMap;
+#define REQUEST_NUMBER 5
 
 int main()
 {
-	htableMap = createHTable();
-	assert(htableMap);
-	readHTableFromFile(htableMap, HTABLE_STORAGE);
+	int sockfd = raiseServer();
 
-	btreeMap = createBTree();
-	assert(btreeMap);
+	int result = createThreadToFightZombie();
+	CHECK("createThreadToFightZombie", result);
 
-	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	CHECK("socket", sockfd);
+	if(fork() == 0)
+		execlp("handler/handler", "handler", NULL);
 
-	struct sockaddr_in servaddr;
-	bzero(&servaddr, sizeof(servaddr));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(PORT);
-	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-	int result = bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
-	CHECK("bind", result);
-
-	result = listen(sockfd, BACKLOG);
-	CHECK("listen", result);
-	printf("listen!\n");
-
-	///////////////// сюда добавить выход по сигналу
+	//for debug via valgrind
+	//int k = REQUEST_NUMBER;
+	//while(k--)
 	while(1)
 	{
 		struct sockaddr_in cliaddr;
@@ -42,13 +31,17 @@ int main()
 		CHECK("accept", newsockfd);
 
 		//communicate with user in other process
-		int pid = fork();
-		CHECK("fork", pid);
-		if(pid == 0)
+		if(fork() == 0)
 		{
 			//close first socket in child process
 			close(sockfd);
 
+			printf("New user. Pid for handle: %d\n", getpid());
+
+			int fifo = openFIFO(FIFO);
+
+			/////////нужна отдельная нить, которая будет слушать из другой очереди сообщений
+			/////////нужен семафор для синхронизации отправки пользователю
 			HeaderMessageStruct header;
 			Flag isAll = FALSE;
 			while(isAll == FALSE)
@@ -56,26 +49,17 @@ int main()
 				result = scanHeader(&header, newsockfd);
 				if(result == -1)
 				{
-					printf("Can't scan header, close connect\n");
+					printf("Close connect. Pid of process: %d\n", getpid());
 					isAll = TRUE;
 				}
 				else
-					isAll = serverFiniteStateMachine(&header, newsockfd);
+					isAll = serverFiniteStateMachine(&header, newsockfd, fifo);
 			}
 
-			deleteHTable(htableMap);
-			deleteBTree(btreeMap);
+			close(fifo);
 
 			//end of process work
 			exit(0);
-		}
-		else
-		{
-			//переписать, чтобы родитель сохранял информацию о процессе
-			//parent waits for child (for debug)
-			int status;
-			waitpid(pid, &status, 0);
-			printf("waitpid\n");
 		}
 
 		//close socket for this user n both process
@@ -83,9 +67,6 @@ int main()
 	}
 
 	//save list of logins/passwords and free memory
-	saveHTable(htableMap, HTABLE_STORAGE);
-	deleteHTable(htableMap);
-	deleteBTree(btreeMap);
 	close(sockfd);
 
 	return 0;

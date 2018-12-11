@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"config.h"
+#include"general_config.h"
 #include"print.h"
 
 void printGreeting()
@@ -21,10 +21,7 @@ void printMainMenuCommandList()
 {
 	printf("\nCommands:\n");
 	printf("<send>\t\twrite a message to someone\n");
-	printf("<read>\t\tprint dialogue with someone\n");
 	printf("<users>\t\tprint list of users\n");
-	printf("<delete>\t\tremove some message\n");
-	printf("<clear>\t\tclear char with someone\n");
 	printf("<exit>\t\tlog out\n");
 	printf("\n");
 }

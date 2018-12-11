@@ -1,5 +1,5 @@
 #include"libs.h"
-#include"config.h"
+#include"general_config.h"
 #include"my_string.h"
 #include"console.h"
 #include"print.h"
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
 	printGreeting();
 
-	Flag isAll = consoleFiniteStateMachine(INIT);
+	Flag isAll = consoleFiniteStateMachine(INITIALIZATION);
 	do
 	{
 		scanStringFromStream(STDIN, string, -1);
@@ -33,6 +33,7 @@ int main(int argc, char **argv)
 	while(isAll == FALSE);
 
 	deleteString(string);
+	sendViaNet(END);
 	close(sockfd);
 
 	free(ip);

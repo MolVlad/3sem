@@ -7,10 +7,7 @@ void sendViaNet(enum MessageType type);
 Flag checkAccount();
 Flag createAccount();
 void logOut(int socketFd);
-void sendMessage();
-void readDialogue();
+Flag sendMessage();
 void userList();
-void deleteMessage();
-void clearHistory();
 
 #endif /* __MENU_H__ */
