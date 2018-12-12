@@ -26,15 +26,12 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	String * password = createString();
 	String * data = createString();
 
-	printf("login:\n");
 	result = stringGetAndPrint(newsockfd, login, header->loginSize);
 	CHECK("stringGetAndCheck login", result);
 
-	printf("password:\n");
 	result = stringGetAndPrint(newsockfd, password, header->passwordSize);
 	CHECK("stringGetAndCheck password", result);
 
-	printf("data:\n");
 	result = stringGetAndPrint(newsockfd, data, header->dataSize);
 	CHECK("stringGetAndCheck password", result);
 
