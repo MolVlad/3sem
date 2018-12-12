@@ -8,6 +8,7 @@ CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
 COMP	Makefile	/^COMP = gcc$/;"	m
 ConsoleCommand	includes/console.h	/^enum ConsoleCommand$/;"	g
 ConsoleState	includes/console.h	/^enum ConsoleState$/;"	g
+DEFAULT_IP	includes/config.h	5;"	d
 DEFINES	Makefile	/^DEFINES =$/;"	m
 ERROR	includes/console.h	/^	ERROR,$/;"	e	enum:ConsoleCommand
 EXIT	includes/console.h	/^	EXIT,$/;"	e	enum:ConsoleCommand
@@ -15,19 +16,25 @@ INITIALIZATION	includes/console.h	/^	INITIALIZATION,$/;"	e	enum:ConsoleCommand
 LIBS	Makefile	/^LIBS =$/;"	m
 MAIN_MENU	includes/console.h	/^	MAIN_MENU,$/;"	e	enum:ConsoleState
 NO	includes/console.h	/^	NO,$/;"	e	enum:ConsoleCommand
+NUM_OF_SEM	includes/config.h	7;"	d
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
 PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
 PROJECT	Makefile	/^PROJECT = client$/;"	m
 RM	Makefile	/^RM = rm -rf$/;"	m
 SEND_MSG	includes/console.h	/^	SEND_MSG,$/;"	e	enum:ConsoleCommand
+SIZE_IP	includes/config.h	4;"	d
 SOURCES	Makefile	/^SOURCES = src\/main.c src\/console.c src\/print.c src\/menu.c ..\/libs\/src\/my_string.c$/;"	m
+SemName	includes/config.h	/^enum SemName$/;"	g
 USERS_LIST	includes/console.h	/^	USERS_LIST,$/;"	e	enum:ConsoleCommand
 WELCOME_PAGE	includes/console.h	/^	WELCOME_PAGE = 0,$/;"	e	enum:ConsoleState
 YES	includes/console.h	/^	YES,$/;"	e	enum:ConsoleCommand
+__CONFIG_H__	includes/config.h	2;"	d
 __CONSOLE_STATE_H__	includes/console.h	2;"	d
+__GLOBAL_H__	includes/global.h	2;"	d
 __MENU_H__	includes/menu.h	2;"	d
 __PRINT_H__	includes/print.h	2;"	d
 checkAccount	src/menu.c	/^Flag checkAccount()$/;"	f
+communicationWithServer	includes/config.h	/^	communicationWithServer,	\/\/mutex for communicate$/;"	e	enum:SemName
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
 createAccount	src/menu.c	/^Flag createAccount()$/;"	f
 ip	src/main.c	/^char * ip;$/;"	v
@@ -40,9 +47,14 @@ printGreeting	src/print.c	/^void printGreeting()$/;"	f
 printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
 receiveAnswer	src/menu.c	/^Flag receiveAnswer()$/;"	f
+receiveMessage	src/menu.c	/^void receiveMessage()$/;"	f
 scanHeaderReverse	src/menu.c	/^int scanHeaderReverse(int fd, HeaderReverseMessageStruct * header)$/;"	f
+semid	src/main.c	/^int semid;$/;"	v
 sendMessage	src/menu.c	/^Flag sendMessage()$/;"	f
 sendViaNet	src/menu.c	/^void sendViaNet(enum MessageType type)$/;"	f
 setConnect	src/menu.c	/^void setConnect()$/;"	f
-sockfd	src/main.c	/^int sockfd = 0;$/;"	v
+sigHandler	src/main.c	/^void sigHandler(int nsig)$/;"	f
+sockfd	src/main.c	/^int sockfd;$/;"	v
+startOfCommunication	includes/config.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName
+thread	src/main.c	/^void *thread(void * arg)$/;"	f
 userList	src/menu.c	/^void userList()$/;"	f

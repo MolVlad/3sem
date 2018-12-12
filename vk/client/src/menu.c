@@ -71,10 +71,7 @@ Flag receiveAnswer()
 
 			//it should be equal to zero in the init message (there are no data)
 			if(header.dataSize != 0)
-			{
 				printf("NACK error, there are data\n");
-				break;
-			}
 
 			break;
 		case LIST:
@@ -82,6 +79,19 @@ Flag receiveAnswer()
 			result = scanStringFromStream(sockfd, data, header.dataSize);
 			CHECK("scanStringFromStream", result);
 			printf("List of users online:\n");
+			printStringToStream(STDOUT, data);
+
+			break;
+		case MESSAGE:
+			if(header.dataSize == 2)
+				ret = FALSE;
+			else
+				ret = TRUE;
+
+			data = createString();
+			result = scanStringFromStream(sockfd, data, header.dataSize);
+			CHECK("scanStringFromStream", result);
+			printf("Message:\n");
 			printStringToStream(STDOUT, data);
 
 			break;
@@ -138,6 +148,7 @@ void sendViaNet(enum MessageType type)
 			header.dataSize = data->currentSize;
 
 			break;
+		case RCV:
 		case LIST_REQUEST:
 		case END:
 			header.loginSize = 0;
@@ -147,8 +158,6 @@ void sendViaNet(enum MessageType type)
 			break;
 	}
 
-	printf("before header\n");
-
 	result = write(sockfd, &header, sizeof(HeaderMessageStruct));
 	if(result != sizeof(HeaderMessageStruct))
 	{
@@ -156,15 +165,11 @@ void sendViaNet(enum MessageType type)
 		exit(-1);
 	}
 
-	printf("after header before login\n");
-
 	if(header.loginSize)
 	{
 		result = printStringToStream(sockfd, login);
 		CHECK("printStringToStream login", result);
 	}
-
-	printf("before password\n");
 
 	if(header.passwordSize)
 	{
@@ -172,15 +177,11 @@ void sendViaNet(enum MessageType type)
 		CHECK("printStringToStream password", result);
 	}
 
-	printf("before data\n");
-
 	if(header.dataSize)
 	{
 		result = printStringToStream(sockfd, data);
 		CHECK("printStringToStream data", result);
 	}
-
-	printf("after data\n");
 
 	deleteString(login);
 	deleteString(password);
@@ -192,6 +193,12 @@ void logOut(int socketFd)
 	printLogOut();
 	sendViaNet(END);
 	close(socketFd);
+}
+
+Flag receiveMessage()
+{
+	sendViaNet(RCV);
+	return receiveAnswer();
 }
 
 Flag checkAccount()

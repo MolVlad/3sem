@@ -1,10 +1,12 @@
 #include"libs.h"
+#include"config.h"
 #include"general_config.h"
 #include"my_string.h"
 #include"console.h"
 #include"print.h"
 #include"menu.h"
 #include"global.h"
+#include"sem.h"
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {
@@ -29,6 +31,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					if(isOK == TRUE)
 					{
 						printf("Success\n");
+						semOperation(semid, startOfCommunication, 1);
 						state = MAIN_MENU;
 					}
 					else if(isOK == FALSE)
@@ -42,6 +45,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					if(isOK == TRUE)
 					{
 						printf("Success\n");
+						semOperation(semid, startOfCommunication, 1);
 						state = MAIN_MENU;
 					}
 					else if(isOK == FALSE)
@@ -67,6 +71,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					return isAll;
 				case EXIT:
 					logOut(sockfd);
+					semOperation(semid, startOfCommunication, -1);
 					//reconnect
 					setConnect();
 					state = WELCOME_PAGE;

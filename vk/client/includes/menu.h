@@ -4,6 +4,7 @@
 void setConnect();
 void sendViaNet(enum MessageType type);
 
+Flag receiveMessage();
 Flag checkAccount();
 Flag createAccount();
 void logOut(int socketFd);
