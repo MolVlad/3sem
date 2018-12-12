@@ -35,7 +35,6 @@ __HTABLE_H__	includes/htable.h	2;"	d
 __SEM_H__	includes/sem.h	2;"	d
 array	includes/htable.h	/^	HTableNode ** array;$/;"	m	struct:__anon2
 btreeMap	src/main.c	/^BTreeMap * btreeMap;$/;"	v
-communicationWithServer	includes/sem.h	/^	communicationWithServer,	\/\/mutex for communicate$/;"	e	enum:SemName
 connectToSem	src/sem.c	/^int connectToSem(key_t key, int num)$/;"	f
 convertToBTreeData	src/btree.c	/^BTreeData * convertToBTreeData(String * login, int pid)$/;"	f
 convertToHTableData	src/htable.c	/^HTableData * convertToHTableData(String * login, String * password)$/;"	f
@@ -49,11 +48,13 @@ data	includes/htable.h	/^	HTableData * data;$/;"	m	struct:HTableNode
 deleteBTree	src/btree.c	/^void deleteBTree(BTreeMap * btreeMap)$/;"	f
 deleteBTreeData	src/btree.c	/^void deleteBTreeData(BTreeData * data)$/;"	f
 deleteBTreeNode	src/btree.c	/^void deleteBTreeNode(BTreeNode * node)$/;"	f
-deleteFromBTree	src/btree.c	/^void deleteFromBTree(BTreeMap * btreeMap, String * string)$/;"	f
+deleteFromBTree	src/btree.c	/^void deleteFromBTree(BTreeMap * btreeMap, String * target)$/;"	f
+deleteFromBTreeNode	src/btree.c	/^BTreeNode * deleteFromBTreeNode(BTreeNode * node, String * target)$/;"	f
 deleteHTable	src/htable.c	/^void deleteHTable(HTableMap * htableMap)$/;"	f
 deleteHTableData	src/htable.c	/^void deleteHTableData(HTableData * data)$/;"	f
 deleteHTableNode	src/htable.c	/^void deleteHTableNode(HTableNode * node)$/;"	f
 fifo	src/main.c	/^int fifo;$/;"	v
+fifoSynch	includes/sem.h	/^	fifoSynch = 0,$/;"	e	enum:SemName
 findBTreeNode	src/btree.c	/^BTreeData * findBTreeNode(BTreeNode * compared, String * login)$/;"	f
 findHTableNodeInChein	src/htable.c	/^HTableData * findHTableNodeInChein(HTableNode * compared, String * login)$/;"	f
 findInBTree	src/btree.c	/^BTreeData * findInBTree(BTreeMap * btreeMap, String * login)$/;"	f
@@ -64,8 +65,8 @@ hashFunction	src/htable.c	/^HashType hashFunction(String * login)$/;"	f
 htableMap	src/main.c	/^HTableMap * htableMap;$/;"	v
 insertToBTree	src/btree.c	/^void insertToBTree(BTreeMap * btreeMap, BTreeData * data)$/;"	f
 insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
-ip	includes/btree.h	/^	char * ip;$/;"	m	struct:__anon3
 left	includes/btree.h	/^	struct BTreeNode * left;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
+listSynch	includes/sem.h	/^	listSynch,$/;"	e	enum:SemName
 login	includes/btree.h	/^	String * login;$/;"	m	struct:__anon3
 login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
 main	src/main.c	/^int main()$/;"	f
@@ -87,12 +88,15 @@ readHTableFromFile	src/htable.c	/^void readHTableFromFile(HTableMap * htableMap,
 replyWithMSG	src/main.c	/^void replyWithMSG(int pid, Flag isOK)$/;"	f
 right	includes/btree.h	/^	struct BTreeNode * right;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
 root	includes/btree.h	/^	BTreeNode * root;$/;"	m	struct:__anon4
+saveBTree	src/btree.c	/^void saveBTree(BTreeMap * btreeMap, const char * fileName)$/;"	f
+saveBTreeData	src/btree.c	/^void saveBTreeData(BTreeData * data, int fd)$/;"	f
+saveBTreeNode	src/btree.c	/^void saveBTreeNode(BTreeNode * node, int fd)$/;"	f
 saveHTable	src/htable.c	/^void saveHTable(HTableMap * htableMap, const char * fileName)$/;"	f
 saveHTableNode	src/htable.c	/^void saveHTableNode(int fd, HTableNode * node)$/;"	f
 saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(int fd, HTableData * data)$/;"	f
 scanPid	src/main.c	/^int scanPid()$/;"	f
 semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
 semid	src/main.c	/^int semid;$/;"	v
+serverThread	includes/sem.h	/^	serverThread,$/;"	e	enum:SemName
 sigHandler	src/main.c	/^void sigHandler(int nsig)$/;"	f
 size	includes/htable.h	/^	int size;$/;"	m	struct:__anon2
-startOfCommunication	includes/sem.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName

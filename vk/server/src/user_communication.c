@@ -4,6 +4,8 @@
 #include"my_string.h"
 #include"user_communication.h"
 #include"fifo.h"
+#include"sem.h"
+#include"global.h"
 
 int raiseServer()
 {
@@ -82,11 +84,12 @@ int scanHeader(HeaderMessageStruct * header, int newsockfd)
 
 void sendMessage(int newsockfd)
 {
+	//////////////////////чтение от другого процесса. ???
 	String * data = createString();
 	printf("Print message:\n");
 	int result = scanTextFromStream(STDIN, data, -1);
 	CHECK("scanTextFromStream data", result);
-
+///////////////////////////////////////////
 	HeaderReverseMessageStruct header;
 	bzero(&header, sizeof(HeaderReverseMessageStruct));
 	header.type = MESSAGE;
@@ -112,10 +115,10 @@ void sendList(int newsockfd)
 	int list = open(FILE_LIST, O_RDWR);
 	CHECK("open list", list);
 
-	///////////взять семафор
+	semOperation(semid, listSynch, -1);
 	int result = scanTextFromStream(list, data, -1);
 	CHECK("scanTextFromStream data", result);
-	//////////отдать семафор
+	semOperation(semid, listSynch, 1);
 
 	HeaderReverseMessageStruct header;
 	bzero(&header, sizeof(HeaderReverseMessageStruct));

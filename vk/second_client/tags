@@ -1,0 +1,71 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
+CLIENT_FILE_FOR_KEY	includes/sem.h	4;"	d
+COMP	Makefile	/^COMP = gcc$/;"	m
+ConsoleCommand	includes/console.h	/^enum ConsoleCommand$/;"	g
+ConsoleState	includes/console.h	/^enum ConsoleState$/;"	g
+DEFAULT_IP	includes/config.h	5;"	d
+DEFINES	Makefile	/^DEFINES =$/;"	m
+ERROR	includes/console.h	/^	ERROR,$/;"	e	enum:ConsoleCommand
+EXIT	includes/console.h	/^	EXIT,$/;"	e	enum:ConsoleCommand
+INITIALIZATION	includes/console.h	/^	INITIALIZATION,$/;"	e	enum:ConsoleCommand
+LIBS	Makefile	/^LIBS = -lpthread$/;"	m
+MAIN_MENU	includes/console.h	/^	MAIN_MENU,$/;"	e	enum:ConsoleState
+NO	includes/console.h	/^	NO,$/;"	e	enum:ConsoleCommand
+NUM_OF_SEM	includes/sem.h	5;"	d
+OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
+PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
+PROJECT	Makefile	/^PROJECT = client$/;"	m
+RM	Makefile	/^RM = rm -rf$/;"	m
+SEND_MSG	includes/console.h	/^	SEND_MSG,$/;"	e	enum:ConsoleCommand
+SIZE_IP	includes/config.h	4;"	d
+SOURCES	Makefile	/^SOURCES = src\/main.c src\/console.c src\/print.c src\/menu.c ..\/libs\/src\/my_string.c src\/sem.c src\/thread.c$/;"	m
+SemName	includes/sem.h	/^enum SemName$/;"	g
+USERS_LIST	includes/console.h	/^	USERS_LIST,$/;"	e	enum:ConsoleCommand
+WELCOME_PAGE	includes/console.h	/^	WELCOME_PAGE = 0,$/;"	e	enum:ConsoleState
+YES	includes/console.h	/^	YES,$/;"	e	enum:ConsoleCommand
+__CONFIG_H__	includes/config.h	2;"	d
+__CONSOLE_STATE_H__	includes/console.h	2;"	d
+__GLOBAL_H__	includes/global.h	2;"	d
+__MENU_H__	includes/menu.h	2;"	d
+__PRINT_H__	includes/print.h	2;"	d
+__SEM_H__	includes/sem.h	2;"	d
+__THREAD_H__	includes/thread.h	2;"	d
+checkAccount	src/menu.c	/^Flag checkAccount()$/;"	f
+communicationWithServer	includes/sem.h	/^	communicationWithServer,	\/\/mutex for communicate$/;"	e	enum:SemName
+connectToSem	src/sem.c	/^int connectToSem(key_t key, int num)$/;"	f
+consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
+createAccount	src/menu.c	/^Flag createAccount()$/;"	f
+createSem	src/sem.c	/^int createSem(key_t key, int num)$/;"	f
+createThread	src/thread.c	/^void createThread()$/;"	f
+deleteThread	src/thread.c	/^void deleteThread()$/;"	f
+getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+ip	src/main.c	/^char * ip;$/;"	v
+logOut	src/menu.c	/^void logOut(int socketFd)$/;"	f
+main	src/main.c	/^int main(int argc, char **argv)$/;"	f
+parseCommand	src/console.c	/^enum ConsoleCommand parseCommand(String * string)$/;"	f
+printError	src/print.c	/^void printError()$/;"	f
+printGoodbye	src/print.c	/^void printGoodbye()$/;"	f
+printGreeting	src/print.c	/^void printGreeting()$/;"	f
+printLogOut	src/print.c	/^void printLogOut()$/;"	f
+printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
+receiveAnswer	src/menu.c	/^Flag receiveAnswer()$/;"	f
+receiveMessage	src/menu.c	/^Flag receiveMessage()$/;"	f
+scanHeaderReverse	src/menu.c	/^int scanHeaderReverse(int fd, HeaderReverseMessageStruct * header)$/;"	f
+semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
+semid	src/main.c	/^int semid;$/;"	v
+sendMessage	src/menu.c	/^Flag sendMessage()$/;"	f
+sendViaNet	src/menu.c	/^void sendViaNet(enum MessageType type)$/;"	f
+setConnect	src/menu.c	/^void setConnect()$/;"	f
+sigHandler	src/thread.c	/^void sigHandler(int nsig)$/;"	f
+sockfd	src/main.c	/^int sockfd;$/;"	v
+startOfCommunication	includes/sem.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName
+thid	src/main.c	/^pthread_t thid;$/;"	v
+thread	src/thread.c	/^void *thread()$/;"	f
+threadSidHandler	src/thread.c	/^void threadSidHandler(int nsig)$/;"	f
+userList	src/menu.c	/^void userList()$/;"	f

@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	else
 		strcpy(ip, DEFAULT_IP);
 
-	key_t key = getTheKey(CLIENT_FILE_FOR_KEY);
+	key_t key = getTheKey("client");
 	semid = createSem(key, NUM_OF_SEM);
 	semOperation(semid, communicationWithServer, 1);
 

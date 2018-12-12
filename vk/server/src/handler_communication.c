@@ -24,8 +24,6 @@ String * pidToString()
 
 	return ret;
 }
-////////////здесь происходит синхронизация семафорами
-////////////печататаем в fifo в нужном формате и затем ждем в очереди сообщений ответа
 ////////////ждем ответа в очереди сообщений
 Flag sendToHandler(String * recipient, String * data)
 {
@@ -40,11 +38,7 @@ Flag createAccount(String * login, String * password)
 {
 	Flag isOK = TRUE;
 
-	printf("before send to pipe\n");
 	sendToPipe(REG, login, password, NULL);
-	printf("after send to pipe\n");
-
-	//semOperation
 
 	return isOK;
 }
@@ -61,6 +55,8 @@ Flag checkAccount(String * login, String * password)
 void sendToPipe(enum MessageType type, String * login, String * password, String * data)
 {
 	int result;
+
+	semOperation(semid, fifoSynch, -1);
 
 	switch(type)
 	{
@@ -127,4 +123,6 @@ void sendToPipe(enum MessageType type, String * login, String * password, String
 		result = printStringToStream(fifo, data);
 		CHECK("printStringToStream", result);
 	}
+
+	semOperation(semid, fifoSynch, 1);
 }

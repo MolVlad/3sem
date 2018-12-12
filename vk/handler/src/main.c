@@ -100,6 +100,7 @@ void handleRequest(enum MessageType type)
 				{
 					isOK = TRUE;
 					insertToBTree(btreeMap, convertToBTreeData(login, getpid()));
+					saveBTree(btreeMap, FILE_LIST);
 				}
 				else
 					isOK = FALSE;
@@ -126,6 +127,7 @@ void handleRequest(enum MessageType type)
 				isOK = TRUE;
 				insertToHTable(htableMap, convertToHTableData(login, password));
 				insertToBTree(btreeMap, convertToBTreeData(login, pid));
+				saveBTree(btreeMap, FILE_LIST);
 			}
 			else
 			{
@@ -161,6 +163,7 @@ void handleRequest(enum MessageType type)
 			result = scanStringFromStream(fifo, login, -1);
 			CHECK("scanStringFromStream", result);
 			deleteFromBTree(btreeMap, login);
+			saveBTree(btreeMap, FILE_LIST);
 			break;
 		default:
 			printf("handle request error: wrong type\n");
@@ -181,17 +184,22 @@ int main()
 	assert(htableMap);
 	readHTableFromFile(htableMap, HTABLE_STORAGE);
 
-	btreeMap = createBTree();
-	assert(btreeMap);
-
 	key_t firstKey = getTheKey(FIRST_FILE_FOR_KEY);
 	key_t secondKey = getTheKey(SECOND_FILE_FOR_KEY);
 
+	fifo = createFIFO(FIFO);
+
+	btreeMap = createBTree();
+	assert(btreeMap);
+	saveBTree(btreeMap, FILE_LIST);
+	printBTree(btreeMap);
+
 	semid = createSem(firstKey, NUM_OF_SEM);
+	semOperation(semid, fifoSynch, 1);
+	semOperation(semid, listSynch, 1);
+
 	msgidForAnswers = createMsg(firstKey);
 	msgidForMessages = createMsg(secondKey);
-
-	fifo = createFIFO(FIFO);
 
 	String * string = createString();
 	int result;
@@ -209,17 +217,6 @@ int main()
 	}
 
 	deleteString(string);
-
-
-
-	/*
-	//для регистрации
-
-	//для входа
-*/
-
-
-
 
 	return 0;
 }

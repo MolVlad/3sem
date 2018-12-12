@@ -179,7 +179,7 @@ void saveHTable(HTableMap * htableMap, const char * fileName)
 			saveHTableNode(fd, htableMap->array[i]);
 	}
 
-	printf("Htable saved\n");
+	printf("HTable saved\n");
 
 	close(fd);
 }

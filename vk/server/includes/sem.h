@@ -1,12 +1,13 @@
 #ifndef __SEM_H__
 #define __SEM_H__
 
-#define NUM_OF_SEM 2
+#define NUM_OF_SEM 3
 
 enum SemName
 {
-	communicationWithServer,	//mutex for communicate
-	startOfCommunication,	//synch of start of work (thread can't start before user login\reg)
+	fifoSynch = 0,
+	listSynch,
+	serverThread,
 };
 
 key_t getTheKey(const char * keyFileName);

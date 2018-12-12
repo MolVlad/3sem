@@ -26,14 +26,29 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	String * password = createString();
 	String * data = createString();
 
-	result = stringGetAndPrint(newsockfd, login, header->loginSize);
+	result = scanStringFromStream(newsockfd, login, header->loginSize);
 	CHECK("stringGetAndCheck login", result);
+	if(header->loginSize > 0)
+	{
+		result = printStringToStream(STDOUT, login);
+		CHECK("printStringToStream", result);
+	}
 
-	result = stringGetAndPrint(newsockfd, password, header->passwordSize);
+	result = scanStringFromStream(newsockfd, password, header->passwordSize);
 	CHECK("stringGetAndCheck password", result);
+	if(header->passwordSize > 0)
+	{
+		result = printStringToStream(STDOUT, password);
+		CHECK("printStringToStream", result);
+	}
 
-	result = stringGetAndPrint(newsockfd, data, header->dataSize);
-	CHECK("stringGetAndCheck password", result);
+	result = scanStringFromStream(newsockfd, data, header->dataSize);
+	CHECK("stringGetAndCheck data", result);
+	if(header->dataSize > 0)
+	{
+		result = printStringToStream(STDOUT, data);
+		CHECK("printStringToStream", result);
+	}
 
 	switch(state)
 	{

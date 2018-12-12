@@ -4,7 +4,6 @@
 typedef struct
 {
 	int pid;
-	char * ip;
 	String * login;
 } BTreeData;
 
@@ -27,6 +26,7 @@ BTreeMap * createBTree();
 void deleteBTree(BTreeMap * btreeMap);
 void insertToBTree(BTreeMap * btreeMap, BTreeData * data);
 void printBTree(BTreeMap * btreeMap);
+void saveBTree(BTreeMap * btreeMap, const char * fileName);
 BTreeData * findInBTree(BTreeMap * btreeMap, String * login);
 void deleteFromBTree(BTreeMap * btreeMap, String * string);
 
@@ -37,7 +37,10 @@ BTreeData * convertToBTreeData(String * login, int pid);
 BTreeNode * createBTreeNode(BTreeData * data);
 void printBTreeNode(BTreeNode * node);
 void printBTreeData(BTreeData * data);
+void saveBTreeNode(BTreeNode * node, int fd);
+void saveBTreeData(BTreeData * data, int fd);
 BTreeData * findBTreeNode(BTreeNode * compared, String * login);
 int putInBTree(BTreeMap * btreeMap, BTreeNode * node);
+BTreeNode * deleteFromBTreeNode(BTreeNode * node, String * target);
 
 #endif /* __BTREE_H__ */

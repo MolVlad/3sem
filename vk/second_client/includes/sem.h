@@ -1,13 +1,13 @@
 #ifndef __SEM_H__
 #define __SEM_H__
 
-#define NUM_OF_SEM 3
+#define CLIENT_FILE_FOR_KEY "../txt/client_ftok.txt"
+#define NUM_OF_SEM 2
 
 enum SemName
 {
-	fifoSynch = 0,
-	listSynch,
-	serverThread,
+	communicationWithServer,	//mutex for communicate
+	startOfCommunication,	//synch of start of work (thread can't start before user login\reg)
 };
 
 key_t getTheKey(const char * keyFileName);

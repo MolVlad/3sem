@@ -7,7 +7,7 @@
 //number of \n in the string after that it ends
 #define NUM_SPACE_TO_BREAK 2
 
-#define PORT 51001
+#define PORT 51000
 
 #define FILE_LIST "../txt/list.txt"
 

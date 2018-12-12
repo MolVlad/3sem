@@ -6,9 +6,7 @@ String * createString()
 {
 	String * ret = (String *)calloc(1, sizeof(String));
 	assert(ret);
-
-	ret->data = (Data *)calloc(INIT_STRING_SIZE + 1, sizeof(Data));
-	assert(ret->data);
+ret->data = (Data *)calloc(INIT_STRING_SIZE + 1, sizeof(Data)); assert(ret->data);
 
 	ret->maxSize = INIT_STRING_SIZE;
 
@@ -160,27 +158,5 @@ int printStringToStream(int stream, String * string)
 	if(n != string->currentSize)
 		return -1;
 
-	return 0;
-}
-
-//maxNum < 0 means that this parameter no effect
-int stringGetAndPrint(int fd, String * string, int maxNum)
-{
-	assert(string);
-
-	int result;
-
-	if(string->currentSize != 0)
-		clearString(string);
-
-	result = scanStringFromStream(fd, string, maxNum);
-	if((result != maxNum) && (maxNum >= 0))
-		return -2;
-
-	result = printStringToStream(STDOUT, string);
-	if(result == -1)
-		return -1;
-
-	printf("\n");
 	return 0;
 }
