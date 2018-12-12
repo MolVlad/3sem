@@ -19,6 +19,7 @@
 #include<sys/socket.h>
 #include<sys/sem.h>
 #include<sys/shm.h>
+#include<sys/msg.h>
 
 #include<netinet/in.h>
 #include<arpa/inet.h>

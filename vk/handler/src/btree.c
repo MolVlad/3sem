@@ -107,20 +107,15 @@ BTreeNode * createBTreeNode(BTreeData * data)
 	return ret;
 }
 
-BTreeData * convertToBTreeData(String * login, char * ip, int pid)
+BTreeData * convertToBTreeData(String * login, int pid)
 {
 	assert(login);
-	assert(ip);
 
 	BTreeData * ret = (BTreeData *)calloc(1, sizeof(BTreeData));
 	assert(ret);
 
 	ret->login = copyString(login);
 	assert(ret->login);
-
-	ret->ip = (char *)calloc(strlen(ip) + 1, sizeof(char));
-	assert(ret->ip);
-	strcpy(ret->ip , ip);
 
 	ret->pid = pid;
 
@@ -163,4 +158,9 @@ BTreeData * findBTreeNode(BTreeNode * compared, String * login)
 		return findBTreeNode(compared->right, login);
 
 	return NULL;
+}
+
+void deleteFromBTree(BTreeMap * btreeMap, String * string)
+{
+
 }

@@ -1,0 +1,98 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BTreeData	includes/btree.h	/^} BTreeData;$/;"	t	typeref:struct:__anon3
+BTreeMap	includes/btree.h	/^} BTreeMap;$/;"	t	typeref:struct:__anon4
+BTreeNode	includes/btree.h	/^typedef struct BTreeNode$/;"	s
+BTreeNode	includes/btree.h	/^} BTreeNode;$/;"	t	typeref:struct:BTreeNode
+CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
+COMP	Makefile	/^COMP = gcc$/;"	m
+DEFINES	Makefile	/^DEFINES =$/;"	m
+HASH_FUNCTION_INIT_VALUE	includes/htable.h	29;"	d
+HASH_FUNCTION_PRIME_NUMBER	includes/htable.h	30;"	d
+HTABLE_SIZE	includes/config.h	4;"	d
+HTABLE_STORAGE	includes/config.h	5;"	d
+HTableData	includes/htable.h	/^} HTableData;$/;"	t	typeref:struct:__anon1
+HTableMap	includes/htable.h	/^} HTableMap;$/;"	t	typeref:struct:__anon2
+HTableNode	includes/htable.h	/^typedef struct HTableNode$/;"	s
+HTableNode	includes/htable.h	/^} HTableNode;$/;"	t	typeref:struct:HTableNode
+HashType	includes/htable.h	/^typedef unsigned int HashType;$/;"	t
+LIBS	Makefile	/^LIBS = -lpthread$/;"	m
+NUM_OF_SEM	includes/sem.h	4;"	d
+OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
+PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
+PROJECT	Makefile	/^PROJECT = handler$/;"	m
+RM	Makefile	/^RM = rm -rf$/;"	m
+SOURCES	Makefile	/^SOURCES = src\/main.c src\/htable.c src\/btree.c ..\/libs\/src\/my_string.c src\/sem.c ..\/libs\/src\/fifo.c ..\/libs\/src\/msg.c$/;"	m
+SemName	includes/sem.h	/^enum SemName$/;"	g
+__BTREE_H__	includes/btree.h	2;"	d
+__CONFIG_H__	includes/config.h	2;"	d
+__GLOBAL_H__	includes/global.h	2;"	d
+__HTABLE_H__	includes/htable.h	2;"	d
+__SEM_H__	includes/sem.h	2;"	d
+array	includes/htable.h	/^	HTableNode ** array;$/;"	m	struct:__anon2
+btreeMap	src/main.c	/^BTreeMap * btreeMap;$/;"	v
+communicationWithServer	includes/sem.h	/^	communicationWithServer,	\/\/mutex for communicate$/;"	e	enum:SemName
+connectToSem	src/sem.c	/^int connectToSem(key_t key, int num)$/;"	f
+convertToBTreeData	src/btree.c	/^BTreeData * convertToBTreeData(String * login, int pid)$/;"	f
+convertToHTableData	src/htable.c	/^HTableData * convertToHTableData(String * login, String * password)$/;"	f
+createBTree	src/btree.c	/^BTreeMap * createBTree()$/;"	f
+createBTreeNode	src/btree.c	/^BTreeNode * createBTreeNode(BTreeData * data)$/;"	f
+createHTable	src/htable.c	/^HTableMap * createHTable()$/;"	f
+createHTableNode	src/htable.c	/^HTableNode * createHTableNode(HTableData * data)$/;"	f
+createSem	src/sem.c	/^int createSem(key_t key, int num)$/;"	f
+data	includes/btree.h	/^	BTreeData * data;$/;"	m	struct:BTreeNode
+data	includes/htable.h	/^	HTableData * data;$/;"	m	struct:HTableNode
+deleteBTree	src/btree.c	/^void deleteBTree(BTreeMap * btreeMap)$/;"	f
+deleteBTreeData	src/btree.c	/^void deleteBTreeData(BTreeData * data)$/;"	f
+deleteBTreeNode	src/btree.c	/^void deleteBTreeNode(BTreeNode * node)$/;"	f
+deleteFromBTree	src/btree.c	/^void deleteFromBTree(BTreeMap * btreeMap, String * string)$/;"	f
+deleteHTable	src/htable.c	/^void deleteHTable(HTableMap * htableMap)$/;"	f
+deleteHTableData	src/htable.c	/^void deleteHTableData(HTableData * data)$/;"	f
+deleteHTableNode	src/htable.c	/^void deleteHTableNode(HTableNode * node)$/;"	f
+fifo	src/main.c	/^int fifo;$/;"	v
+findBTreeNode	src/btree.c	/^BTreeData * findBTreeNode(BTreeNode * compared, String * login)$/;"	f
+findHTableNodeInChein	src/htable.c	/^HTableData * findHTableNodeInChein(HTableNode * compared, String * login)$/;"	f
+findInBTree	src/btree.c	/^BTreeData * findInBTree(BTreeMap * btreeMap, String * login)$/;"	f
+findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, String * login)$/;"	f
+getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+handleRequest	src/main.c	/^void handleRequest(enum MessageType type)$/;"	f
+hashFunction	src/htable.c	/^HashType hashFunction(String * login)$/;"	f
+htableMap	src/main.c	/^HTableMap * htableMap;$/;"	v
+insertToBTree	src/btree.c	/^void insertToBTree(BTreeMap * btreeMap, BTreeData * data)$/;"	f
+insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
+ip	includes/btree.h	/^	char * ip;$/;"	m	struct:__anon3
+left	includes/btree.h	/^	struct BTreeNode * left;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
+login	includes/btree.h	/^	String * login;$/;"	m	struct:__anon3
+login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
+main	src/main.c	/^int main()$/;"	f
+msgidForAnswers	src/main.c	/^int msgidForAnswers;$/;"	v
+msgidForMessages	src/main.c	/^int msgidForMessages;$/;"	v
+nextInChain	includes/htable.h	/^	struct HTableNode * nextInChain;$/;"	m	struct:HTableNode	typeref:struct:HTableNode::HTableNode
+parseType	src/main.c	/^enum MessageType parseType(String * string)$/;"	f
+password	includes/htable.h	/^	String * password;$/;"	m	struct:__anon1
+pid	includes/btree.h	/^	int pid;$/;"	m	struct:__anon3
+printBTree	src/btree.c	/^void printBTree(BTreeMap * btreeMap)$/;"	f
+printBTreeData	src/btree.c	/^void printBTreeData(BTreeData * data)$/;"	f
+printBTreeNode	src/btree.c	/^void printBTreeNode(BTreeNode * node)$/;"	f
+printHTable	src/htable.c	/^void printHTable(HTableMap * htableMap)$/;"	f
+printHTableNode	src/htable.c	/^void printHTableNode(HTableNode * node)$/;"	f
+printHTableNodeData	src/htable.c	/^void printHTableNodeData(HTableData * data)$/;"	f
+putInBTree	src/btree.c	/^int putInBTree(BTreeMap * btreeMap, BTreeNode * node)$/;"	f
+putInHTable	src/htable.c	/^int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)$/;"	f
+readHTableFromFile	src/htable.c	/^void readHTableFromFile(HTableMap * htableMap, const char * fileName)$/;"	f
+replyWithMSG	src/main.c	/^void replyWithMSG(int pid, Flag isOK)$/;"	f
+right	includes/btree.h	/^	struct BTreeNode * right;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
+root	includes/btree.h	/^	BTreeNode * root;$/;"	m	struct:__anon4
+saveHTable	src/htable.c	/^void saveHTable(HTableMap * htableMap, const char * fileName)$/;"	f
+saveHTableNode	src/htable.c	/^void saveHTableNode(int fd, HTableNode * node)$/;"	f
+saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(int fd, HTableData * data)$/;"	f
+scanPid	src/main.c	/^int scanPid()$/;"	f
+semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
+semid	src/main.c	/^int semid;$/;"	v
+sigHandler	src/main.c	/^void sigHandler(int nsig)$/;"	f
+size	includes/htable.h	/^	int size;$/;"	m	struct:__anon2
+startOfCommunication	includes/sem.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName

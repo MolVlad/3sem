@@ -2,21 +2,29 @@
 #include"general_config.h"
 #include"sem.h"
 
-int createSem(key_t key)
+key_t getTheKey(const char * keyFileName)
 {
-	int semid = semget(key, NUM_OF_SEM, PERMISSION | IPC_CREAT | IPC_EXCL);
+	key_t key = ftok(keyFileName, 0);
+	CHECK("ftok", key);
+
+	return key;
+}
+
+int createSem(key_t key, int num)
+{
+	int semid = semget(key, num, PERMISSION | IPC_CREAT | IPC_EXCL);
 	if(semid < 0)
 	{
 		if(errno == EEXIST)
 		{
 			printf("Sem already exist. Need to remove\n");
 
-			semid = semget(key, NUM_OF_SEM, PERMISSION);
+			semid = semget(key, num, PERMISSION);
 			CHECK("semget", semid);
 
 			CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
 
-			semid = semget(key, NUM_OF_SEM, PERMISSION | IPC_CREAT | IPC_EXCL);
+			semid = semget(key, num, PERMISSION | IPC_CREAT | IPC_EXCL);
 			CHECK("semid", semid);
 		}
 		else
@@ -29,10 +37,10 @@ int createSem(key_t key)
 	return semid;
 }
 
-int connectToSem(key_t key)
+int connectToSem(key_t key, int num)
 {
 	int semid;
-	do semid = semget(key, NUM_OF_SEM, PERMISSION);
+	do semid = semget(key, num, PERMISSION);
 	while((semid == -1) && (errno ==ENOENT));
 
 	if(semid == -1)
@@ -54,5 +62,4 @@ void semOperation(int semid, enum SemName semName, int operation)
 
 	int result = semop(semid, &semBuf, 1);
 	CHECK("semop", result);
-	printf("sem_num = %d, sem_op = %d\n", semName, operation);
 }

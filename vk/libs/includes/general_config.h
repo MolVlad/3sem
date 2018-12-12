@@ -7,10 +7,8 @@
 //number of \n in the string after that it ends
 #define NUM_SPACE_TO_BREAK 2
 
-#define PORT 51000
+#define PORT 51001
 
-#define FILE_FOR_KEY  "../txt/ftok.txt"
-#define FIFO "../txt/fifo"
 #define FILE_LIST "../txt/list.txt"
 
 #define PERMISSION 0777
@@ -20,6 +18,7 @@ enum MessageType
 	LOGIN = 0,
 	REG,
 	MSG,
+	RCV,
 	LIST_REQUEST,
 	END,
 };
@@ -38,6 +37,7 @@ enum ReverseMessageType
 	ACK = 0,
 	NACK,
 	LIST,
+	MESSAGE,
 };
 
 typedef struct

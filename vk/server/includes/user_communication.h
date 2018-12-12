@@ -9,5 +9,6 @@ int sendReply(Flag flag, int newsockfd);
 void replyViaNet(enum ReverseMessageType type, int newsockfd);
 int scanHeader(HeaderMessageStruct * header, int newsockfd);
 void sendList(int newsockfd);
+void sendMessage(int newsockfd);
 
 #endif /* __USER_COMMUNICATION_H__ */

@@ -16,6 +16,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	if(header->type == END)
 	{
 		printf("End of communication\n");
+		sendToPipe(END, userLogin, NULL, NULL);
 		isAll = TRUE;
 		return isAll;
 	}
@@ -57,6 +58,8 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 					{
 						state = WAITING_REQUESTS;
 						sendReply(TRUE, newsockfd);
+						userLogin = createString();
+						userLogin = copyString(login);
 						printf("Reg success\n");
 					}
 					else
@@ -73,6 +76,8 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 					{
 						state = WAITING_REQUESTS;
 						sendReply(TRUE, newsockfd);
+						userLogin = createString();
+						userLogin = copyString(login);
 						printf("Login success\n");
 					}
 					else
@@ -104,6 +109,10 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 						printf("Send error\n");
 						sendReply(FALSE, newsockfd);
 					}
+
+					break;
+				case RCV:
+					sendMessage(newsockfd);
 
 					break;
 				case LIST_REQUEST:

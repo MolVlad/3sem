@@ -1,6 +1,6 @@
 PROJECT = server
 
-SOURCES = src/main.c ../libs/src/my_string.c src/user_communication.c src/handler_communication.c src/zombie.c src/state.c ../libs/src/fifo.c
+SOURCES = src/main.c ../libs/src/my_string.c src/user_communication.c src/handler_communication.c src/zombie.c src/state.c ../libs/src/fifo.c ../libs/src/msg.c src/sem.c
 INCLUDES += -I includes -I ../libs/includes
 DEFINES =
 CFLAGS = -Wall -Wextra

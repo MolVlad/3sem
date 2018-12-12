@@ -28,11 +28,12 @@ void deleteBTree(BTreeMap * btreeMap);
 void insertToBTree(BTreeMap * btreeMap, BTreeData * data);
 void printBTree(BTreeMap * btreeMap);
 BTreeData * findInBTree(BTreeMap * btreeMap, String * login);
+void deleteFromBTree(BTreeMap * btreeMap, String * string);
 
 // Private function
 void deleteBTreeNode(BTreeNode * node);
 void deleteBTreeData(BTreeData * data);
-BTreeData * convertToBTreeData(String * login, char * ip, int pid);
+BTreeData * convertToBTreeData(String * login, int pid);
 BTreeNode * createBTreeNode(BTreeData * data);
 void printBTreeNode(BTreeNode * node);
 void printBTreeData(BTreeData * data);

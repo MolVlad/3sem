@@ -132,7 +132,6 @@ int scanTextFromStream(int fd, String * string, int maxNum)
 			if(read(fd, &c, sizeof(Data)) == 0)
 				return -1;
 
-
 			maxNum--;
 			putInString(string, &c);
 		}
@@ -147,7 +146,6 @@ int scanTextFromStream(int fd, String * string, int maxNum)
 			else
 				spaceCounter = 0;
 
-			printf("%c", c);
 			putInString(string, &c);
 		}
 

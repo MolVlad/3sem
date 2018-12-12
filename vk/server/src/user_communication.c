@@ -49,7 +49,8 @@ void replyViaNet(enum ReverseMessageType type, int newsockfd)
 			header.dataSize = 0;
 			break;
 		case LIST:
-			printf("error: replyViaNet with type = LIST\n");
+		case MESSAGE:
+			printf("error: replyViaNet with type = %d\n", type);
 			exit(-1);
 			break;
 	}
@@ -77,6 +78,31 @@ int scanHeader(HeaderMessageStruct * header, int newsockfd)
 	printf("password size = %d, data size = %d\n", header->passwordSize, header->dataSize);
 
 	return 0;
+}
+
+void sendMessage(int newsockfd)
+{
+	String * data = createString();
+	printf("Print message:\n");
+	int result = scanTextFromStream(STDIN, data, -1);
+	CHECK("scanTextFromStream data", result);
+
+	HeaderReverseMessageStruct header;
+	bzero(&header, sizeof(HeaderReverseMessageStruct));
+	header.type = MESSAGE;
+	header.dataSize = data->currentSize;
+
+	result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
+	if(result != sizeof(HeaderReverseMessageStruct))
+	{
+		printf("write header error. result = %d\n", result);
+		exit(-1);
+	}
+
+	result = printStringToStream(newsockfd, data);
+	CHECK("printStringToStream data", result);
+
+	deleteString(data);
 }
 
 void sendList(int newsockfd)

@@ -190,9 +190,9 @@ void sendViaNet(enum MessageType type)
 
 void logOut(int socketFd)
 {
-	printLogOut();
 	sendViaNet(END);
 	close(socketFd);
+	printLogOut();
 }
 
 Flag receiveMessage()

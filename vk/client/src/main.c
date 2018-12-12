@@ -6,41 +6,17 @@
 #include"print.h"
 #include"menu.h"
 #include"sem.h"
+#include"thread.h"
 
 int semid;
 int sockfd;
 char * ip;
-
-void sigHandler(int nsig)
-{
-	printf("Print to stream error with SIGPIPE. nsig = %d\n", nsig);
-	exit(-1);
-}
-
-void *thread()
-{
-	printf("lol\n");
-	while(1)
-	{
-		semOperation(semid, startOfCommunication, -1);
-		semOperation(semid, communicationWithServer, -1);
-
-		printf("thread\n");
-
-		Flag isAll;
-		do
-		{
-			isAll = receiveMessage();
-		} while(isAll == TRUE);
-
-		semOperation(semid, communicationWithServer, 1);
-		semOperation(semid, startOfCommunication, 1);
-	}
-}
+pthread_t thid;
 
 int main(int argc, char **argv)
 {
 	(void) signal(SIGPIPE, sigHandler);
+	(void) signal(SIGINT, threadSidHandler);
 
 	ip = (char *)calloc(SIZE_IP, sizeof(char));
 
@@ -49,17 +25,9 @@ int main(int argc, char **argv)
 	else
 		strcpy(ip, DEFAULT_IP);
 
-	key_t key = getTheKey(FILE_FOR_KEY);
+	key_t key = getTheKey(CLIENT_FILE_FOR_KEY);
 	semid = createSem(key, NUM_OF_SEM);
 	semOperation(semid, communicationWithServer, 1);
-
-	pthread_t thid;
-	int  result = pthread_create(&thid, NULL, thread, NULL);
-	if(result != 0)
-	{
-		perror("pthread create");
-		exit(-1);
-	}
 
 	setConnect(sockfd);
 

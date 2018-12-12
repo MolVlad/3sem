@@ -7,6 +7,7 @@
 #include"menu.h"
 #include"global.h"
 #include"sem.h"
+#include"thread.h"
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {
@@ -31,6 +32,8 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					if(isOK == TRUE)
 					{
 						printf("Success\n");
+						//create new thread
+						createThread();
 						semOperation(semid, startOfCommunication, 1);
 						state = MAIN_MENU;
 					}
@@ -45,6 +48,8 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					if(isOK == TRUE)
 					{
 						printf("Success\n");
+						//create new thread
+						createThread();
 						semOperation(semid, startOfCommunication, 1);
 						state = MAIN_MENU;
 					}
@@ -71,7 +76,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					return isAll;
 				case EXIT:
 					logOut(sockfd);
-					semOperation(semid, startOfCommunication, -1);
+					deleteThread();
 					//reconnect
 					setConnect();
 					state = WELCOME_PAGE;

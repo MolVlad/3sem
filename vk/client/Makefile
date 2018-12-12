@@ -1,6 +1,6 @@
 PROJECT = client
 
-SOURCES = src/main.c src/console.c src/print.c src/menu.c ../libs/src/my_string.c src/sem.c
+SOURCES = src/main.c src/console.c src/print.c src/menu.c ../libs/src/my_string.c src/sem.c src/thread.c
 INCLUDES += -I includes -I ../libs/includes
 DEFINES =
 CFLAGS = -Wall -Wextra

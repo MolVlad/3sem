@@ -1,6 +1,6 @@
 PROJECT = handler
 
-SOURCES = src/main.c src/htable.c src/btree.c ../libs/src/my_string.c ../libs/src/sem.c ../libs/src/fifo.c
+SOURCES = src/main.c src/htable.c src/btree.c ../libs/src/my_string.c src/sem.c ../libs/src/fifo.c ../libs/src/msg.c
 INCLUDES += -I includes -I ../libs/includes
 DEFINES =
 CFLAGS = -Wall -Wextra
