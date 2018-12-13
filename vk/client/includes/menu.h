@@ -1,7 +1,7 @@
 #ifndef __MENU_H__
 #define __MENU_H__
 
-void setConnect();
+int setConnect();
 void sendViaNet(enum MessageType type);
 
 Flag receiveMessage();

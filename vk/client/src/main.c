@@ -12,9 +12,12 @@ int semid;
 int sockfd;
 char * ip;
 pthread_t thid;
+String * stringKey;
 
 int main(int argc, char **argv)
 {
+	int result;
+
 	(void) signal(SIGPIPE, sigHandler);
 	(void) signal(SIGUSR1, threadSidHandler);
 	(void) signal(SIGINT, sigHandler);
@@ -26,11 +29,16 @@ int main(int argc, char **argv)
 	else
 		strcpy(ip, DEFAULT_IP);
 
-	key_t key = getTheKey(CLIENT_FILE_FOR_KEY);
+	result = setConnect(sockfd);
+	CHECK("setConnect", result);
+
+	stringKey = pidToString();
+	result = mkfifo(stringKey->data, 0777);
+	CHECK("create", result);
+	key_t key = getTheKey(stringKey->data);
+
 	semid = createSem(key, NUM_OF_SEM);
 	semOperation(semid, communicationWithServer, 1);
-
-	setConnect(sockfd);
 
 	String * string = createString();
 	assert(string);
@@ -48,6 +56,8 @@ int main(int argc, char **argv)
 	while(isAll == FALSE);
 
 	deleteString(string);
+	remove(stringKey->data);
+	deleteString(stringKey);
 	CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
 	close(sockfd);
 

@@ -8,6 +8,8 @@
 void sigHandler()
 {
 	sendViaNet(END);
+	remove(stringKey->data);
+	deleteString(stringKey);
 
 	exit(-1);
 }

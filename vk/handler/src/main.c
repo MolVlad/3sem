@@ -28,7 +28,7 @@ void sigHandler(int nsig)
 	exit(0);
 }
 
-enum MessageType parseType(String * string)
+int parseType(String * string)
 {
 	if(strcmp(string->data, "login") == 0)
 		return LOGIN;
@@ -48,6 +48,8 @@ int scanPid()
 
 	int result = scanStringFromStream(fifo, pid, -1);
 	CHECK("scanStringFromStream", result);
+	printStringToStream(STDOUT, pid);
+	write(STDOUT, "\n", 1);
 
 	int ret = atoi(pid->data);
 
@@ -167,6 +169,13 @@ void handleRequest(enum MessageType type)
 			replyWithMSG(pid, FALSE);
 	}
 
+	printStringToStream(STDOUT, login);
+	write(STDOUT, "\n", 1);
+	printStringToStream(STDOUT, password);
+	write(STDOUT, "\n", 1);
+	printStringToStream(STDOUT, data);
+	write(STDOUT, "\n", 1);
+
 	deleteString(login);
 	deleteString(password);
 	deleteString(data);
@@ -198,15 +207,19 @@ int main()
 
 	String * string = createString();
 	int result;
-	enum MessageType type;
+	int type;
 	while(1)
 	{
 		do
 		{
 			result = scanStringFromStream(fifo, string, -1);
 			CHECK("scanStringFromStream", result);
+			printStringToStream(STDOUT, string);
+			write(STDOUT, "\n", 1);
 
 			type = parseType(string);
+			if(type == -1)
+				printf("handler error type\n");
 		} while(type < 0);
 
 		handleRequest(type);

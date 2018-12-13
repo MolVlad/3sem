@@ -5,7 +5,7 @@
 #include"print.h"
 #include"global.h"
 
-void setConnect()
+int setConnect()
 {
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	CHECK("socket", sockfd);
@@ -22,7 +22,7 @@ void setConnect()
 	}
 
 	int result = connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
-	CHECK("connect", result);
+	return result;
 }
 
 //scan header from user to know sizes of blocks

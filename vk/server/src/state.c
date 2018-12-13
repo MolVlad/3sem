@@ -13,14 +13,6 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	Flag isOK;
 	int result;
 
-	if(header->type == END)
-	{
-		printf("End of communication\n");
-		sendToPipe(END, userLogin, NULL, NULL);
-		isAll = TRUE;
-		return isAll;
-	}
-
 	//strings for blocks
 	String * login = createString();
 	String * password = createString();
@@ -101,6 +93,10 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 						sendReply(FALSE, newsockfd);
 					}
 					break;
+				case END:
+					printf("End of communication\n");
+					isAll = TRUE;
+					return isAll;
 				default:
 					printf("Wrond msg type for init state\n");
 					exit(-1);
@@ -134,6 +130,11 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 					sendList(newsockfd);
 
 					break;
+				case END:
+					printf("End of communication\n");
+					sendToPipe(END, userLogin, NULL, NULL);
+					isAll = TRUE;
+					return isAll;
 				default:
 					break;
 			}
