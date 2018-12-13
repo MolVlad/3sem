@@ -1,0 +1,27 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AMOUNT_OF_NUMBERS	main.c	16;"	d	file:
+CHECK	main.c	19;"	d	file:
+MAX_RANDOM	main.c	17;"	d	file:
+Segment	main.c	/^typedef struct Segment$/;"	s	file:
+Segment	main.c	/^} Segment;$/;"	t	typeref:struct:Segment	file:
+allocateMemory	main.c	/^int allocateMemory(pthread_t ** thids, Segment ** segment, int numberOfThreads)$/;"	f
+array	main.c	/^int * array;$/;"	v
+average	main.c	/^float average = 0, dispersion = 0;$/;"	v
+dispersion	main.c	/^float average = 0, dispersion = 0;$/;"	v
+firstElement	main.c	/^	int firstElement;$/;"	m	struct:Segment	file:
+freeMemory	main.c	/^void freeMemory(pthread_t * thids, Segment * segment)$/;"	f
+function	main.c	/^typedef void *(*function)(void *);$/;"	t	file:
+generateData	main.c	/^void generateData()$/;"	f
+joinThreads	main.c	/^int joinThreads(int numberOfThreads, pthread_t *thids)$/;"	f
+lastElement	main.c	/^	int lastElement;$/;"	m	struct:Segment	file:
+main	main.c	/^int main()$/;"	f
+scanNumberOfThreads	main.c	/^int scanNumberOfThreads()$/;"	f
+startThreads	main.c	/^int startThreads(int numberOfThreads, pthread_t * thids, Segment * segment, function threadRoutine)$/;"	f
+step	main.c	/^int step;$/;"	v
+threadForAverage	main.c	/^void *threadForAverage(void * arg)$/;"	f
+threadForDispersion	main.c	/^void *threadForDispersion(void * arg)$/;"	f

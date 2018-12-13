@@ -1,0 +1,33 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CHECK	server.c	19;"	d	file:
+DataForAnswer	server.c	/^	struct DataForAnswer$/;"	s	struct:MsgBufAnswer	file:
+DataForRequest	server.c	/^	struct DataForRequest$/;"	s	struct:MsgBufRequest	file:
+MESSAGE_FOR_SERVER	server.c	16;"	d	file:
+MSG_SIZE	server.c	15;"	d	file:
+MsgBufAnswer	server.c	/^struct MsgBufAnswer$/;"	s	file:
+MsgBufRequest	server.c	/^struct MsgBufRequest$/;"	s	file:
+NUM	server.c	17;"	d	file:
+PERMISSION	server.c	14;"	d	file:
+Segment	server.c	/^typedef struct Segment$/;"	s	file:
+Segment	server.c	/^} Segment;$/;"	t	typeref:struct:Segment	file:
+answer	server.c	/^		int answer;$/;"	m	struct:MsgBufAnswer::DataForAnswer	file:
+connectToSem	server.c	/^int connectToSem(key_t key, int num)$/;"	f
+copyData	server.c	/^void copyData(struct DataForRequest * destination, struct DataForRequest * data)$/;"	f
+createSem	server.c	/^int createSem(key_t key, int num)$/;"	f
+data	server.c	/^	struct DataForRequest data;$/;"	m	struct:Segment	typeref:struct:Segment::DataForRequest	file:
+data	server.c	/^	} data;$/;"	m	struct:MsgBufAnswer	typeref:struct:MsgBufAnswer::DataForAnswer	file:
+data	server.c	/^	} data;$/;"	m	struct:MsgBufRequest	typeref:struct:MsgBufRequest::DataForRequest	file:
+key	server.c	/^	key_t key;$/;"	m	struct:Segment	file:
+main	server.c	/^int main(int argc, char *argv[])$/;"	f
+msgid	server.c	/^	int msgid;$/;"	m	struct:Segment	file:
+num	server.c	/^		int num[MSG_SIZE];$/;"	m	struct:MsgBufRequest::DataForRequest	file:
+pid	server.c	/^		int pid;$/;"	m	struct:MsgBufRequest::DataForRequest	file:
+processRequest	server.c	/^void *processRequest(void * arg)$/;"	f
+semOperation	server.c	/^void semOperation(int semid, int num, int operation)$/;"	f
+type	server.c	/^	long type;$/;"	m	struct:MsgBufAnswer	file:
+type	server.c	/^	long type;$/;"	m	struct:MsgBufRequest	file:
