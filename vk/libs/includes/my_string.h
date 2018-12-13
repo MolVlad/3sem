@@ -22,6 +22,7 @@ int printStringToStream(int stream, String * string);
 void clearString(String * string);
 String * copyString(String * original);
 int stringCompare(String * first, String * second);
+String * pidToString();
 
 void putInString(String * string, Data * data);
 

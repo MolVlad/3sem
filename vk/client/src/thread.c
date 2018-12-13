@@ -7,6 +7,8 @@
 
 void sigHandler()
 {
+	sendViaNet(END);
+
 	exit(-1);
 }
 

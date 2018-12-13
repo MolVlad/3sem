@@ -70,8 +70,7 @@ listSynch	includes/sem.h	/^	listSynch,$/;"	e	enum:SemName
 login	includes/btree.h	/^	String * login;$/;"	m	struct:__anon3
 login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
 main	src/main.c	/^int main()$/;"	f
-msgidForAnswers	src/main.c	/^int msgidForAnswers;$/;"	v
-msgidForMessages	src/main.c	/^int msgidForMessages;$/;"	v
+msgid	src/main.c	/^int msgid;$/;"	v
 nextInChain	includes/htable.h	/^	struct HTableNode * nextInChain;$/;"	m	struct:HTableNode	typeref:struct:HTableNode::HTableNode
 parseType	src/main.c	/^enum MessageType parseType(String * string)$/;"	f
 password	includes/htable.h	/^	String * password;$/;"	m	struct:__anon1

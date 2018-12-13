@@ -12,8 +12,7 @@
 HTableMap * htableMap;
 BTreeMap * btreeMap;
 int semid;
-int msgidForAnswers;
-int msgidForMessages;
+int msgid;
 int fifo;
 
 void sigHandler(int nsig)
@@ -59,10 +58,12 @@ int scanPid()
 
 void replyWithMSG(int pid, Flag isOK)
 {
-	if(isOK == TRUE)
-		printf("handler true\n");
-	else
-		printf("handler false\n");
+	struct MsgBufAnswer bufAnswer;
+	bufAnswer.type = pid;
+	bufAnswer.data.ACK = isOK;
+
+	int result = msgsnd(msgid, (struct msgbuf *)&bufAnswer, sizeof(struct DataForAnswer), 0);
+	CHECK("msgsnd", result);
 }
 
 void handleRequest(enum MessageType type)
@@ -81,7 +82,6 @@ void handleRequest(enum MessageType type)
 	switch(type)
 	{
 		case LOGIN:
-			printf("handler type login\n");
 			result = scanStringFromStream(fifo, login, -1);
 			CHECK("scanStringFromStream", result);
 
@@ -99,7 +99,7 @@ void handleRequest(enum MessageType type)
 				if(same == NULL)
 				{
 					isOK = TRUE;
-					insertToBTree(btreeMap, convertToBTreeData(login, getpid()));
+					insertToBTree(btreeMap, convertToBTreeData(login, pid));
 					saveBTree(btreeMap, FILE_LIST);
 				}
 				else
@@ -114,7 +114,6 @@ void handleRequest(enum MessageType type)
 
 			break;
 		case REG:
-			printf("handler type reg\n");
 			result = scanStringFromStream(fifo, login, -1);
 			CHECK("scanStringFromStream", result);
 
@@ -138,7 +137,6 @@ void handleRequest(enum MessageType type)
 
 			break;
 		case MSG:
-			printf("handler type msg\n");
 			result = scanStringFromStream(fifo, login, -1);
 			CHECK("scanStringFromStream", result);
 
@@ -159,7 +157,6 @@ void handleRequest(enum MessageType type)
 
 			break;
 		case END:
-			printf("handler type end\n");
 			result = scanStringFromStream(fifo, login, -1);
 			CHECK("scanStringFromStream", result);
 			deleteFromBTree(btreeMap, login);
@@ -167,7 +164,7 @@ void handleRequest(enum MessageType type)
 			break;
 		default:
 			printf("handle request error: wrong type\n");
-			exit(1);
+			replyWithMSG(pid, FALSE);
 	}
 
 	deleteString(login);
@@ -184,8 +181,7 @@ int main()
 	assert(htableMap);
 	readHTableFromFile(htableMap, HTABLE_STORAGE);
 
-	key_t firstKey = getTheKey(FIRST_FILE_FOR_KEY);
-	key_t secondKey = getTheKey(SECOND_FILE_FOR_KEY);
+	key_t key = getTheKey(FILE_FOR_KEY);
 
 	fifo = createFIFO(FIFO);
 
@@ -194,26 +190,26 @@ int main()
 	saveBTree(btreeMap, FILE_LIST);
 	printBTree(btreeMap);
 
-	semid = createSem(firstKey, NUM_OF_SEM);
+	semid = createSem(key, NUM_OF_SEM);
 	semOperation(semid, fifoSynch, 1);
 	semOperation(semid, listSynch, 1);
 
-	msgidForAnswers = createMsg(firstKey);
-	msgidForMessages = createMsg(secondKey);
+	msgid = createMsg(key);
 
 	String * string = createString();
 	int result;
+	enum MessageType type;
 	while(1)
 	{
-		result = scanStringFromStream(fifo, string, -1);
-		CHECK("scanStringFromStream", result);
-		printf("handler:\n");
-		result = printStringToStream(STDOUT, string);
-		CHECK("printStringToStream", result);
-		printf("\n");
+		do
+		{
+			result = scanStringFromStream(fifo, string, -1);
+			CHECK("scanStringFromStream", result);
 
-		handleRequest(parseType(string));
-		clearString(string);
+			type = parseType(string);
+		} while(type < 0);
+
+		handleRequest(type);
 	}
 
 	deleteString(string);

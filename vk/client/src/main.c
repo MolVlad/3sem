@@ -17,6 +17,7 @@ int main(int argc, char **argv)
 {
 	(void) signal(SIGPIPE, sigHandler);
 	(void) signal(SIGUSR1, threadSidHandler);
+	(void) signal(SIGINT, sigHandler);
 
 	ip = (char *)calloc(SIZE_IP, sizeof(char));
 
@@ -47,7 +48,6 @@ int main(int argc, char **argv)
 	while(isAll == FALSE);
 
 	deleteString(string);
-	sendViaNet(END);
 	CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
 	close(sockfd);
 

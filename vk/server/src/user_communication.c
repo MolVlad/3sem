@@ -84,13 +84,15 @@ int scanHeader(HeaderMessageStruct * header, int newsockfd)
 
 void sendMessage(int newsockfd)
 {
+	int result;
+
 	//////////////////////чтение от другого процесса. ???
 	String * data = createString();
-	printf("Print message:\n");
-	int result = scanTextFromStream(STDIN, data, -1);
+/*	printf("Print message:\n");
+	result = scanTextFromStream(STDIN, data, -1);
 	CHECK("scanTextFromStream data", result);
 ///////////////////////////////////////////
-	HeaderReverseMessageStruct header;
+*/	HeaderReverseMessageStruct header;
 	bzero(&header, sizeof(HeaderReverseMessageStruct));
 	header.type = MESSAGE;
 	header.dataSize = data->currentSize;

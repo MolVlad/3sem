@@ -7,49 +7,42 @@
 #include"sem.h"
 #include"global.h"
 #include"my_string.h"
+#include"msg.h"
 
-String * pidToString()
+Flag getAnswer()
 {
-	String * ret = createString();
+	struct MsgBufAnswer bufAnswer;
+	int length = msgrcv(msgid, (struct msg_buf *)&bufAnswer, sizeof(struct DataForAnswer), getpid(), 0);
+	CHECK("msgrcv", length);
 
-	int i, del = 1000000, pid = getpid();
-	char c;
-	for(i = 0; i < 7; i++)
+	if(length < (int)sizeof(struct DataForAnswer))
 	{
-		c = pid / del + '0';
-		pid = pid % del;
-		del = del / 10;
-		putInString(ret, &c);
+		printf("Too short message\n");
+		return -1;
 	}
 
-	return ret;
+	return bufAnswer.data.ACK;
 }
-////////////ждем ответа в очереди сообщений
+
 Flag sendToHandler(String * recipient, String * data)
 {
-	Flag isOK = TRUE;
-
 	sendToPipe(MSG, recipient, NULL, data);
 
-	return isOK;
+	return getAnswer();
 }
 
 Flag createAccount(String * login, String * password)
 {
-	Flag isOK = TRUE;
-
 	sendToPipe(REG, login, password, NULL);
 
-	return isOK;
+	return getAnswer();
 }
 
 Flag checkAccount(String * login, String * password)
 {
-	Flag isOK = TRUE;
-
 	sendToPipe(LOGIN, login, password, NULL);
 
-	return isOK;
+	return getAnswer();
 }
 
 void sendToPipe(enum MessageType type, String * login, String * password, String * data)

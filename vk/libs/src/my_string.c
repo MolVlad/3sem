@@ -160,3 +160,20 @@ int printStringToStream(int stream, String * string)
 
 	return 0;
 }
+
+String * pidToString()
+{
+	String * ret = createString();
+
+	int i, del = 1000000, pid = getpid();
+	char c;
+	for(i = 0; i < 7; i++)
+	{
+		c = pid / del + '0';
+		pid = pid % del;
+		del = del / 10;
+		putInString(ret, &c);
+	}
+
+	return ret;
+}

@@ -16,8 +16,7 @@
 int handlerPid;
 int fifo;
 int semid;
-int msgidForAnswers;
-int msgidForMessages;
+int msgid;
 int sockfd;
 String * stringPid;
 String * userLogin;
@@ -61,11 +60,9 @@ int main()
 			stringPid = pidToString();
 
 			fifo = openFIFO(FIFO);
-			key_t firstKey = getTheKey(FIRST_FILE_FOR_KEY);
-			key_t secondKey = getTheKey(SECOND_FILE_FOR_KEY);
-			semid = connectToSem(firstKey, NUM_OF_SEM);
-			msgidForAnswers = connectToMsg(firstKey);
-			msgidForMessages = connectToMsg(secondKey);
+			key_t key = getTheKey(FILE_FOR_KEY);
+			semid = connectToSem(key, NUM_OF_SEM);
+			msgid = connectToMsg(key);
 
 			/////////нужна отдельная нить, которая будет слушать из другой очереди сообщений
 			/////////нужен семафор для синхронизации отправки пользователю

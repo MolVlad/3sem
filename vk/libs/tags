@@ -5,14 +5,17 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 ACK	includes/general_config.h	/^	ACK = 0,$/;"	e	enum:ReverseMessageType
+ACK	includes/msg.h	/^		Flag ACK;$/;"	m	struct:MsgBufAnswer::DataForAnswer
 AFTER_TRESHOLD_STRING_SIZE	includes/my_string.h	6;"	d
 CHECK	includes/general_config.h	56;"	d
 Data	includes/my_string.h	/^typedef char Data;$/;"	t
+DataForAnswer	includes/msg.h	/^	struct DataForAnswer$/;"	s	struct:MsgBufAnswer
+DataForRequest	includes/msg.h	/^	struct DataForRequest$/;"	s	struct:MsgBufTransmission
 END	includes/general_config.h	/^	END,$/;"	e	enum:MessageType
 FALSE	includes/general_config.h	/^	FALSE = 0,$/;"	e	enum:Flag
-FIFO	includes/general_config.h	13;"	d
-FILE_FOR_KEY	includes/general_config.h	12;"	d
-FILE_LIST	includes/general_config.h	14;"	d
+FIFO	includes/config_serv_hand.h	6;"	d
+FILE_FOR_KEY	includes/config_serv_hand.h	4;"	d
+FILE_LIST	includes/general_config.h	12;"	d
 Flag	includes/general_config.h	/^typedef enum Flag$/;"	g
 Flag	includes/general_config.h	/^} Flag;$/;"	t	typeref:enum:Flag
 HeaderMessageStruct	includes/general_config.h	/^} HeaderMessageStruct;$/;"	t	typeref:struct:__anon2
@@ -21,12 +24,19 @@ INIT_STRING_SIZE	includes/my_string.h	4;"	d
 LIST	includes/general_config.h	/^	LIST,$/;"	e	enum:ReverseMessageType
 LIST_REQUEST	includes/general_config.h	/^	LIST_REQUEST,$/;"	e	enum:MessageType
 LOGIN	includes/general_config.h	/^	LOGIN = 0,$/;"	e	enum:MessageType
+MESSAGE	includes/general_config.h	/^	MESSAGE,$/;"	e	enum:ReverseMessageType
+MESSAGE_FOR_SERVER	includes/msg.h	6;"	d
 MSG	includes/general_config.h	/^	MSG,$/;"	e	enum:MessageType
+MSG_SIZE	includes/msg.h	4;"	d
 MessageType	includes/general_config.h	/^enum MessageType$/;"	g
+MsgBufAnswer	includes/msg.h	/^struct MsgBufAnswer$/;"	s
+MsgBufTransmission	includes/msg.h	/^struct MsgBufTransmission$/;"	s
 NACK	includes/general_config.h	/^	NACK,$/;"	e	enum:ReverseMessageType
+NAME_SIZE	includes/msg.h	5;"	d
 NUM_SPACE_TO_BREAK	includes/general_config.h	8;"	d
-PERMISSION	includes/general_config.h	16;"	d
+PERMISSION	includes/general_config.h	14;"	d
 PORT	includes/general_config.h	10;"	d
+RCV	includes/general_config.h	/^	RCV,$/;"	e	enum:MessageType
 REG	includes/general_config.h	/^	REG,$/;"	e	enum:MessageType
 ReverseMessageType	includes/general_config.h	/^enum ReverseMessageType$/;"	g
 STDIN	includes/general_config.h	4;"	d
@@ -34,33 +44,37 @@ STDOUT	includes/general_config.h	5;"	d
 String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon1
 TRESHOLD_STRING_SIZE	includes/my_string.h	5;"	d
 TRUE	includes/general_config.h	/^	TRUE,$/;"	e	enum:Flag
+__CONFIG_SERV_HAND__	includes/config_serv_hand.h	2;"	d
 __FIFO_H__	includes/fifo.h	2;"	d
 __GENERAL_CONFIG_H__	includes/general_config.h	2;"	d
+__MSG_H__	includes/msg.h	2;"	d
 __MY_STRING_H__	includes/my_string.h	2;"	d
 __PRECOMP_H__	includes/libs.h	2;"	d
-__SEM_H__	includes/sem.h	2;"	d
 clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
-connectToSem	src/sem.c	/^int connectToSem(key_t key, int num)$/;"	f
+connectToMsg	src/msg.c	/^int connectToMsg(key_t key)$/;"	f
 copyString	src/my_string.c	/^String * copyString(String * original)$/;"	f
 createFIFO	src/fifo.c	/^int createFIFO(const char * name)$/;"	f
-createSem	src/sem.c	/^int createSem(key_t key, int num)$/;"	f
+createMsg	src/msg.c	/^int createMsg(key_t key)$/;"	f
 createString	src/my_string.c	/^String * createString()$/;"	f
 currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon1
+data	includes/msg.h	/^	} data;$/;"	m	struct:MsgBufAnswer	typeref:struct:MsgBufAnswer::DataForAnswer
+data	includes/msg.h	/^	} data;$/;"	m	struct:MsgBufTransmission	typeref:struct:MsgBufTransmission::DataForRequest
 data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon1
 dataSize	includes/general_config.h	/^	int dataSize;$/;"	m	struct:__anon2
 dataSize	includes/general_config.h	/^	int dataSize;$/;"	m	struct:__anon3
 deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
-getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+fifo	includes/msg.h	/^		char fifo[NAME_SIZE];$/;"	m	struct:MsgBufTransmission::DataForRequest
 loginSize	includes/general_config.h	/^	int loginSize;$/;"	m	struct:__anon2
 maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon1
 openFIFO	src/fifo.c	/^int openFIFO(const char * name)$/;"	f
 passwordSize	includes/general_config.h	/^	int passwordSize;$/;"	m	struct:__anon2
+pidToString	src/my_string.c	/^String * pidToString()$/;"	f
 printStringToStream	src/my_string.c	/^int printStringToStream(int stream, String * string)$/;"	f
 putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
 scanStringFromStream	src/my_string.c	/^int scanStringFromStream(int fd, String * string, int maxNum)$/;"	f
 scanTextFromStream	src/my_string.c	/^int scanTextFromStream(int fd, String * string, int maxNum)$/;"	f
-semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
 stringCompare	src/my_string.c	/^int stringCompare(String * first, String * second)$/;"	f
-stringGetAndPrint	src/my_string.c	/^int stringGetAndPrint(int fd, String * string, int maxNum)$/;"	f
 type	includes/general_config.h	/^	enum MessageType type;$/;"	m	struct:__anon2	typeref:enum:__anon2::MessageType
 type	includes/general_config.h	/^	enum ReverseMessageType type;$/;"	m	struct:__anon3	typeref:enum:__anon3::ReverseMessageType
+type	includes/msg.h	/^	long type;$/;"	m	struct:MsgBufAnswer
+type	includes/msg.h	/^	long type;$/;"	m	struct:MsgBufTransmission

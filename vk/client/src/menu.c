@@ -85,7 +85,7 @@ Flag receiveAnswer()
 			result = scanStringFromStream(sockfd, data, header.dataSize);
 			CHECK("scanStringFromStream", result);
 
-			if(header.dataSize == 2)
+			if(header.dataSize <= 2)
 				ret = FALSE;
 			else
 			{

@@ -32,6 +32,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	{
 		result = printStringToStream(STDOUT, login);
 		CHECK("printStringToStream", result);
+		printf("\n");
 	}
 
 	result = scanStringFromStream(newsockfd, password, header->passwordSize);
@@ -40,6 +41,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	{
 		result = printStringToStream(STDOUT, password);
 		CHECK("printStringToStream", result);
+		printf("\n");
 	}
 
 	result = scanStringFromStream(newsockfd, data, header->dataSize);
@@ -48,6 +50,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 	{
 		result = printStringToStream(STDOUT, data);
 		CHECK("printStringToStream", result);
+		printf("\n");
 	}
 
 	switch(state)

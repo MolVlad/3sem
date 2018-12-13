@@ -62,10 +62,10 @@ semid	src/main.c	/^int semid;$/;"	v
 sendMessage	src/menu.c	/^Flag sendMessage()$/;"	f
 sendViaNet	src/menu.c	/^void sendViaNet(enum MessageType type)$/;"	f
 setConnect	src/menu.c	/^void setConnect()$/;"	f
-sigHandler	src/thread.c	/^void sigHandler(int nsig)$/;"	f
+sigHandler	src/thread.c	/^void sigHandler()$/;"	f
 sockfd	src/main.c	/^int sockfd;$/;"	v
 startOfCommunication	includes/sem.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName
 thid	src/main.c	/^pthread_t thid;$/;"	v
 thread	src/thread.c	/^void *thread()$/;"	f
-threadSidHandler	src/thread.c	/^void threadSidHandler(int nsig)$/;"	f
+threadSidHandler	src/thread.c	/^void threadSidHandler()$/;"	f
 userList	src/menu.c	/^void userList()$/;"	f

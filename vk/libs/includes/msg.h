@@ -2,15 +2,15 @@
 #define __MSG_H__
 
 #define MSG_SIZE 2
+#define NAME_SIZE 10
 #define MESSAGE_FOR_SERVER 1
 
-struct MsgBufRequest
+struct MsgBufTransmission
 {
 	long type;
 	struct DataForRequest
 	{
-		int pid;
-		int num[MSG_SIZE];
+		char fifo[NAME_SIZE];
 	} data;
 };
 
@@ -19,7 +19,7 @@ struct MsgBufAnswer
 	long type;
 	struct DataForAnswer
 	{
-		int answer;
+		Flag ACK;
 	} data;
 };
 
