@@ -27,7 +27,6 @@ key_t waitForWiper()
 /* Function for synchronization */
 key_t waitForWasher()
 {
-	//Create FIFO callboard
 	int callboardFIFO = openOrCreateFIFO(CALLBOARD_FIFO);
 
 	char id[SIZE_ID];

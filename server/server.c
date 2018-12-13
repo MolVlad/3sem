@@ -1,5 +1,6 @@
 #include<unistd.h>
 #include<sys/types.h>
+#include<sys/wait.h>
 #include<sys/stat.h>
 #include<sys/ipc.h>
 #include<sys/msg.h>
@@ -8,10 +9,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<pthread.h>
+#include<sys/sem.h>
 
 #define PERMISSION 0777
 #define MSG_SIZE 2
 #define MESSAGE_FOR_SERVER 1
+#define NUM 1
 
 #define CHECK(nameFunction, retValue)				\
 do {								\
@@ -22,6 +25,10 @@ do {								\
 	}							\
 } while(0)							\
 
+void *processRequest(void * arg);
+int connectToSem(key_t key, int num);
+int createSem(key_t key, int num);
+void semOperation(int semid, int num, int operation);
 
 struct MsgBufRequest
 {
@@ -45,6 +52,7 @@ struct MsgBufAnswer
 typedef struct Segment
 {
 	int msgid;
+	key_t key;
 	struct DataForRequest data;
 } Segment;
 
@@ -61,21 +69,83 @@ void *processRequest(void * arg)
 {
 	Segment * segment = (Segment *)arg;
 
-	printf("Message from %d\n", segment->data.pid);
+	printf("Message from %d. Wait\n", segment->data.pid);
+	int semid = connectToSem(segment->key, 1);
+	semOperation(semid, 0, -1);
+	printf("Have waited!\n");
 	int answer = segment->data.num[0] * segment->data.num[1];
 
 	struct MsgBufAnswer bufAnswer;
 	bufAnswer.type = segment->data.pid;
 	bufAnswer.data.answer = answer;
 
-	printf("Accepted %d and %d\n", segment->data.num[0], segment->data.num[1]);
-	printf("Res = %d\n", answer);
+	//printf("Accepted %d and %d\n", segment->data.num[0], segment->data.num[1]);
+	//printf("Res = %d\n", answer);
 
+	printf("wait 5 sec\n");
+	sleep(5);
 	int result = msgsnd(segment->msgid, (struct msgbuf *)&bufAnswer, sizeof(struct DataForAnswer), 0);
 	CHECK("msgsnd", result);
 
+	printf("Done\n");
+	semOperation(semid, 0, 1);
+
 	free(segment);
 	pthread_exit(0);
+}
+
+int createSem(key_t key, int num)
+{
+	int semid = semget(key, num, PERMISSION | IPC_CREAT | IPC_EXCL);
+	if(semid < 0)
+	{
+		if(errno == EEXIST)
+		{
+			printf("Sem already exist. Need to remove\n");
+
+			semid = semget(key, num, PERMISSION);
+			CHECK("semget", semid);
+
+			CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
+
+			semid = semget(key, num, PERMISSION | IPC_CREAT | IPC_EXCL);
+			CHECK("semid", semid);
+		}
+		else
+		{
+			perror("semget");
+			return 2;
+		}
+	}
+
+	return semid;
+}
+
+int connectToSem(key_t key, int num)
+{
+	int semid;
+	do semid = semget(key, num, PERMISSION);
+	while((semid == -1) && (errno ==ENOENT));
+
+	if(semid == -1)
+	{
+		perror("semget");
+		exit(4);
+	}
+
+	return semid;
+}
+
+void semOperation(int semid, int num, int operation)
+{
+	struct sembuf semBuf;
+
+	semBuf.sem_op = operation;
+	semBuf.sem_flg = 0;
+	semBuf.sem_num = num;
+
+	int result = semop(semid, &semBuf, 1);
+	CHECK("semop", result);
 }
 
 int main(int argc, char *argv[])
@@ -88,6 +158,9 @@ int main(int argc, char *argv[])
 
 		key_t key = ftok(file, 0);
 		CHECK("ftok", key);
+
+		int semid = createSem(key, 1);
+		semOperation(semid, 0, NUM);
 
 		int msgid = msgget(key, PERMISSION | IPC_CREAT | IPC_EXCL);
 		if(msgid < 0)
@@ -125,6 +198,7 @@ int main(int argc, char *argv[])
 				struct Segment * segment = (struct Segment *)calloc(1, sizeof(struct Segment));
 				copyData(&segment->data, &bufRequest.data);
 				segment->msgid = msgid;
+				segment->key = key;
 
 				if(length < sizeof(struct DataForRequest))
 					printf("Too short message\n");

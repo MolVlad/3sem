@@ -29,12 +29,12 @@ int main()
 {
 	int n, clilen;
 	char line[BUF_SIZE];
-	struct sockaddr_in servaddr, cliaddr;
 
 	int sockfd = socket(PF_INET, SOCK_DGRAM, 0);
 	CHECK("socket", sockfd);
 	printf("%d\n", sockfd);
 
+	struct sockaddr_in servaddr, cliaddr;
 	bzero(&cliaddr, sizeof(cliaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_port = htons(51000);
