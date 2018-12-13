@@ -73,8 +73,12 @@ int main()
 				result = scanHeader(&header, newsockfd);
 				if(result == -1)
 				{
+					header.type = END;
+					header.loginSize = 0;
+					header.passwordSize = 0;
+					header.dataSize = 0;
+					isAll = serverFiniteStateMachine(&header, newsockfd);
 					printf("Close connect. Pid of process: %d\n", getpid());
-					isAll = TRUE;
 				}
 				else
 					isAll = serverFiniteStateMachine(&header, newsockfd);

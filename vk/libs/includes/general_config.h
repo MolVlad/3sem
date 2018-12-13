@@ -11,7 +11,7 @@
 
 #define FILE_LIST "../txt/list.txt"
 
-#define PERMISSION 0777
+#define PERMISSION 0666
 
 enum MessageType
 {
@@ -59,7 +59,7 @@ do								\
 	if(retValue < 0)					\
 	{							\
 		perror(nameFunction);				\
-		exit(1);					\
+		kill(getpid(), SIGINT);				\
 	}							\
 }while(0)							\
 
