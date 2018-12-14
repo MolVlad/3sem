@@ -1,16 +1,16 @@
-MAIN_SERVER_DIR = main_server
-MAIN_SERVER_NAME = main_server
-HANDLER_DIR = handler
-HANDLER_NAME = handler
+INIT_PROGRAM_NAME = process_handler
+INIT_PROGRAM_DIR = process_handler
+DATABASE_NAME = database
+DATABASE_DIR = database
 
 .PHONY: all clean start
 
 all:
-	cd $(HANDLER_DIR) && make && make clean_obj
-	cd $(MAIN_SERVER_DIR) && make && make clean_obj
+	cd $(DATABASE_DIR) && make && make clean_obj
+	cd $(INIT_PROGRAM_DIR) && make && make clean_obj
 clean:
-	cd $(HANDLER_DIR) && make clean
-	cd $(MAIN_SERVER_DIR) && make clean
+	cd $(DATABASE_DIR) && make clean
+	cd $(INIT_PROGRAM_DIR) && make clean
 
 start:
-	./$(MAIN_SERVER_DIR)/$(MAIN_SERVER_NAME)
+	./$(INIT_PROGRAM_DIR)/$(INIT_PROGRAM_NAME)
