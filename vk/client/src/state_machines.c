@@ -1,12 +1,14 @@
 #include"libs.h"
-#include"config.h"
+#include"global_variables.h"
+#include"general_config.h"
+
 #include"my_string.h"
-#include"console.h"
-#include"print.h"
-#include"menu.h"
-#include"global.h"
-#include"sem.h"
-#include"thread.h"
+#include"state_machines.h"
+#include"server_api.h"
+#include"server_connection.h"
+#include"server_feedback.h"
+#include"sem_config.h"
+#include"threads.h"
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 {
@@ -23,7 +25,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					printf("Do you have an account? (y/n) <exit> for close\n");
 					return isAll;
 				case EXIT:
-					printGoodbye();
+					printf("See you soon\n");
 					isAll = TRUE;
 					return isAll;
 				case YES:
@@ -57,7 +59,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					}
 					break;
 				default:
-					printError();
+					printf("Wrong command\n");
 					state = WELCOME_PAGE;
 			}
 
@@ -97,7 +99,7 @@ Flag consoleFiniteStateMachine(enum ConsoleCommand command)
 					state = MAIN_MENU;
 					break;
 				default:
-					printError();
+					printf("Wrong command\n");
 					state = MAIN_MENU;
 			}
 
@@ -125,4 +127,13 @@ enum ConsoleCommand parseCommand(String * string)
 		return USERS_LIST;
 
 	return ERROR;
+}
+
+void printMainMenuCommandList()
+{
+	printf("\nCommands:\n");
+	printf("<send>\t\twrite a message to someone\n");
+	printf("<users>\t\tprint list of users\n");
+	printf("<exit>\t\tlog out\n");
+	printf("\n");
 }

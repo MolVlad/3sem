@@ -1,5 +1,5 @@
-#ifndef __CONSOLE_STATE_H__
-#define __CONSOLE_STATE_H__
+#ifndef __STATE_MACHINES_H__
+#define __STATE_MACHINES_H__
 
 enum ConsoleState
 {
@@ -20,6 +20,8 @@ enum ConsoleCommand
 };
 
 Flag consoleFiniteStateMachine(enum ConsoleCommand command);
-enum ConsoleCommand parseCommand(String * string);
 
-#endif /* __CONSOLE_STATE_H__ */
+enum ConsoleCommand parseCommand(String * string);
+void printMainMenuCommandList();
+
+#endif /* __STATE_MACHINES_H__ */

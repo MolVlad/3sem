@@ -1,5 +1,5 @@
-#ifndef __PRECOMP_H__
-#define __PRECOMP_H__
+#ifndef __LIBS_H__
+#define __LIBS_H__
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -24,4 +24,4 @@
 #include<netinet/in.h>
 #include<arpa/inet.h>
 
-#endif /* __PRECOMP_H__ */
+#endif /* __LIBS_H__ */

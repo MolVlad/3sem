@@ -1,11 +1,15 @@
 #include"libs.h"
-#include"config.h"
+#include"default_config.h"
+#include"general_config.h"
+
 #include"my_string.h"
-#include"console.h"
-#include"print.h"
-#include"menu.h"
-#include"sem.h"
-#include"thread.h"
+#include"sem_config.h"
+#include"state_machines.h"
+#include"server_api.h"
+#include"server_connection.h"
+#include"server_feedback.h"
+#include"signal_handlers.h"
+#include"threads.h"
 
 int semid;
 int sockfd;
@@ -17,10 +21,7 @@ int main(int argc, char **argv)
 {
 	int result;
 
-	(void) signal(SIGPIPE, sigHandler);
-	(void) signal(SIGUSR1, threadSidHandler);
-	(void) signal(SIGINT, sigHandler);
-
+	configSignals();
 	ip = (char *)calloc(SIZE_IP, sizeof(char));
 
 	if(argc == 2)
@@ -42,7 +43,7 @@ int main(int argc, char **argv)
 	String * string = createString();
 	assert(string);
 
-	printGreeting();
+	printf("Hello!\n");
 
 	Flag isAll = consoleFiniteStateMachine(INITIALIZATION);
 	do

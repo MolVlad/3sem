@@ -1,31 +1,12 @@
 #include"libs.h"
-#include"global.h"
-#include"thread.h"
-#include"config.h"
-#include"sem.h"
-#include"menu.h"
+#include"global_variables.h"
+#include"general_config.h"
 
-void sigHandler()
-{
-	sendViaNet(END);
-	remove(stringKey->data);
-	deleteString(stringKey);
-	close(sockfd);
-	if(thid)
-	{
-		pthread_kill(thid, SIGUSR1);
-		pthread_join(thid, (void **)NULL);
-	}
-
-	exit(-1);
-}
-
-void threadSidHandler()
-{
-	int status;
-	semOperation(semid, startOfCommunication, 1);
-	pthread_exit(&status);
-}
+#include"threads.h"
+#include"general_config.h"
+#include"sem_config.h"
+#include"server_connection.h"
+#include"server_api.h"
 
 void *thread()
 {

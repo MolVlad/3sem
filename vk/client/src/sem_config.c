@@ -1,6 +1,6 @@
 #include"libs.h"
-#include"config.h"
-#include"sem.h"
+#include"general_config.h"
+#include"sem_config.h"
 
 key_t getTheKey(const char * keyFileName, int id)
 {
