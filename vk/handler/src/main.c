@@ -12,18 +12,26 @@
 HTableMap * htableMap;
 BTreeMap * btreeMap;
 int semid;
-int msgid;
-int fifo;
+int msgidForAnswer;
+int msgidForTransmission;
+int generalFifo;
+char privateFifoName[PRIVATE_FIFO_NAME_SIZE];
+int privateFifo;
+String * stringForGeneralFifo;
+
+void increasePrivateFifoName(char * privateFifoName);
 
 void sigHandler(int nsig)
 {
 	printf("Exit from handler with signal SIGINT, nsig = %d\n", nsig);
 	saveHTable(htableMap, HTABLE_STORAGE);
 	CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
-	remove(FIFO);
+	remove(GENERAL_FIFO);
+	close(generalFifo);
 	printHTable(htableMap);
 	deleteHTable(htableMap);
 	deleteBTree(btreeMap);
+	deleteString(stringForGeneralFifo);
 
 	exit(0);
 }
@@ -46,10 +54,8 @@ int scanPid()
 {
 	String * pid = createString();
 
-	int result = scanStringFromStream(fifo, pid, -1);
+	int result = scanStringFromStream(generalFifo, pid, -1);
 	CHECK("scanStringFromStream", result);
-	printStringToStream(STDOUT, pid);
-	write(STDOUT, "\n", 1);
 
 	int ret = atoi(pid->data);
 
@@ -58,13 +64,37 @@ int scanPid()
 	return ret;
 }
 
+void sendToRecipientPrivateFifoName(int pid)
+{
+	struct MsgBufTransmission bufTransmission;
+	bufTransmission.type = pid;
+
+	strcpy(bufTransmission.data.privateFifo, privateFifoName);
+
+	int result = msgsnd(msgidForTransmission, (struct msgbuf *)&bufTransmission, sizeof(struct DataForTransmission), 0);
+	CHECK("msgsnd", result);
+}
+
+void sendToSenderPrivateFifoName(int pid, Flag isOK)
+{
+	struct MsgBufAnswer bufAnswer;
+	bufAnswer.type = pid;
+	bufAnswer.data.ACK = isOK;
+
+	if(isOK == TRUE)
+		strcpy(bufAnswer.data.privateFifo, privateFifoName);
+
+	int result = msgsnd(msgidForAnswer, (struct msgbuf *)&bufAnswer, sizeof(struct DataForAnswer), 0);
+	CHECK("msgsnd", result);
+}
+
 void replyWithMSG(int pid, Flag isOK)
 {
 	struct MsgBufAnswer bufAnswer;
 	bufAnswer.type = pid;
 	bufAnswer.data.ACK = isOK;
 
-	int result = msgsnd(msgid, (struct msgbuf *)&bufAnswer, sizeof(struct DataForAnswer), 0);
+	int result = msgsnd(msgidForAnswer, (struct msgbuf *)&bufAnswer, sizeof(struct DataForAnswer), 0);
 	CHECK("msgsnd", result);
 }
 
@@ -84,10 +114,10 @@ void handleRequest(enum MessageType type)
 	switch(type)
 	{
 		case LOGIN:
-			result = scanStringFromStream(fifo, login, -1);
+			result = scanStringFromStream(generalFifo, login, -1);
 			CHECK("scanStringFromStream", result);
 
-			result = scanStringFromStream(fifo, password, -1);
+			result = scanStringFromStream(generalFifo, password, -1);
 			CHECK("scanStringFromStream", result);
 
 			desired = findInHTable(htableMap, login);
@@ -116,10 +146,10 @@ void handleRequest(enum MessageType type)
 
 			break;
 		case REG:
-			result = scanStringFromStream(fifo, login, -1);
+			result = scanStringFromStream(generalFifo, login, -1);
 			CHECK("scanStringFromStream", result);
 
-			result = scanStringFromStream(fifo, password, -1);
+			result = scanStringFromStream(generalFifo, password, -1);
 			CHECK("scanStringFromStream", result);
 
 			desired = findInHTable(htableMap, login);
@@ -129,6 +159,7 @@ void handleRequest(enum MessageType type)
 				insertToHTable(htableMap, convertToHTableData(login, password));
 				insertToBTree(btreeMap, convertToBTreeData(login, pid));
 				saveBTree(btreeMap, FILE_LIST);
+				//saveHTable(htableMap, HTABLE_STORAGE);
 			}
 			else
 			{
@@ -139,27 +170,30 @@ void handleRequest(enum MessageType type)
 
 			break;
 		case MSG:
-			result = scanStringFromStream(fifo, login, -1);
+			result = scanStringFromStream(generalFifo, login, -1);
 			CHECK("scanStringFromStream", result);
-
-			result = scanTextFromStream(fifo, data, -1);
-			CHECK("scanTextFromStream", result);
 
 			printf("login:\n");
 			result = printStringToStream(STDOUT, login);
 			CHECK("printStringToStream", result);
 			printf("\n");
-			printf("data:\n");
-			result = printStringToStream(STDOUT, data);
-			CHECK("printStringToStream", result);
-			printf("\n");
 
-			isOK = TRUE;
-			replyWithMSG(pid, isOK);
+			BTreeData * recipient = findInBTree(btreeMap, login);
+			if(recipient != NULL)
+			{
+				increasePrivateFifoName(privateFifoName);
+				privateFifo = createFIFO(privateFifoName);
+				isOK = TRUE;
+				sendToRecipientPrivateFifoName(recipient->pid);
+			}
+			else
+				isOK = FALSE;
+
+			sendToSenderPrivateFifoName(pid, isOK);
 
 			break;
 		case END:
-			result = scanStringFromStream(fifo, login, -1);
+			result = scanStringFromStream(generalFifo, login, -1);
 			CHECK("scanStringFromStream", result);
 			deleteFromBTree(btreeMap, login);
 			saveBTree(btreeMap, FILE_LIST);
@@ -181,8 +215,28 @@ void handleRequest(enum MessageType type)
 	deleteString(data);
 }
 
+void increasePrivateFifoName(char * privateFifoName)
+{
+	int size = strlen(privateFifoName);
+	int i;
+	for(i = size - 1; i >=0; i--)
+	{
+		if(privateFifoName[i] < '9')
+		{
+			privateFifoName[i]++;
+			return;
+		}
+		else
+			privateFifoName[i] = '0';
+	}
+
+	memset(privateFifoName, '0', size);
+}
+
 int main()
 {
+	memset(privateFifoName, '0', PRIVATE_FIFO_NAME_SIZE);
+
 	printf("Handler is running\n");
 	(void) signal(SIGINT, sigHandler);
 
@@ -190,42 +244,40 @@ int main()
 	assert(htableMap);
 	readHTableFromFile(htableMap, HTABLE_STORAGE);
 
-	key_t key = getTheKey(FILE_FOR_KEY);
-
-	fifo = createFIFO(FIFO);
+	generalFifo = createFIFO(GENERAL_FIFO);
 
 	btreeMap = createBTree();
 	assert(btreeMap);
 	saveBTree(btreeMap, FILE_LIST);
 	printBTree(btreeMap);
 
-	semid = createSem(key, NUM_OF_SEM);
-	semOperation(semid, fifoSynch, 1);
-	semOperation(semid, listSynch, 1);
+	key_t firstKey = getTheKey(FILE_FOR_KEY, 0);
+	key_t secondKey = getTheKey(FILE_FOR_KEY, 1);
 
-	msgid = createMsg(key);
+	msgidForAnswer = createMsg(firstKey);
+	msgidForTransmission = createMsg(secondKey);
 
-	String * string = createString();
+	semid = createSem(firstKey, NUM_OF_SEM);
+	semOperation(semid, generalFifoSynch, 1);
+	semOperation(semid, userListSynch, 1);
+
+	stringForGeneralFifo = createString();
 	int result;
 	int type;
 	while(1)
 	{
 		do
 		{
-			result = scanStringFromStream(fifo, string, -1);
+			result = scanStringFromStream(generalFifo, stringForGeneralFifo, -1);
 			CHECK("scanStringFromStream", result);
-			printStringToStream(STDOUT, string);
-			write(STDOUT, "\n", 1);
 
-			type = parseType(string);
+			type = parseType(stringForGeneralFifo);
 			if(type == -1)
 				printf("handler error type\n");
 		} while(type < 0);
 
 		handleRequest(type);
 	}
-
-	deleteString(string);
 
 	return 0;
 }

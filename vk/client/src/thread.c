@@ -10,6 +10,7 @@ void sigHandler()
 	sendViaNet(END);
 	remove(stringKey->data);
 	deleteString(stringKey);
+	close(sockfd);
 
 	exit(-1);
 }
@@ -45,10 +46,7 @@ void createThread()
 {
 	int  result = pthread_create(&thid, NULL, thread, NULL);
 	if(result != 0)
-	{
-		perror("pthread create");
-		exit(-1);
-	}
+		CHECK("pthread_create", -1);
 
 	semOperation(semid, startOfCommunication, 1);
 }

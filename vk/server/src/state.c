@@ -99,7 +99,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 					return isAll;
 				default:
 					printf("Wrond msg type for init state\n");
-					exit(-1);
+					CHECK("", -1);
 					break;
 			}
 
@@ -108,12 +108,13 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 			switch(header->type)
 			{
 				case MSG:
-					isOK = sendToHandler(login, data);
+					isOK = sendToRecipient(login, data);
 					if(isOK == TRUE)
 					{
 						state = WAITING_REQUESTS;
 						sendReply(TRUE, newsockfd);
 						printf("Sent success\n");
+						printf("Let's read!\n");
 					}
 					else
 					{
@@ -132,7 +133,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 					break;
 				case END:
 					printf("End of communication\n");
-					sendToPipe(END, userLogin, NULL, NULL);
+					sendToPipe(END, userLogin, NULL);
 					isAll = TRUE;
 					return isAll;
 				default:
@@ -142,7 +143,7 @@ Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)
 			break;
 		default:
 			printf("server state error\n");
-			exit(1);
+			CHECK("", -1);
 	}
 
 	deleteString(login);

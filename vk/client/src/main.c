@@ -33,9 +33,9 @@ int main(int argc, char **argv)
 	CHECK("setConnect", result);
 
 	stringKey = pidToString();
-	result = mkfifo(stringKey->data, 0777);
+	result = mkfifo(stringKey->data, PERMISSION);
 	CHECK("create", result);
-	key_t key = getTheKey(stringKey->data);
+	key_t key = getTheKey(stringKey->data, 0);
 
 	semid = createSem(key, NUM_OF_SEM);
 	semOperation(semid, communicationWithServer, 1);

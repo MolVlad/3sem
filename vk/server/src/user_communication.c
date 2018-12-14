@@ -3,6 +3,7 @@
 #include"general_config.h"
 #include"my_string.h"
 #include"user_communication.h"
+#include"handler_communication.h"
 #include"fifo.h"
 #include"sem.h"
 #include"global.h"
@@ -53,16 +54,13 @@ void replyViaNet(enum ReverseMessageType type, int newsockfd)
 		case LIST:
 		case MESSAGE:
 			printf("error: replyViaNet with type = %d\n", type);
-			exit(-1);
+			CHECK("replyViaNet", -1);
 			break;
 	}
 
 	int result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
 	if(result != sizeof(HeaderReverseMessageStruct))
-	{
-		printf("write header error. result = %d\n", result);
-		exit(-1);
-	}
+		CHECK("write header", -1);
 }
 
 //scan header from user to know sizes of blocks
@@ -85,24 +83,27 @@ int scanHeader(HeaderMessageStruct * header, int newsockfd)
 void sendMessage(int newsockfd)
 {
 	int result;
-
-	//////////////////////чтение от другого процесса. ???
 	String * data = createString();
-/*	printf("Print message:\n");
-	result = scanTextFromStream(STDIN, data, -1);
-	CHECK("scanTextFromStream data", result);
-///////////////////////////////////////////
-*/	HeaderReverseMessageStruct header;
+
+	Flag isOK = getPrivateFifoToRead();
+	if(isOK == TRUE)
+	{
+		int privateFifoToRead = openFIFO(privateFifoName);
+		printf("let's scan!\n");
+		result = scanTextFromStream(privateFifoToRead, data, -1);
+		CHECK("scanTextFromStream data", result);
+		close(privateFifoToRead);
+		remove(privateFifoName);
+	}
+
+	HeaderReverseMessageStruct header;
 	bzero(&header, sizeof(HeaderReverseMessageStruct));
 	header.type = MESSAGE;
 	header.dataSize = data->currentSize;
 
 	result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
 	if(result != sizeof(HeaderReverseMessageStruct))
-	{
-		printf("write header error. result = %d\n", result);
-		exit(-1);
-	}
+		CHECK("write header", -1);
 
 	result = printStringToStream(newsockfd, data);
 	CHECK("printStringToStream data", result);
@@ -117,10 +118,10 @@ void sendList(int newsockfd)
 	int list = open(FILE_LIST, O_RDWR);
 	CHECK("open list", list);
 
-	semOperation(semid, listSynch, -1);
+	semOperation(semid, userListSynch, -1);
 	int result = scanTextFromStream(list, data, -1);
 	CHECK("scanTextFromStream data", result);
-	semOperation(semid, listSynch, 1);
+	semOperation(semid, userListSynch, 1);
 
 	HeaderReverseMessageStruct header;
 	bzero(&header, sizeof(HeaderReverseMessageStruct));
@@ -129,10 +130,7 @@ void sendList(int newsockfd)
 
 	result = write(newsockfd, &header, sizeof(HeaderReverseMessageStruct));
 	if(result != sizeof(HeaderReverseMessageStruct))
-	{
-		printf("Header write error. result = %d\n", result);
-		exit(0);
-	}
+		CHECK("write header", -1);
 
 	result = printStringToStream(newsockfd, data);
 	CHECK("printStringToStream data", result);

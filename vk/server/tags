@@ -32,15 +32,18 @@ connectToSem	src/sem.c	/^int connectToSem(key_t key, int num)$/;"	f
 createAccount	src/handler_communication.c	/^Flag createAccount(String * login, String * password)$/;"	f
 createSem	src/sem.c	/^int createSem(key_t key, int num)$/;"	f
 createThreadToFightZombie	src/zombie.c	/^int createThreadToFightZombie()$/;"	f
-fifo	src/main.c	/^int fifo;$/;"	v
-fifoSynch	includes/sem.h	/^	fifoSynch = 0,$/;"	e	enum:SemName
 functionToFightZombies	src/zombie.c	/^void *functionToFightZombies()$/;"	f
+generalFifo	src/main.c	/^int generalFifo;$/;"	v
+generalFifoSynch	includes/sem.h	/^	generalFifoSynch = 0,$/;"	e	enum:SemName
 getAnswer	src/handler_communication.c	/^Flag getAnswer()$/;"	f
-getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+getPrivateFifoToRead	src/handler_communication.c	/^Flag getPrivateFifoToRead()$/;"	f
+getPrivateFifoToWrite	src/handler_communication.c	/^Flag getPrivateFifoToWrite()$/;"	f
+getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName, int id)$/;"	f
 handlerPid	src/main.c	/^int handlerPid;$/;"	v
-listSynch	includes/sem.h	/^	listSynch,$/;"	e	enum:SemName
 main	src/main.c	/^int main()$/;"	f
-msgid	src/main.c	/^int msgid;$/;"	v
+msgidForAnswer	src/main.c	/^int msgidForAnswer;$/;"	v
+msgidForTransmission	src/main.c	/^int msgidForTransmission;$/;"	v
+privateFifoName	src/main.c	/^char privateFifoName[PRIVATE_FIFO_NAME_SIZE];$/;"	v
 raiseServer	src/user_communication.c	/^int raiseServer()$/;"	f
 replyViaNet	src/user_communication.c	/^void replyViaNet(enum ReverseMessageType type, int newsockfd)$/;"	f
 scanHeader	src/user_communication.c	/^int scanHeader(HeaderMessageStruct * header, int newsockfd)$/;"	f
@@ -49,11 +52,12 @@ semid	src/main.c	/^int semid;$/;"	v
 sendList	src/user_communication.c	/^void sendList(int newsockfd)$/;"	f
 sendMessage	src/user_communication.c	/^void sendMessage(int newsockfd)$/;"	f
 sendReply	src/user_communication.c	/^int sendReply(Flag flag, int newsockfd)$/;"	f
-sendToHandler	src/handler_communication.c	/^Flag sendToHandler(String * recipient, String * data)$/;"	f
-sendToPipe	src/handler_communication.c	/^void sendToPipe(enum MessageType type, String * login, String * password, String * data)$/;"	f
+sendToPipe	src/handler_communication.c	/^void sendToPipe(enum MessageType type, String * login, String * password)$/;"	f
+sendToRecipient	src/handler_communication.c	/^Flag sendToRecipient(String * recipient, String * data)$/;"	f
 serverFiniteStateMachine	src/state.c	/^Flag serverFiniteStateMachine(HeaderMessageStruct * header, int newsockfd)$/;"	f
-serverThread	includes/sem.h	/^	serverThread,$/;"	e	enum:SemName
+serverThreadSynch	includes/sem.h	/^	serverThreadSynch,$/;"	e	enum:SemName
 sigHandler	src/main.c	/^void sigHandler(int nsig)$/;"	f
 sockfd	src/main.c	/^int sockfd;$/;"	v
 stringPid	src/main.c	/^String * stringPid;$/;"	v
+userListSynch	includes/sem.h	/^	userListSynch,$/;"	e	enum:SemName
 userLogin	src/main.c	/^String * userLogin;$/;"	v

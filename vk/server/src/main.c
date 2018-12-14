@@ -14,12 +14,14 @@
 #define REQUEST_NUMBER 5
 
 int handlerPid;
-int fifo;
+int generalFifo;
 int semid;
-int msgid;
+int msgidForAnswer;
+int msgidForTransmission;
 int sockfd;
 String * stringPid;
 String * userLogin;
+char privateFifoName[PRIVATE_FIFO_NAME_SIZE];
 
 void sigHandler(int nsig)
 {
@@ -59,10 +61,14 @@ int main()
 
 			stringPid = pidToString();
 
-			fifo = openFIFO(FIFO);
-			key_t key = getTheKey(FILE_FOR_KEY);
-			semid = connectToSem(key, NUM_OF_SEM);
-			msgid = connectToMsg(key);
+			generalFifo = openFIFO(GENERAL_FIFO);
+
+			key_t firstKey = getTheKey(FILE_FOR_KEY, 0);
+			semid = connectToSem(firstKey, NUM_OF_SEM);
+			msgidForAnswer = connectToMsg(firstKey);
+
+			key_t secondKey = getTheKey(FILE_FOR_KEY, 1);
+			msgidForTransmission = connectToMsg(secondKey);
 
 			/////////нужна отдельная нить, которая будет слушать из другой очереди сообщений
 			/////////нужен семафор для синхронизации отправки пользователю
@@ -86,7 +92,7 @@ int main()
 
 			deleteString(stringPid);
 			deleteString(userLogin);
-			close(fifo);
+			close(generalFifo);
 
 			//end of process work
 			exit(0);

@@ -44,7 +44,7 @@ createAccount	src/menu.c	/^Flag createAccount()$/;"	f
 createSem	src/sem.c	/^int createSem(key_t key, int num)$/;"	f
 createThread	src/thread.c	/^void createThread()$/;"	f
 deleteThread	src/thread.c	/^void deleteThread()$/;"	f
-getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName, int id)$/;"	f
 ip	src/main.c	/^char * ip;$/;"	v
 logOut	src/menu.c	/^void logOut(int socketFd)$/;"	f
 main	src/main.c	/^int main(int argc, char **argv)$/;"	f
@@ -61,10 +61,11 @@ semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int 
 semid	src/main.c	/^int semid;$/;"	v
 sendMessage	src/menu.c	/^Flag sendMessage()$/;"	f
 sendViaNet	src/menu.c	/^void sendViaNet(enum MessageType type)$/;"	f
-setConnect	src/menu.c	/^void setConnect()$/;"	f
+setConnect	src/menu.c	/^int setConnect()$/;"	f
 sigHandler	src/thread.c	/^void sigHandler()$/;"	f
 sockfd	src/main.c	/^int sockfd;$/;"	v
 startOfCommunication	includes/sem.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName
+stringKey	src/main.c	/^String * stringKey;$/;"	v
 thid	src/main.c	/^pthread_t thid;$/;"	v
 thread	src/thread.c	/^void *thread()$/;"	f
 threadSidHandler	src/thread.c	/^void threadSidHandler()$/;"	f

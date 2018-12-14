@@ -5,12 +5,12 @@
 
 enum SemName
 {
-	fifoSynch = 0,
-	listSynch,
-	serverThread,
+	generalFifoSynch = 0,
+	userListSynch,
+	serverThreadSynch,
 };
 
-key_t getTheKey(const char * keyFileName);
+key_t getTheKey(const char * keyFileName, int id);
 int createSem(key_t key, int num);
 void semOperation(int semid, enum SemName semName, int operation);
 int connectToSem(key_t key, int num);

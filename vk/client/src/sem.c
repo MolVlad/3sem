@@ -2,9 +2,9 @@
 #include"general_config.h"
 #include"sem.h"
 
-key_t getTheKey(const char * keyFileName)
+key_t getTheKey(const char * keyFileName, int id)
 {
-	key_t key = ftok(keyFileName, 0);
+	key_t key = ftok(keyFileName, id);
 	CHECK("ftok", key);
 
 	return key;

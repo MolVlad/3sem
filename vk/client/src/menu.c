@@ -17,8 +17,7 @@ int setConnect()
 	if(inet_aton(ip, &servaddr.sin_addr) == 0)
 	{
 		printf("Invalid IP address\n");
-		close(sockfd);
-		exit(-1);
+		CHECK("inet_aton", -1);
 	}
 
 	int result = connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr));
@@ -44,12 +43,7 @@ Flag receiveAnswer()
 
 	HeaderReverseMessageStruct header;
 	int result = scanHeaderReverse(sockfd, &header);
-	if(result == -1)
-	{
-		printf("Connection error: \n");
-		printf("failed to accept header\n");
-		exit(-1);
-	}
+	CHECK("scanHeaderReverse", result);
 
 	String * data = createString();
 
@@ -162,10 +156,7 @@ void sendViaNet(enum MessageType type)
 
 	result = write(sockfd, &header, sizeof(HeaderMessageStruct));
 	if(result != sizeof(HeaderMessageStruct))
-	{
-		printf("write header error. result = %d\n", result);
-		exit(-1);
-	}
+		CHECK("write header", -1);
 
 	if(header.loginSize)
 	{

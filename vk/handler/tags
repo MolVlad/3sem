@@ -53,26 +53,27 @@ deleteFromBTreeNode	src/btree.c	/^BTreeNode * deleteFromBTreeNode(BTreeNode * no
 deleteHTable	src/htable.c	/^void deleteHTable(HTableMap * htableMap)$/;"	f
 deleteHTableData	src/htable.c	/^void deleteHTableData(HTableData * data)$/;"	f
 deleteHTableNode	src/htable.c	/^void deleteHTableNode(HTableNode * node)$/;"	f
-fifo	src/main.c	/^int fifo;$/;"	v
-fifoSynch	includes/sem.h	/^	fifoSynch = 0,$/;"	e	enum:SemName
 findBTreeNode	src/btree.c	/^BTreeData * findBTreeNode(BTreeNode * compared, String * login)$/;"	f
 findHTableNodeInChein	src/htable.c	/^HTableData * findHTableNodeInChein(HTableNode * compared, String * login)$/;"	f
 findInBTree	src/btree.c	/^BTreeData * findInBTree(BTreeMap * btreeMap, String * login)$/;"	f
 findInHTable	src/htable.c	/^HTableData * findInHTable(HTableMap * htableMap, String * login)$/;"	f
-getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName)$/;"	f
+generalFifo	src/main.c	/^int generalFifo;$/;"	v
+generalFifoSynch	includes/sem.h	/^	generalFifoSynch = 0,$/;"	e	enum:SemName
+getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName, int id)$/;"	f
 handleRequest	src/main.c	/^void handleRequest(enum MessageType type)$/;"	f
 hashFunction	src/htable.c	/^HashType hashFunction(String * login)$/;"	f
 htableMap	src/main.c	/^HTableMap * htableMap;$/;"	v
+increasePrivateFifoName	src/main.c	/^void increasePrivateFifoName(char * privateFifoName)$/;"	f
 insertToBTree	src/btree.c	/^void insertToBTree(BTreeMap * btreeMap, BTreeData * data)$/;"	f
 insertToHTable	src/htable.c	/^void insertToHTable(HTableMap * htableMap, HTableData * data)$/;"	f
 left	includes/btree.h	/^	struct BTreeNode * left;$/;"	m	struct:BTreeNode	typeref:struct:BTreeNode::BTreeNode
-listSynch	includes/sem.h	/^	listSynch,$/;"	e	enum:SemName
 login	includes/btree.h	/^	String * login;$/;"	m	struct:__anon3
 login	includes/htable.h	/^	String * login;$/;"	m	struct:__anon1
 main	src/main.c	/^int main()$/;"	f
-msgid	src/main.c	/^int msgid;$/;"	v
+msgidForAnswer	src/main.c	/^int msgidForAnswer;$/;"	v
+msgidForTransmission	src/main.c	/^int msgidForTransmission;$/;"	v
 nextInChain	includes/htable.h	/^	struct HTableNode * nextInChain;$/;"	m	struct:HTableNode	typeref:struct:HTableNode::HTableNode
-parseType	src/main.c	/^enum MessageType parseType(String * string)$/;"	f
+parseType	src/main.c	/^int parseType(String * string)$/;"	f
 password	includes/htable.h	/^	String * password;$/;"	m	struct:__anon1
 pid	includes/btree.h	/^	int pid;$/;"	m	struct:__anon3
 printBTree	src/btree.c	/^void printBTree(BTreeMap * btreeMap)$/;"	f
@@ -81,6 +82,8 @@ printBTreeNode	src/btree.c	/^void printBTreeNode(BTreeNode * node)$/;"	f
 printHTable	src/htable.c	/^void printHTable(HTableMap * htableMap)$/;"	f
 printHTableNode	src/htable.c	/^void printHTableNode(HTableNode * node)$/;"	f
 printHTableNodeData	src/htable.c	/^void printHTableNodeData(HTableData * data)$/;"	f
+privateFifo	src/main.c	/^int privateFifo;$/;"	v
+privateFifoName	src/main.c	/^char privateFifoName[PRIVATE_FIFO_NAME_SIZE];$/;"	v
 putInBTree	src/btree.c	/^int putInBTree(BTreeMap * btreeMap, BTreeNode * node)$/;"	f
 putInHTable	src/htable.c	/^int putInHTable(HTableMap * htableMap, HashType hash, HTableNode * node)$/;"	f
 readHTableFromFile	src/htable.c	/^void readHTableFromFile(HTableMap * htableMap, const char * fileName)$/;"	f
@@ -96,6 +99,10 @@ saveHTableNodeData	src/htable.c	/^void saveHTableNodeData(int fd, HTableData * d
 scanPid	src/main.c	/^int scanPid()$/;"	f
 semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
 semid	src/main.c	/^int semid;$/;"	v
-serverThread	includes/sem.h	/^	serverThread,$/;"	e	enum:SemName
+sendToRecipientPrivateFifoName	src/main.c	/^void sendToRecipientPrivateFifoName(int pid)$/;"	f
+sendToSenderPrivateFifoName	src/main.c	/^void sendToSenderPrivateFifoName(int pid, Flag isOK)$/;"	f
+serverThreadSynch	includes/sem.h	/^	serverThreadSynch,$/;"	e	enum:SemName
 sigHandler	src/main.c	/^void sigHandler(int nsig)$/;"	f
 size	includes/htable.h	/^	int size;$/;"	m	struct:__anon2
+stringForGeneralFifo	src/main.c	/^String * stringForGeneralFifo;$/;"	v
+userListSynch	includes/sem.h	/^	userListSynch,$/;"	e	enum:SemName
