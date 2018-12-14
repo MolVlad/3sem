@@ -66,7 +66,7 @@ Flag sendToRecipient(String * recipient, String * data)
 	if(isOK == TRUE)
 	{
 		int privateFifoToWrite = openFIFO(privateFifoName);
-		printStringToStream(privateFifoToWrite, recipient);
+		printStringToStream(privateFifoToWrite, userLogin);
 		write(privateFifoToWrite, "\n", 1);
 		printStringToStream(privateFifoToWrite, data);
 		close(privateFifoToWrite);

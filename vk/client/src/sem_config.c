@@ -17,7 +17,7 @@ int createSem(key_t key, int num)
 	{
 		if(errno == EEXIST)
 		{
-			printf("Sem already exist. Need to remove\n");
+			//printf("Sem already exist. Need to remove\n");
 
 			semid = semget(key, num, PERMISSION);
 			CHECK("semget", semid);

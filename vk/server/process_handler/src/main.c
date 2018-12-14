@@ -10,9 +10,7 @@
 #include"sem_config.h"
 #include"server_msg_types.h"
 #include"signal_handlers.h"
-
-pthread_t thid = 0;
-int handlerPid;
+pthread_t thid = 0; int handlerPid;
 int generalFifo;
 int semid;
 int msgidForAnswer;
