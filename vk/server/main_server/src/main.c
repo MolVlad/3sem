@@ -1,7 +1,5 @@
 #include"libs.h"
-#include"config.h"
 #include"general_config.h"
-#include"config_serv_hand.h"
 #include"my_string.h"
 #include"handler_communication.h"
 #include"user_communication.h"
@@ -11,8 +9,7 @@
 #include"msg.h"
 #include"sem.h"
 
-#define REQUEST_NUMBER 5
-
+pthread_t thid = 0;
 int handlerPid;
 int generalFifo;
 int semid;
@@ -23,17 +20,33 @@ String * stringPid;
 String * userLogin;
 char privateFifoName[PRIVATE_FIFO_NAME_SIZE];
 
+void threadSidHandler()
+{
+	int status;
+	pthread_exit(&status);
+}
+
 void sigHandler(int nsig)
 {
 	printf("Exit from server with signal SIGINT, nsig = %d\n", nsig);
 	kill(handlerPid, SIGINT);
 	close(sockfd);
+	if(thid)
+	{
+		pthread_kill(thid, SIGUSR1);
+		pthread_join(thid, (void **)NULL);
+	}
+
+	deleteString(stringPid);
+	deleteString(userLogin);
+
 	exit(0);
 }
 
 int main()
 {
 	(void) signal(SIGINT, sigHandler);
+	(void) signal(SIGUSR1, threadSidHandler);
 
 	sockfd = raiseServer();
 
@@ -41,8 +54,9 @@ int main()
 	CHECK("createThreadToFightZombie", result);
 
 	handlerPid = fork();
+	CHECK("fork", handlerPid);
 	if(handlerPid == 0)
-		execlp("../handler/handler", "handler", NULL);
+		execlp("handler/handler", "handler", NULL);
 
 	while(1)
 	{
@@ -70,8 +84,6 @@ int main()
 			key_t secondKey = getTheKey(FILE_FOR_KEY, 1);
 			msgidForTransmission = connectToMsg(secondKey);
 
-			/////////нужна отдельная нить, которая будет слушать из другой очереди сообщений
-			/////////нужен семафор для синхронизации отправки пользователю
 			HeaderMessageStruct header;
 			Flag isAll = FALSE;
 			while(isAll == FALSE)

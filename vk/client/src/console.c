@@ -1,6 +1,5 @@
 #include"libs.h"
 #include"config.h"
-#include"general_config.h"
 #include"my_string.h"
 #include"console.h"
 #include"print.h"

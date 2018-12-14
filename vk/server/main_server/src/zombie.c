@@ -1,5 +1,6 @@
 #include"libs.h"
 #include"zombie.h"
+#include"global.h"
 
 void *functionToFightZombies()
 {
@@ -16,7 +17,6 @@ void *functionToFightZombies()
 
 int createThreadToFightZombie()
 {
-	pthread_t thid;
 	int result = pthread_create(&thid, NULL, functionToFightZombies, NULL);
 	if(result != 0)
 	{

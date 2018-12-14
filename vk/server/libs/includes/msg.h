@@ -1,8 +1,6 @@
 #ifndef __MSG_H__
 #define __MSG_H__
 
-#include"config_serv_hand.h"
-
 #define MSG_SIZE 2
 #define NAME_SIZE 10
 #define MESSAGE_FOR_SERVER 1

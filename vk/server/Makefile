@@ -1,31 +1,16 @@
-PROJECT = server
+MAIN_SERVER_DIR = main_server
+MAIN_SERVER_NAME = main_server
+HANDLER_DIR = handler
+HANDLER_NAME = handler
 
-SOURCES = src/main.c ../libs/src/my_string.c src/user_communication.c src/handler_communication.c src/zombie.c src/state.c ../libs/src/fifo.c ../libs/src/msg.c src/sem.c
-INCLUDES += -I includes -I ../libs/includes
-DEFINES =
-CFLAGS = -Wall -Wextra
-LIBS = -lpthread
-COMP = gcc
+.PHONY: all clean start
 
-PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)
-OBJS = $(SOURCES:.c=.o)
-
-CFLAGS += $(DEFINES) $(INCLUDES) $(DEFINES)
-
-RM = rm -rf
-
-.PHONY: all clean go tags
-
-link: $(OBJS)
-	$(COMP) -o $(PROJECT) $(OBJS) $(LIBS)
-
-all: clean link
-
+all:
+	cd $(HANDLER_DIR) && make && make clean_obj
+	cd $(MAIN_SERVER_DIR) && make && make clean_obj
 clean:
-	$(RM) $(OBJS) $(PROJECT)
+	cd $(HANDLER_DIR) && make clean
+	cd $(MAIN_SERVER_DIR) && make clean
 
-%.o: %.c
-	$(COMP) -c $(CFLAGS) $(@:.o=.c) $(LIBS) -o $@
-
-tags:
-	ctags -R
+start:
+	./$(MAIN_SERVER_DIR)/$(MAIN_SERVER_NAME)

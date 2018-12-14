@@ -4,28 +4,57 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACK	includes/config.h	/^	ACK = 0,$/;"	e	enum:ReverseMessageType
+AFTER_TRESHOLD_STRING_SIZE	includes/my_string.h	6;"	d
 CFLAGS	Makefile	/^CFLAGS = -Wall -Wextra$/;"	m
+CHECK	includes/config.h	53;"	d
 CLIENT_FILE_FOR_KEY	includes/sem.h	4;"	d
 COMP	Makefile	/^COMP = gcc$/;"	m
 ConsoleCommand	includes/console.h	/^enum ConsoleCommand$/;"	g
 ConsoleState	includes/console.h	/^enum ConsoleState$/;"	g
 DEFAULT_IP	includes/config.h	5;"	d
 DEFINES	Makefile	/^DEFINES =$/;"	m
+Data	includes/my_string.h	/^typedef char Data;$/;"	t
+END	includes/config.h	/^	END,$/;"	e	enum:MessageType
 ERROR	includes/console.h	/^	ERROR,$/;"	e	enum:ConsoleCommand
 EXIT	includes/console.h	/^	EXIT,$/;"	e	enum:ConsoleCommand
+FALSE	includes/config.h	/^	FALSE = 0,$/;"	e	enum:Flag
+Flag	includes/config.h	/^typedef enum Flag$/;"	g
+Flag	includes/config.h	/^} Flag;$/;"	t	typeref:enum:Flag
+HeaderMessageStruct	includes/config.h	/^} HeaderMessageStruct;$/;"	t	typeref:struct:__anon2
+HeaderReverseMessageStruct	includes/config.h	/^} HeaderReverseMessageStruct;$/;"	t	typeref:struct:__anon3
 INITIALIZATION	includes/console.h	/^	INITIALIZATION,$/;"	e	enum:ConsoleCommand
+INIT_STRING_SIZE	includes/my_string.h	4;"	d
 LIBS	Makefile	/^LIBS = -lpthread$/;"	m
+LIST	includes/config.h	/^	LIST,$/;"	e	enum:ReverseMessageType
+LIST_REQUEST	includes/config.h	/^	LIST_REQUEST,$/;"	e	enum:MessageType
+LOGIN	includes/config.h	/^	LOGIN = 0,$/;"	e	enum:MessageType
 MAIN_MENU	includes/console.h	/^	MAIN_MENU,$/;"	e	enum:ConsoleState
+MESSAGE	includes/config.h	/^	MESSAGE,$/;"	e	enum:ReverseMessageType
+MSG	includes/config.h	/^	MSG,$/;"	e	enum:MessageType
+MessageType	includes/config.h	/^enum MessageType$/;"	g
+NACK	includes/config.h	/^	NACK,$/;"	e	enum:ReverseMessageType
 NO	includes/console.h	/^	NO,$/;"	e	enum:ConsoleCommand
 NUM_OF_SEM	includes/sem.h	5;"	d
+NUM_SPACE_TO_BREAK	includes/my_string.h	7;"	d
 OBJS	Makefile	/^OBJS = $(SOURCES:.c=.o)$/;"	m
+PERMISSION	includes/config.h	11;"	d
+PORT	includes/config.h	4;"	d
 PRECOMP_OBJ	Makefile	/^PRECOMP_OBJ = $(PRECOMP:.h=.h.gch)$/;"	m
 PROJECT	Makefile	/^PROJECT = client$/;"	m
+RCV	includes/config.h	/^	RCV,$/;"	e	enum:MessageType
+REG	includes/config.h	/^	REG,$/;"	e	enum:MessageType
 RM	Makefile	/^RM = rm -rf$/;"	m
+ReverseMessageType	includes/config.h	/^enum ReverseMessageType$/;"	g
 SEND_MSG	includes/console.h	/^	SEND_MSG,$/;"	e	enum:ConsoleCommand
-SIZE_IP	includes/config.h	4;"	d
-SOURCES	Makefile	/^SOURCES = src\/main.c src\/console.c src\/print.c src\/menu.c ..\/libs\/src\/my_string.c src\/sem.c src\/thread.c$/;"	m
+SIZE_IP	includes/config.h	7;"	d
+SOURCES	Makefile	/^SOURCES = src\/main.c src\/console.c src\/print.c src\/menu.c src\/my_string.c src\/sem.c src\/thread.c$/;"	m
+STDIN	includes/config.h	8;"	d
+STDOUT	includes/config.h	9;"	d
 SemName	includes/sem.h	/^enum SemName$/;"	g
+String	includes/my_string.h	/^} String;$/;"	t	typeref:struct:__anon1
+TRESHOLD_STRING_SIZE	includes/my_string.h	5;"	d
+TRUE	includes/config.h	/^	TRUE,$/;"	e	enum:Flag
 USERS_LIST	includes/console.h	/^	USERS_LIST,$/;"	e	enum:ConsoleCommand
 WELCOME_PAGE	includes/console.h	/^	WELCOME_PAGE = 0,$/;"	e	enum:ConsoleState
 YES	includes/console.h	/^	YES,$/;"	e	enum:ConsoleCommand
@@ -33,30 +62,48 @@ __CONFIG_H__	includes/config.h	2;"	d
 __CONSOLE_STATE_H__	includes/console.h	2;"	d
 __GLOBAL_H__	includes/global.h	2;"	d
 __MENU_H__	includes/menu.h	2;"	d
+__MY_STRING_H__	includes/my_string.h	2;"	d
+__PRECOMP_H__	includes/libs.h	2;"	d
 __PRINT_H__	includes/print.h	2;"	d
 __SEM_H__	includes/sem.h	2;"	d
 __THREAD_H__	includes/thread.h	2;"	d
 checkAccount	src/menu.c	/^Flag checkAccount()$/;"	f
+clearString	src/my_string.c	/^void clearString(String * string)$/;"	f
 communicationWithServer	includes/sem.h	/^	communicationWithServer,	\/\/mutex for communicate$/;"	e	enum:SemName
 connectToSem	src/sem.c	/^int connectToSem(key_t key, int num)$/;"	f
 consoleFiniteStateMachine	src/console.c	/^Flag consoleFiniteStateMachine(enum ConsoleCommand command)$/;"	f
+copyString	src/my_string.c	/^String * copyString(String * original)$/;"	f
 createAccount	src/menu.c	/^Flag createAccount()$/;"	f
 createSem	src/sem.c	/^int createSem(key_t key, int num)$/;"	f
+createString	src/my_string.c	/^String * createString()$/;"	f
 createThread	src/thread.c	/^void createThread()$/;"	f
+currentSize	includes/my_string.h	/^	int currentSize;$/;"	m	struct:__anon1
+data	includes/my_string.h	/^	Data * data;$/;"	m	struct:__anon1
+dataSize	includes/config.h	/^	int dataSize;$/;"	m	struct:__anon2
+dataSize	includes/config.h	/^	int dataSize;$/;"	m	struct:__anon3
+deleteString	src/my_string.c	/^void deleteString(String * string)$/;"	f
 deleteThread	src/thread.c	/^void deleteThread()$/;"	f
 getTheKey	src/sem.c	/^key_t getTheKey(const char * keyFileName, int id)$/;"	f
 ip	src/main.c	/^char * ip;$/;"	v
 logOut	src/menu.c	/^void logOut(int socketFd)$/;"	f
+loginSize	includes/config.h	/^	int loginSize;$/;"	m	struct:__anon2
 main	src/main.c	/^int main(int argc, char **argv)$/;"	f
+maxSize	includes/my_string.h	/^	int maxSize;$/;"	m	struct:__anon1
 parseCommand	src/console.c	/^enum ConsoleCommand parseCommand(String * string)$/;"	f
+passwordSize	includes/config.h	/^	int passwordSize;$/;"	m	struct:__anon2
+pidToString	src/my_string.c	/^String * pidToString()$/;"	f
 printError	src/print.c	/^void printError()$/;"	f
 printGoodbye	src/print.c	/^void printGoodbye()$/;"	f
 printGreeting	src/print.c	/^void printGreeting()$/;"	f
 printLogOut	src/print.c	/^void printLogOut()$/;"	f
 printMainMenuCommandList	src/print.c	/^void printMainMenuCommandList()$/;"	f
+printStringToStream	src/my_string.c	/^int printStringToStream(int stream, String * string)$/;"	f
+putInString	src/my_string.c	/^void putInString(String * string, Data * data)$/;"	f
 receiveAnswer	src/menu.c	/^Flag receiveAnswer()$/;"	f
 receiveMessage	src/menu.c	/^Flag receiveMessage()$/;"	f
 scanHeaderReverse	src/menu.c	/^int scanHeaderReverse(int fd, HeaderReverseMessageStruct * header)$/;"	f
+scanStringFromStream	src/my_string.c	/^int scanStringFromStream(int fd, String * string, int maxNum)$/;"	f
+scanTextFromStream	src/my_string.c	/^int scanTextFromStream(int fd, String * string, int maxNum)$/;"	f
 semOperation	src/sem.c	/^void semOperation(int semid, enum SemName semName, int operation)$/;"	f
 semid	src/main.c	/^int semid;$/;"	v
 sendMessage	src/menu.c	/^Flag sendMessage()$/;"	f
@@ -65,8 +112,11 @@ setConnect	src/menu.c	/^int setConnect()$/;"	f
 sigHandler	src/thread.c	/^void sigHandler()$/;"	f
 sockfd	src/main.c	/^int sockfd;$/;"	v
 startOfCommunication	includes/sem.h	/^	startOfCommunication,	\/\/synch of start of work (thread can't start before user login\\reg)$/;"	e	enum:SemName
+stringCompare	src/my_string.c	/^int stringCompare(String * first, String * second)$/;"	f
 stringKey	src/main.c	/^String * stringKey;$/;"	v
 thid	src/main.c	/^pthread_t thid;$/;"	v
 thread	src/thread.c	/^void *thread()$/;"	f
 threadSidHandler	src/thread.c	/^void threadSidHandler()$/;"	f
+type	includes/config.h	/^	enum MessageType type;$/;"	m	struct:__anon2	typeref:enum:__anon2::MessageType
+type	includes/config.h	/^	enum ReverseMessageType type;$/;"	m	struct:__anon3	typeref:enum:__anon3::ReverseMessageType
 userList	src/menu.c	/^void userList()$/;"	f

@@ -1,7 +1,5 @@
 #include"libs.h"
-#include"config.h"
 #include"general_config.h"
-#include"config_serv_hand.h"
 #include"my_string.h"
 #include"handler_communication.h"
 #include"sem.h"

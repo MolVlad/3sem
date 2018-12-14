@@ -1,7 +1,7 @@
-PROJECT = client
+PROJECT = main_server
 
-SOURCES = src/main.c src/console.c src/print.c src/menu.c src/my_string.c src/sem.c src/thread.c
-INCLUDES += -I includes
+SOURCES = src/main.c ../libs/src/my_string.c src/user_communication.c src/handler_communication.c src/zombie.c src/state.c ../libs/src/fifo.c ../libs/src/msg.c ../libs/src/sem.c
+INCLUDES += -I includes -I ../libs/includes
 DEFINES =
 CFLAGS = -Wall -Wextra
 LIBS = -lpthread
@@ -14,12 +14,12 @@ CFLAGS += $(DEFINES) $(INCLUDES) $(DEFINES)
 
 RM = rm -rf
 
-.PHONY: all clean go tags clean_obj
-
-all: clean link clean_obj
+.PHONY: all clean go tags
 
 link: $(OBJS)
 	$(COMP) -o $(PROJECT) $(OBJS) $(LIBS)
+
+all: clean link
 
 clean:
 	$(RM) $(OBJS) $(PROJECT)

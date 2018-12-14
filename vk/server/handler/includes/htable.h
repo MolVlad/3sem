@@ -1,6 +1,9 @@
 #ifndef __HTABLE_H__
 #define __HTABLE_H__
 
+#define HTABLE_SIZE 100
+#define HTABLE_STORAGE "txt/htable_storage"
+
 typedef struct
 {
 	String * login;

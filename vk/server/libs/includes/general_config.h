@@ -1,15 +1,12 @@
 #ifndef __GENERAL_CONFIG_H__
 #define __GENERAL_CONFIG_H__
 
-#define STDIN 1
-#define STDOUT 0
-
-//number of \n in the string after that it ends
-#define NUM_SPACE_TO_BREAK 2
-
 #define PORT 51000
 
-#define FILE_LIST "../txt/list.txt"
+#define FILE_FOR_KEY "txt/key.txt"
+#define GENERAL_FIFO "txt/general_fifo"
+#define PRIVATE_FIFO_NAME_SIZE 6
+#define FILE_LIST "txt/list.txt"
 
 #define PERMISSION 0666
 
@@ -52,6 +49,9 @@ typedef enum Flag
 	FALSE = 0,
 	TRUE,
 } Flag;
+
+#define STDIN 1
+#define STDOUT 0
 
 #define CHECK(nameFunction, retValue)				\
 do								\

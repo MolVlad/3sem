@@ -1,7 +1,5 @@
 #include"libs.h"
-#include"config.h"
 #include"general_config.h"
-#include"config_serv_hand.h"
 #include"my_string.h"
 #include"htable.h"
 #include"btree.h"
@@ -28,7 +26,6 @@ void sigHandler(int nsig)
 	CHECK("semctl", semctl(semid, 0, IPC_RMID, 0));
 	remove(GENERAL_FIFO);
 	close(generalFifo);
-	printHTable(htableMap);
 	deleteHTable(htableMap);
 	deleteBTree(btreeMap);
 	deleteString(stringForGeneralFifo);
@@ -159,7 +156,6 @@ void handleRequest(enum MessageType type)
 				insertToHTable(htableMap, convertToHTableData(login, password));
 				insertToBTree(btreeMap, convertToBTreeData(login, pid));
 				saveBTree(btreeMap, FILE_LIST);
-				//saveHTable(htableMap, HTABLE_STORAGE);
 			}
 			else
 			{

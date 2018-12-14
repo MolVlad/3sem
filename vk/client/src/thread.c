@@ -1,7 +1,7 @@
 #include"libs.h"
 #include"global.h"
 #include"thread.h"
-#include"general_config.h"
+#include"config.h"
 #include"sem.h"
 #include"menu.h"
 
@@ -11,6 +11,11 @@ void sigHandler()
 	remove(stringKey->data);
 	deleteString(stringKey);
 	close(sockfd);
+	if(thid)
+	{
+		pthread_kill(thid, SIGUSR1);
+		pthread_join(thid, (void **)NULL);
+	}
 
 	exit(-1);
 }
@@ -56,6 +61,7 @@ void deleteThread()
 	if(thid)
 	{
 		pthread_kill(thid, SIGUSR1);
+		pthread_join(thid, (void **)NULL);
 		thid = 0;
 	}
 
