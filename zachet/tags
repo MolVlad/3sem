@@ -1,0 +1,29 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AMOUNT_OF_NUMBERS_FOR_MACHINE	main.c	25;"	d	file:
+AMOUNT_OF_NUMBERS_FOR_MACHINE	server.c	37;"	d	file:
+BACKLOG	server.c	39;"	d	file:
+CHECK	main.c	30;"	d	file:
+CHECK	server.c	25;"	d	file:
+DEFAULT_IP	main.c	27;"	d	file:
+MACHINE_NUM	main.c	26;"	d	file:
+MACHINE_NUM	server.c	38;"	d	file:
+MAX_RANDOM	main.c	28;"	d	file:
+Message	main.c	/^struct Message$/;"	s	file:
+Message	server.c	/^struct Message$/;"	s	file:
+ReverseMessage	main.c	/^struct ReverseMessage$/;"	s	file:
+ReverseMessage	server.c	/^struct ReverseMessage$/;"	s	file:
+array	main.c	/^	int array[AMOUNT_OF_NUMBERS_FOR_MACHINE];$/;"	m	struct:Message	file:
+array	server.c	/^	int array[AMOUNT_OF_NUMBERS_FOR_MACHINE];$/;"	m	struct:Message	file:
+generateData	main.c	/^void generateData(int * array)$/;"	f
+main	main.c	/^int main(int argc, char **argv)$/;"	f
+main	server.c	/^int main(int argc, char **argv)$/;"	f
+printSum	main.c	/^void printSum(int * array)$/;"	f
+result	main.c	/^	int result;$/;"	m	struct:ReverseMessage	file:
+result	server.c	/^	int result;$/;"	m	struct:ReverseMessage	file:
+setConnect	main.c	/^int setConnect(int port)$/;"	f
+setNum	main.c	/^void setNum(int * destination, int * source)$/;"	f
